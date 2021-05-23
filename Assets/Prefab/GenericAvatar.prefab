@@ -16,7 +16,8 @@ GameObject:
   - component: {fileID: 2754486748955791981}
   - component: {fileID: 8706150506697623497}
   - component: {fileID: 414204541270967377}
-  m_Layer: 0
+  - component: {fileID: 6441007859182316285}
+  m_Layer: 8
   m_Name: GenericAvatar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -196,3 +197,36 @@ MonoBehaviour:
   compressRotation: 0
   interpolateScale: 1
   syncScale: 1
+--- !u!60 &6441007859182316285
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644570496936021407}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.99, y: 0.75}
+    newSize: {x: 0.99, y: 0.75}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.5033128, y: 0.06403894}
+      - {x: 0.08997624, y: 0.3784144}
+      - {x: -0.07729045, y: 0.37777093}
+      - {x: -0.4894581, y: 0.061748564}
+      - {x: -0.4728323, y: -0.2505419}
+      - {x: -0.08236566, y: -0.38066953}
+      - {x: 0.08837437, y: -0.38054192}
+      - {x: 0.47560334, y: -0.255}

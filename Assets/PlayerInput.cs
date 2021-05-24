@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[RequireComponent(typeof(Experience), typeof(Ability))]
 
 
 public class PlayerInput : NetworkBehaviour
@@ -11,6 +12,9 @@ public class PlayerInput : NetworkBehaviour
     ClientInstance playerAtThisComputer;
     IFF iff;
     Rigidbody2D rb;
+    GadgetDriver gd;
+    Ability priAbility;
+    Ability secAbility;
 
     //param
     [SerializeField] float accelRate_normal;
@@ -20,6 +24,7 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] float turnAccelRate_normal;
 
     float throttleSensitivity = 0.05f;
+    float scrollSensitivity = 0.1f;
 
     //hood
     [SerializeField] Vector2 desAimDir = Vector2.zero;
@@ -31,7 +36,25 @@ public class PlayerInput : NetworkBehaviour
         HookIntoLocalUI();
         iff = GetComponent<IFF>();
         rb = GetComponent<Rigidbody2D>();
+        gd = GetComponent<GadgetDriver>();
+        SetupAbilites();
 
+    }
+
+    private void SetupAbilites()
+    {
+        Ability[] abilities = GetComponents<Ability>();
+        foreach (Ability ab in abilities)
+        {
+            if (ab.IsPrimaryAbility)
+            {
+                priAbility = ab;
+            }
+            else
+            {
+                secAbility = ab;
+            }
+        }
     }
 
     private void HookIntoLocalUI()
@@ -56,10 +79,53 @@ public class PlayerInput : NetworkBehaviour
 
     private void HandleMouseInput()
     {
+        UpdateAimDir();
+        UpdateGadgetScrolling();
+        UpdateMouseClicking();
+    }
+
+    private void UpdateAimDir()
+    {
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         desAimDir = (mousePos - transform.position).normalized;
     }
+
+    private void UpdateGadgetScrolling()
+    {
+        if (Input.mouseScrollDelta.y * scrollSensitivity < 0)
+        {
+            gd.IncrementGadgetSelection();
+        }
+        if (Input.mouseScrollDelta.y * scrollSensitivity > 0)
+        {
+            gd.DecrementGadgetSelection();
+        }
+    }
+
+    private void UpdateMouseClicking()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            priAbility.MouseClickDown();
+            //gd.primaryGadget.OnClickDown(mousePos, transform);
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+        {
+            priAbility.MouseClickUp();
+            //gd.primaryGadget.OnClickUp(mousePos);
+        }
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            secAbility.MouseClickDown();
+        }
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+        {
+            secAbility.MouseClickUp();
+        }
+    }
+
+
 
     private void HandleKeyboardInput()
     {

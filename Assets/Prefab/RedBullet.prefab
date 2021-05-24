@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6321295644903346578}
   - component: {fileID: 75921052859884571}
   m_Layer: 9
-  m_Name: GenericProjectile
+  m_Name: RedBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,12 +76,12 @@ SpriteRenderer:
   m_SortingLayerID: 374401597
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 38efbe5ed3562c042ae436a2c159b4f3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f69ab2c686b60bc48a02664ada7a8986, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.09, y: 0.54}
+  m_Size: {x: 0.14, y: 0.31}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -122,7 +122,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.14, y: 0.31}
+  m_Size: {x: 0.13, y: 0.37}
   m_Direction: 0
 --- !u!70 &961443929853437692
 CapsuleCollider2D:
@@ -138,7 +138,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.14, y: 0.31}
+  m_Size: {x: 0.13, y: 0.37}
   m_Direction: 0
 --- !u!114 &6321295644903346578
 MonoBehaviour:

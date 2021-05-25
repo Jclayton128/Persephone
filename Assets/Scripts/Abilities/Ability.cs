@@ -13,6 +13,9 @@ public abstract class Ability : NetworkBehaviour
     [SerializeField] protected float damagePerShot;
     [SerializeField] protected float weaponLifetime;
     [SerializeField] protected float weaponSpeed;
+    [SerializeField] protected float hullDamage;
+    [SerializeField] protected float shieldDamage;
+    [SerializeField] protected float ionDamage;
     [SerializeField] protected float costPerShot;
 
     Experience exp;

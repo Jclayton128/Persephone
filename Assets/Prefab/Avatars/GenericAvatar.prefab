@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8706150506697623497}
   - component: {fileID: 414204541270967377}
   - component: {fileID: 6441007859182316285}
-  - component: {fileID: 2578491886477772862}
+  - component: {fileID: 5030652208682602083}
   m_Layer: 8
   m_Name: GenericAvatar
   m_TagString: Untagged
@@ -79,15 +79,15 @@ SpriteRenderer:
   m_SortingLayerID: 719045139
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 5a30cb5e002c6a6419f02db8d5778bea, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 0.99, y: 0.75}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &8644570496936021376
@@ -231,7 +231,7 @@ PolygonCollider2D:
       - {x: -0.08236566, y: -0.38066953}
       - {x: 0.08837437, y: -0.38054192}
       - {x: 0.47560334, y: -0.255}
---- !u!114 &2578491886477772862
+--- !u!114 &5030652208682602083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -240,11 +240,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 8644570496936021407}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f60ac658c68bc5945804916121d312df, type: 3}
+  m_Script: {fileID: 11500000, guid: 58e52d6e2c40003489dddc3803d2a98d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  secondaryGadgetsOnboard: []
-  gadgetSlots: 2
-  secondaryGadgetIndex: 1
+  hurtAudioClip: []
+  dieAudioClip: []
+  hullLevel: {fileID: 0}
+  shieldLevel: {fileID: 0}
+  maxHulltmp: {fileID: 0}
+  maxShieldtmp: {fileID: 0}
+  regenShieldtmp: {fileID: 0}
+  isPlayer: 0
+  shieldMax: 0
+  shieldRegenPerSecond: 0
+  hullMax: 1
+  countsTowardsScore: 0
+  isDying: 0
+  shieldCurrentLevel: 0
+  hullCurrentLevel: 0

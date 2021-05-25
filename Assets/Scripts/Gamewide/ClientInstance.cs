@@ -10,7 +10,9 @@ public class ClientInstance : NetworkBehaviour
     [SerializeField] AvatarShipyard avatarShipyard;
     public static ClientInstance Instance;
     Camera cam;
-    [SerializeField] GameObject desiredAvatar;
+    //[SerializeField] GameObject desiredAvatar;
+    ShipSelectPanelDriver sspd;
+    int desiredAvatar;
     public GameObject currentAvatar;
     Scene scene;
 
@@ -58,14 +60,16 @@ public class ClientInstance : NetworkBehaviour
 
     private void HookIntoLocalShipSelectPanel()
     {
-        FindObjectOfType<ShipSelectPanelDriver>().ci = this;
+        sspd = FindObjectOfType<ShipSelectPanelDriver>();
+        sspd.ci = this;
+        sspd.DisplayPanel();
+        
     }
     public void SetDesiredAvatar(int indexForShipyard)
     {
 
-        desiredAvatar = avatarShipyard.ReturnPrefabAtIndex(indexForShipyard); //doesn't update on the server here.
+        //desiredAvatar = avatarShipyard.ReturnPrefabAtIndex(indexForShipyard); //doesn't update on the server here.
         CmdRequestSpawnDesiredAvatar(indexForShipyard);
-
     }
 
 
@@ -84,17 +88,17 @@ public class ClientInstance : NetworkBehaviour
     [Command]
     private void CmdRequestSpawnDesiredAvatar(int index)
     {
-        desiredAvatar = avatarShipyard.ReturnPrefabAtIndex(index);
-        NetworkSpawnAvatar();
+        //desiredAvatar = avatarShipyard.ReturnPrefabAtIndex(index);
+        NetworkSpawnAvatar(index);
 
     }
 
     [Server]
-    private void NetworkSpawnAvatar()
+    private void NetworkSpawnAvatar(int index)
     {
         //Vector3 randomPos = MapHelper.CreateRandomValidStartPoint(); For random start position
         Debug.Log($"trying to spawn {desiredAvatar} on server");
-        GameObject test = FindObjectOfType<PersNetworkManager>().spawnPrefabs[0];
+        GameObject test = FindObjectOfType<PersNetworkManager>().spawnPrefabs[index];
         GameObject go = Instantiate(test, transform.position, Quaternion.identity);
         Debug.Log($"break 2");
         go.GetComponent<IFF>().SetIFFAllegiance(IFF.PlayerIFF);

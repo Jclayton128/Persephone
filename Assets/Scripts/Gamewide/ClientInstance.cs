@@ -7,13 +7,17 @@ using UnityEngine.SceneManagement;
 
 public class ClientInstance : NetworkBehaviour
 {
-    [SerializeField] GameObject shipPrefab = null;
+    [SerializeField] AvatarShipyard avatarShipyard;
     public static ClientInstance Instance;
     Camera cam;
+    [SerializeField] GameObject desiredAvatar;
     public GameObject currentAvatar;
     Scene scene;
 
     public static Action<GameObject> OnAvatarSpawned; //Anytime an observer to this event hears it, they get passed a reference Game Object
+
+
+
 
     #region EventResponse
 
@@ -36,55 +40,67 @@ public class ClientInstance : NetworkBehaviour
         scene = SceneManager.GetSceneByBuildIndex(1);
         Instance = this;
         cam = Camera.main;
+        avatarShipyard = FindObjectOfType<AvatarShipyard>();
         if (!isLocalPlayer)
         {
             cam.enabled = false;
         }
 
-        if (shipPrefab && isLocalPlayer)
+        if (isLocalPlayer)
         {
-            CmdRequestSpawn();
+            HookIntoLocalShipSelectPanel();
+
         }
+
 
         //FindObjectOfType<UIManager>().SetLocalPlayerForUI(this);
     }
+
+    private void HookIntoLocalShipSelectPanel()
+    {
+        FindObjectOfType<ShipSelectPanelDriver>().ci = this;
+    }
+    public void SetDesiredAvatar(int indexForShipyard)
+    {
+
+        desiredAvatar = avatarShipyard.ReturnPrefabAtIndex(indexForShipyard); //doesn't update on the server here.
+        CmdRequestSpawnDesiredAvatar(indexForShipyard);
+
+    }
+
+
+    #endregion
+
+
+    #region Server
 
     public override void OnStartServer()
     {
         base.OnStartServer();
         GameObject.DontDestroyOnLoad(gameObject);
-    }
-
-    public void SetupAvatarRespawn()
-    {
-        Destroy(currentAvatar);
-        CmdRequestSpawn();    
-    }
-
-    public void SetChosenAvatarPrefab(GameObject go)
-    {
-        shipPrefab = go;
-        Debug.Log("just set the prefab as " + go);
-        CmdRequestSpawn();
-        //De
+        avatarShipyard = FindObjectOfType<AvatarShipyard>();
     }
 
     [Command]
-    public void CmdRequestSpawn()
+    private void CmdRequestSpawnDesiredAvatar(int index)
     {
+        desiredAvatar = avatarShipyard.ReturnPrefabAtIndex(index);
         NetworkSpawnAvatar();
+
     }
-    #endregion
 
-
-    #region Server
     [Server]
     private void NetworkSpawnAvatar()
     {
         //Vector3 randomPos = MapHelper.CreateRandomValidStartPoint(); For random start position
-        GameObject go = Instantiate(shipPrefab, transform.position, Quaternion.identity);
+        Debug.Log($"trying to spawn {desiredAvatar} on server");
+        GameObject test = FindObjectOfType<PersNetworkManager>().spawnPrefabs[0];
+        GameObject go = Instantiate(test, transform.position, Quaternion.identity);
+        Debug.Log($"break 2");
         go.GetComponent<IFF>().SetIFFAllegiance(IFF.PlayerIFF);
+        Debug.Log($"break 3");
         NetworkServer.Spawn(go, base.connectionToClient);
+        Debug.Log($"break 4");
     }
 
 

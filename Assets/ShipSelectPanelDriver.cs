@@ -10,33 +10,16 @@ public class ShipSelectPanelDriver : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-        FindLocalClientInstance();
+        //Populate button images with sprites from the AvatarShipyard
+
 
     }
-
-    private void FindLocalClientInstance()
+    public void PushSelectPrefabToClient(int index)
     {
-        ClientInstance[] allCI = FindObjectsOfType<ClientInstance>();
-        Debug.Log($"Found {allCI.Length} CIs");
-        foreach (ClientInstance possCI in allCI)
-        {
-            if (possCI.isLocalPlayer)
-            {
-                ci = possCI;
-            }
-        }
-    }
-
-    public void PushSelectPrefabToClient(GameObject go)
-    {
-        if (!ci)
-        {
-            FindLocalClientInstance();
-        }
-
-        ci.SetChosenAvatarPrefab(go);
-        Debug.Log($"CI is {ci.connectionToServer} and wants to be {go}");
+        ci.SetDesiredAvatar(index);
         gameObject.SetActive(false);
+        Debug.Log($"Pushed {index} to {ci} ");
     }
+
 
 }

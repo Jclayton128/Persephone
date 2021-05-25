@@ -6,12 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : NetworkBehaviour
 {
-    public void EnterArenaScene(GameObject go)
-    {
-        ClientInstance ci = ClientInstance.ReturnClientInstance();
-        ci.SetChosenAvatarPrefab(go);
-        SceneManager.LoadSceneAsync(1);
-    }
+    //public void EnterArenaScene(GameObject go)
+    //{
+    //    ClientInstance ci = ClientInstance.ReturnClientInstance();
+    //    ci.SetChosenAvatarPrefab(go);
+    //    SceneManager.LoadSceneAsync(1);
+    //}
 
 
 }

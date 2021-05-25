@@ -421,10 +421,10 @@ MonoBehaviour:
       - m_Target: {fileID: 1365304430}
         m_TargetAssemblyTypeName: ShipSelectPanelDriver, Assembly-CSharp
         m_MethodName: PushSelectPrefabToClient
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 2887084537579551194, guid: 140f047c88ffdc5479a70a2ed8b18d70, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -705,11 +705,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1365304430}
         m_TargetAssemblyTypeName: ShipSelectPanelDriver, Assembly-CSharp
         m_MethodName: PushSelectPrefabToClient
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 5485847337457805922, guid: 4c758cfbf3fa54342a8e16b94d988ee3, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -929,6 +929,7 @@ GameObject:
   m_Component:
   - component: {fileID: 538501675}
   - component: {fileID: 538501676}
+  - component: {fileID: 538501674}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -936,6 +937,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &538501674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538501673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b0d02f64c475894184e97f9f7d9a4b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarMenu:
+  - {fileID: 2887084537579551194, guid: 140f047c88ffdc5479a70a2ed8b18d70, type: 3}
+  - {fileID: 5485847337457805922, guid: 4c758cfbf3fa54342a8e16b94d988ee3, type: 3}
 --- !u!4 &538501675
 Transform:
   m_ObjectHideFlags: 0
@@ -963,7 +979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneId: 2501325844
-  serverOnly: 1
+  serverOnly: 0
   visible: 0
   m_AssetId: 
   hasSpawned: 0
@@ -1225,8 +1241,8 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 2887084537579551194, guid: 140f047c88ffdc5479a70a2ed8b18d70, type: 3}
   - {fileID: 5485847337457805922, guid: 4c758cfbf3fa54342a8e16b94d988ee3, type: 3}
-  - {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   - {fileID: 3937818766114237639, guid: 7b6c9240013d41040b4caa5dd5501955, type: 3}
+  - {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
 --- !u!4 &864886754
 Transform:
   m_ObjectHideFlags: 0

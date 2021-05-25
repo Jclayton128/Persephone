@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  shipPrefab: {fileID: 2887084537579551194, guid: 140f047c88ffdc5479a70a2ed8b18d70, type: 3}
+  shipPrefab: {fileID: 0}
   currentAvatar: {fileID: 0}
 --- !u!114 &8602940360580045143
 MonoBehaviour:

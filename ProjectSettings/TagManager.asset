@@ -55,3 +55,6 @@ TagManager:
   - name: Weaponry
     uniqueID: 374401597
     locked: 0
+  - name: WorldSpaceUI
+    uniqueID: 1212995695
+    locked: 0

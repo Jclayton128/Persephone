@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class ClientInstance : NetworkBehaviour
 {
@@ -10,6 +11,7 @@ public class ClientInstance : NetworkBehaviour
     public static ClientInstance Instance;
     Camera cam;
     public GameObject currentAvatar;
+    Scene scene;
 
     public static Action<GameObject> OnAvatarSpawned; //Anytime an observer to this event hears it, they get passed a reference Game Object
 
@@ -30,23 +32,41 @@ public class ClientInstance : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
+        GameObject.DontDestroyOnLoad(gameObject);
+        scene = SceneManager.GetSceneByBuildIndex(1);
         Instance = this;
         cam = Camera.main;
         if (!isLocalPlayer)
         {
             cam.enabled = false;
         }
-        CmdRequestSpawn();
+
+        if (shipPrefab && isLocalPlayer)
+        {
+            CmdRequestSpawn();
+        }
+
         //FindObjectOfType<UIManager>().SetLocalPlayerForUI(this);
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        GameObject.DontDestroyOnLoad(gameObject);
     }
 
     public void SetupAvatarRespawn()
     {
-        if (isLocalPlayer)
-        {
-            Destroy(currentAvatar);
-            CmdRequestSpawn();
-        }
+        Destroy(currentAvatar);
+        CmdRequestSpawn();    
+    }
+
+    public void SetChosenAvatarPrefab(GameObject go)
+    {
+        shipPrefab = go;
+        Debug.Log("just set the prefab as " + go);
+        CmdRequestSpawn();
+        //De
     }
 
     [Command]
@@ -55,6 +75,7 @@ public class ClientInstance : NetworkBehaviour
         NetworkSpawnAvatar();
     }
     #endregion
+
 
     #region Server
     [Server]

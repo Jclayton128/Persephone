@@ -5,7 +5,7 @@ using Mirror;
 
 public class Blaster_gad : Gadget
 {
-    WeaponEmitter we;
+    //WeaponEmitter we;
 
     public override void OnClickDown(Vector2 targetPos, Transform currentTransform)
     {

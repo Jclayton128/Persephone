@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using Mirror;
+using UnityEngine.SceneManagement;
 
 public class DebugHelper : NetworkBehaviour
 {
@@ -11,6 +12,20 @@ public class DebugHelper : NetworkBehaviour
     [SerializeField] TextMeshProUGUI debugModeTMP = null;
     [SerializeField] GameObject[] testMinion = null;
     public override void OnStartClient()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        Scene arena = SceneManager.GetSceneByBuildIndex(1);
+        if (currentScene == arena)
+        {
+            debugModeTMP = GameObject.FindGameObjectWithTag("DebugText").GetComponent<TextMeshProUGUI>();
+        }
+        else
+        {
+            SceneManager.activeSceneChanged += ReloadUI;
+        }
+    }
+
+    private void ReloadUI(Scene arg0, Scene arg1)
     {
         debugModeTMP = GameObject.FindGameObjectWithTag("DebugText").GetComponent<TextMeshProUGUI>();
     }

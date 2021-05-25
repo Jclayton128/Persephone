@@ -1,0 +1,59 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using TMPro;
+using System;
+using Mirror;
+
+public class DebugHelper : NetworkBehaviour
+{
+    bool isInDebugMode = false;
+    [SerializeField] TextMeshProUGUI debugModeTMP = null;
+    [SerializeField] GameObject[] testMinion = null;
+    public override void OnStartClient()
+    {
+        debugModeTMP = GameObject.FindGameObjectWithTag("DebugText").GetComponent<TextMeshProUGUI>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        HandleDebugModeToggle();
+        HandleDebugMinionSpawn();
+    }
+
+    private void HandleDebugMinionSpawn()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1) && isInDebugMode && isLocalPlayer)
+        {
+            CmdSpawnMinionForDebug(0);
+        }
+    }
+
+
+    private void HandleDebugModeToggle()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            isInDebugMode = !isInDebugMode;
+            if (isInDebugMode)
+            {
+                debugModeTMP.text = "DEBUG";
+            }
+            else
+            {
+                debugModeTMP.text = " ";
+            }
+        }
+    }
+
+
+    [Command]
+    private void CmdSpawnMinionForDebug(int index)
+    {
+        GameObject minion = Instantiate(testMinion[index], Vector3.zero, Quaternion.identity) as GameObject;
+        NetworkServer.Spawn(minion);
+    }
+
+
+}

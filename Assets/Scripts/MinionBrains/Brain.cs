@@ -11,19 +11,31 @@ public abstract class Brain : NetworkBehaviour
     protected SpriteRenderer sr;
     protected ArenaBounds ab;
     protected List<GameObject> targets = new List<GameObject>();
-    protected GameObject currentAttackTarget;
-    protected Vector3 currentDest = Vector3.zero;
+    protected GameObject incomingDamager;
+    [SerializeField] protected GameObject currentAttackTarget;
+    [SerializeField] protected Vector3 currentDest = Vector3.zero;
+    protected Detector det;
 
     //param
+    [SerializeField] float detectorRange;
     [SerializeField] float accelRate_normal;
-    [SerializeField] float drag_normal;
-    [SerializeField] float drag_retro;
     [SerializeField] float maxTurnSpeed_normal;
     [SerializeField] float turnAccelRate_normal;
 
-    float closeEnough = 0.2f;
-    float angleThresholdForAccel = 10f;
-    float timeBetweenScans = 0.2f;
+    protected float closeEnough = 0.2f;
+    protected float angleThresholdForAccel = 10f;
+    protected float timeBetweenScans = 0.1f;
+
+    float param1;
+    float param2;
+    float param3;
+
+    [SerializeField] GameObject weaponPrefab = null;
+    [SerializeField] float timeBetweenShots;
+    [SerializeField] float weaponSpeed;
+    [SerializeField] AudioClip[] firingSounds;
+    AudioClip selectedFiringSound;
+
 
     //hood
     protected float angleToDest;
@@ -33,13 +45,16 @@ public abstract class Brain : NetworkBehaviour
 
     protected float timeSinceLastScan = 0;
 
+    protected float timeSinceLastShot = 0;
 
-    void Start()
+    protected virtual void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         ab = FindObjectOfType<ArenaBounds>();
-        timeSinceLastScan = Random.Range(0, timeBetweenScans);
+        det = GetComponent<Detector>();
+        det.SetDetectorRange(detectorRange);
+        timeSinceLastScan = UnityEngine.Random.Range(0, timeBetweenScans);
     }
 
     // Update is called once per frame
@@ -69,6 +84,11 @@ public abstract class Brain : NetworkBehaviour
         }
     }
 
+    protected virtual void FixedUpdate()
+    {
+
+    }
+
     #region Targeting
     public void AddTargetToList(GameObject target)
     {
@@ -80,9 +100,27 @@ public abstract class Brain : NetworkBehaviour
         targets.Remove(target);
     }
 
+    public void WarnOfIncomingDamageDealer(GameObject damager)
+    {
+        incomingDamager = damager;
+    }
+
     #endregion
 
     #region Movement
+
+    protected virtual void FlyTowardsDestination()
+    {
+        if (Mathf.Abs(angleToDest) <= angleThresholdForAccel)
+        {
+            rb.AddForce(accelRate_normal * transform.up);
+            return;
+        }
+        if (Mathf.Abs(angleToDest) <= angleThresholdForAccel*3)
+        {
+            rb.AddForce(accelRate_normal / 2 * transform.up);
+        }
+    }
     protected virtual void FlyTowardsNavTarget(bool adjustForDistanceToTarget)
     {
         if (Mathf.Abs(angleToDest) <= angleThresholdForAccel && adjustForDistanceToTarget == true)
@@ -132,20 +170,28 @@ public abstract class Brain : NetworkBehaviour
     #region Facing
     protected virtual void TurnToFaceNavTarget() //Optimize to decrease velocity with small angles off;
     {
+        float factor = Mathf.Abs(angleToDest) / 5;
+        factor = Mathf.Clamp01(factor);
+        Debug.Log("turn speed: " + maxTurnSpeed_normal * factor);
+        if (angleToDest > 0)
+        {
+            rb.angularVelocity = -1 * maxTurnSpeed_normal * factor;
+        }
+        if (angleToDest < 0)
+        {
+            rb.angularVelocity = maxTurnSpeed_normal * factor;
+        }
+    }
 
-        float angleWithTurnDamper = Mathf.Clamp(angleToDest, -10, 10);
-        float currentTurnRate = Mathf.Clamp(-maxTurnSpeed_normal * angleWithTurnDamper / 10, -maxTurnSpeed_normal, maxTurnSpeed_normal);
-        if (angleToDest > 0.02)
+    protected virtual void TurnToFaceDestination()
+    {
+        if (angleToDest > 5)
         {
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, currentTurnRate, turnAccelRate_normal * Time.deltaTime);
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
         }
-        if (angleToDest < -0.02)
+        if (angleToDest < -5)
         {
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, currentTurnRate, turnAccelRate_normal * Time.deltaTime);
-        }
-        if (Mathf.Abs(angleToDest) <= 0.02)
-        {
-            //rb.angularVelocity = 0;
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
         }
     }
     protected void TurnToFacePlayerWithLead(float weaponSpeed)
@@ -159,6 +205,36 @@ public abstract class Brain : NetworkBehaviour
         //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(0, 0, -1 * angleToTargetFromNorth), maxTurnRate * Time.deltaTime);
     }
     #endregion
+
+    #region Attacking
+    protected void SelectFiringSound()
+    {
+        if (firingSounds.Length == 0) { return; }
+        int random = UnityEngine.Random.Range(0, firingSounds.Length);
+        selectedFiringSound = firingSounds[random];
+    }
+
+    #endregion
+
+    #region LevelScaling
+
+    public void SetParam1(float value)
+    {
+        param1 = value;
+    }
+
+    public void SetParam2(float value)
+    {
+        param2 = value;
+    }
+
+    public void SetParam3(float value)
+    {
+        param3 = value;
+    }
+
+    #endregion
+
 
 
 }

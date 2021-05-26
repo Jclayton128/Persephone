@@ -9,7 +9,7 @@ public class IFF : NetworkBehaviour
     //init
 
     //param
-    int iffAllegiance;
+    [SerializeField] int iffAllegiance;
     public static readonly int PlayerIFF = 0;
 
     public Action<int> OnChangeIFF;

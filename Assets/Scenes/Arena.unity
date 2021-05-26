@@ -283,6 +283,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2499555401504895810, guid: 7b6c9240013d41040b4caa5dd5501955, type: 3}
+      propertyPath: accelRate_normal
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3937818766114237636, guid: 7b6c9240013d41040b4caa5dd5501955, type: 3}
       propertyPath: sceneId
       value: 1021019216
@@ -1318,6 +1322,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3916728825473221509, guid: fb16c5bc5bcfa944bab745be7f8a8dbe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb16c5bc5bcfa944bab745be7f8a8dbe, type: 3}
 --- !u!4 &886831449 stripped
@@ -1550,6 +1558,10 @@ PrefabInstance:
     - target: {fileID: 3916728825473221509, guid: fb16c5bc5bcfa944bab745be7f8a8dbe, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3916728825473221509, guid: fb16c5bc5bcfa944bab745be7f8a8dbe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb16c5bc5bcfa944bab745be7f8a8dbe, type: 3}
@@ -6625,6 +6637,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3916728825473221509, guid: fb16c5bc5bcfa944bab745be7f8a8dbe, type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb16c5bc5bcfa944bab745be7f8a8dbe, type: 3}
 --- !u!4 &1987798465 stripped
@@ -6721,6 +6737,10 @@ PrefabInstance:
     - target: {fileID: 3916728825473221509, guid: fb16c5bc5bcfa944bab745be7f8a8dbe, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3916728825473221509, guid: fb16c5bc5bcfa944bab745be7f8a8dbe, type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb16c5bc5bcfa944bab745be7f8a8dbe, type: 3}

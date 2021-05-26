@@ -46,4 +46,12 @@ public class ArenaBounds : MonoBehaviour
             return true;
         }
     }
+
+    public Vector2 CreateValidRandomPointWithinArena()
+    {
+        float randX = Random.Range(minX, maxX);
+        float randY = Random.Range(minY, maxY);
+        Vector2 randPos = new Vector2(randX, randY);
+        return randPos;
+    }
 }

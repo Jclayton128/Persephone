@@ -30,9 +30,7 @@ public abstract class Brain : NetworkBehaviour
     float param2;
     float param3;
 
-    [SerializeField] GameObject weaponPrefab = null;
-    [SerializeField] float timeBetweenShots;
-    [SerializeField] float weaponSpeed;
+    [SerializeField] protected GameObject weaponPrefab = null;
     [SerializeField] AudioClip[] firingSounds;
     AudioClip selectedFiringSound;
 
@@ -44,8 +42,6 @@ public abstract class Brain : NetworkBehaviour
     protected float distToAttackTarget;
 
     protected float timeSinceLastScan = 0;
-
-    protected float timeSinceLastShot = 0;
 
     protected virtual void Start()
     {

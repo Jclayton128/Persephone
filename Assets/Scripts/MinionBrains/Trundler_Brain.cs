@@ -12,11 +12,28 @@ public class Trundler_Brain : Brain
     // When the player is within boresight and firing range, the enemy opens fire.
     // If the player navigates outside of the enemy's scan range, it breaks lock and goes back to a random patrol.
 
+    //init
+
+    //blaster param
+    float randomSpread = 10f;
+    float boresight = 30f;
+    float shotSpeed = 10f;
+    float shotLifetime = 0.3f;
+    float timeBetweenShots = 0.2f;
+    bool isFiring = false;
+    float blasterDamage = 1.0f;
+
+    //hood
+    float timeSinceLastShot = 0f;
+    float attackRange;
+
+
 
     protected override void Start()
     {
         base.Start();
         currentDest = ab.CreateValidRandomPointWithinArena();
+        attackRange = shotLifetime * shotSpeed;
     }
 
     protected override void Update()
@@ -24,8 +41,10 @@ public class Trundler_Brain : Brain
         base.Update();
         EvaluateTarget();
         AdjustColorIfPursuingTarget();
+        AttackTarget();
         UpdateRandomDestination();
     }
+
 
     private void EvaluateTarget()
     {
@@ -51,6 +70,24 @@ public class Trundler_Brain : Brain
             sr.color = Color.white;
         }
     }
+
+    private void AttackTarget()
+    {
+        timeSinceLastShot += Time.deltaTime;
+        if (timeSinceLastShot < timeBetweenShots) { return; }
+        if (currentAttackTarget && distToAttackTarget < attackRange && angleToAttackTarget < boresight)
+        {
+            GameObject newBlasterProjectile = Instantiate(weaponPrefab, transform.position, transform.rotation) as GameObject;
+            //newBlasterProjectile.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-randomSpread, randomSpread)));
+            newBlasterProjectile.GetComponent<Rigidbody2D>().velocity = (shotSpeed) * newBlasterProjectile.transform.up;
+            newBlasterProjectile.GetComponent<DamageDealer>().SetDamage(blasterDamage);
+            //SelectRandomFiringSound();
+            //AudioSource.PlayClipAtPoint(selectedBlasterSound, gameObject.transform.position);
+            Destroy(newBlasterProjectile, shotLifetime);
+            timeSinceLastShot = 0;
+        }
+    }
+
 
     private void UpdateRandomDestination()
     {

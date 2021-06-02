@@ -19,9 +19,9 @@ public class Trundler_Brain : Brain
     float boresight = 30f;
     float shotSpeed = 10f;
     float shotLifetime = 0.3f;
-    float timeBetweenShots = 0.2f;
+    float timeBetweenShots = 0.6f;
     bool isFiring = false;
-    float blasterDamage = 1.0f;
+    float blasterDamage = 0.3f;
 
     //hood
     float timeSinceLastShot = 0f;
@@ -38,11 +38,14 @@ public class Trundler_Brain : Brain
 
     protected override void Update()
     {
-        base.Update();
-        EvaluateTarget();
-        AdjustColorIfPursuingTarget();
-        AttackTarget();
-        UpdateRandomDestination();
+        if (isServer)
+        {
+            base.Update();
+            EvaluateTarget();
+            AdjustColorIfPursuingTarget();
+            AttackTarget();
+            UpdateRandomDestination();
+        }
     }
 
 
@@ -78,9 +81,14 @@ public class Trundler_Brain : Brain
         if (currentAttackTarget && distToAttackTarget < attackRange && angleToAttackTarget < boresight)
         {
             GameObject newBlasterProjectile = Instantiate(weaponPrefab, transform.position, transform.rotation) as GameObject;
-            //newBlasterProjectile.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-randomSpread, randomSpread)));
+            newBlasterProjectile.layer = 11;
+            newBlasterProjectile.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-randomSpread, randomSpread)));
             newBlasterProjectile.GetComponent<Rigidbody2D>().velocity = (shotSpeed) * newBlasterProjectile.transform.up;
-            newBlasterProjectile.GetComponent<DamageDealer>().SetDamage(blasterDamage);
+            DamageDealer damageDealer = newBlasterProjectile.GetComponent<DamageDealer>();
+
+            NetworkServer.Spawn(newBlasterProjectile);
+            damageDealer.IsReal = true;
+            damageDealer.SetDamage(blasterDamage);
             //SelectRandomFiringSound();
             //AudioSource.PlayClipAtPoint(selectedBlasterSound, gameObject.transform.position);
             Destroy(newBlasterProjectile, shotLifetime);

@@ -20,7 +20,7 @@ MonoBehaviour:
   accelRate_normal: 5
   maxTurnSpeed_normal: 180
   turnAccelRate_normal: 7
-  weaponPrefab: {fileID: 5800808169269432392, guid: 60537b9ac36d09644aef86a5aa220de1, type: 3}
+  weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   firingSounds: []
 --- !u!1001 &2123319864885529494
 PrefabInstance:

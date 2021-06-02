@@ -135,6 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  iffAllegiance: 0
 --- !u!114 &2754486748955791981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,16 +248,14 @@ MonoBehaviour:
   syncInterval: 0.1
   hurtAudioClip: []
   dieAudioClip: []
-  hullLevel: {fileID: 0}
-  shieldLevel: {fileID: 0}
+  healthSlider: {fileID: 0}
+  shieldSlider: {fileID: 0}
   maxHulltmp: {fileID: 0}
   maxShieldtmp: {fileID: 0}
   regenShieldtmp: {fileID: 0}
   isPlayer: 0
-  shieldMax: 0
-  shieldRegenPerSecond: 0
-  hullMax: 1
+  shieldMax: 5
+  shieldRegenPerSecond: 0.5
+  hullMax: 4
   countsTowardsScore: 0
   isDying: 0
-  shieldCurrentLevel: 0
-  hullCurrentLevel: 0

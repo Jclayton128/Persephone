@@ -34,8 +34,10 @@ public class Health : NetworkBehaviour
 
     //hood
     [SerializeField] bool isDying = false;
-    public float shieldCurrentLevel;
-    public float hullCurrentLevel;
+    [SyncVar(hook = nameof(UpdateUI))]
+     float shieldCurrentLevel;
+    [SyncVar(hook = nameof(UpdateUI))]
+    float hullCurrentLevel;
     DamageDealer lastDamageDealerToBeHitBy;
     GameObject ownerOfLastDamageDealerToBeHitBy;
     void Start()
@@ -87,10 +89,6 @@ public class Health : NetworkBehaviour
         {
             shieldCurrentLevel += shieldRegenPerSecond * Time.deltaTime;
         }
-        if (shieldSlider)
-        {
-            shieldSlider.value = shieldCurrentLevel;
-        }
     }
 
     public void ModifyShieldLevel(float amount, bool affectHullToo)
@@ -122,20 +120,12 @@ public class Health : NetworkBehaviour
             //Debug.Log("can't overcharge the shields");
             shieldCurrentLevel = shieldMax;
         }
-        if (shieldSlider)
-        {
-            shieldSlider.value = shieldCurrentLevel;
-        }
     }
 
     public void ModifyHullLevel(float amount)
     {
         hullCurrentLevel += amount;
         hullCurrentLevel = Mathf.Clamp(hullCurrentLevel, 0, hullMax);
-        if (healthSlider)
-        {
-            healthSlider.value = hullCurrentLevel;
-        }
     }
 
     private void LiveOrDie()
@@ -227,15 +217,6 @@ public class Health : NetworkBehaviour
         }
     }
 
-    public void ResetHealthTotally()
-    {
-        if (isPlayer)
-        {
-            shieldCurrentLevel = shieldMax;
-            hullCurrentLevel = hullMax;
-        }
-    }
-
     public void ResetShields()
     {
         shieldCurrentLevel = shieldMax;
@@ -274,6 +255,18 @@ public class Health : NetworkBehaviour
     public float GetMaxHull()
     {
         return hullMax;
+    }
+
+    private void UpdateUI(float oldValue, float newValue)
+    {
+        if (healthSlider)
+        {
+            healthSlider.value = hullCurrentLevel;
+        }
+        if (shieldSlider)
+        {
+            shieldSlider.value = shieldCurrentLevel;
+        }
     }
 
 }

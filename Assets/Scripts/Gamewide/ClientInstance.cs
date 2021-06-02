@@ -55,7 +55,7 @@ public class ClientInstance : NetworkBehaviour
         }
 
 
-        //FindObjectOfType<UIManager>().SetLocalPlayerForUI(this);
+        FindObjectOfType<UIManager>().SetLocalPlayerForUI(this);
     }
 
     private void HookIntoLocalShipSelectPanel()

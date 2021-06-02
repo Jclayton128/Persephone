@@ -9,29 +9,31 @@ using Mirror;
 public class Health : NetworkBehaviour
 {
     //init
+
     [SerializeField] AudioClip[] hurtAudioClip = null;
     [SerializeField] AudioClip[] dieAudioClip = null;
-    [SerializeField] Slider hullLevel = null;
-    [SerializeField] Slider shieldLevel = null;
+
+    UIManager uim;
+    [SerializeField] Slider healthSlider;
+    [SerializeField] Slider shieldSlider;
     [SerializeField] TextMeshProUGUI maxHulltmp = null;
     [SerializeField] TextMeshProUGUI maxShieldtmp = null;
     [SerializeField] TextMeshProUGUI regenShieldtmp = null;
 
-    SpriteRenderer playerSR;
     AudioClip chosenHurtSound;
     AudioClip chosenDieSound;
     Rigidbody2D rb;
 
     //param
-    public bool isPlayer = false;
-    public float shieldMax = 0;
-    public float shieldRegenPerSecond = 0f;
-    public float hullMax = 1;
+    [SerializeField] bool isPlayer = false;
+    [SerializeField] float shieldMax = 0;
+    [SerializeField] float shieldRegenPerSecond = 0f;
+    [SerializeField] float hullMax = 1;
     float dragAtDeath = 30f;
-    public bool countsTowardsScore = false;
+    [SerializeField] bool countsTowardsScore = false;
 
     //hood
-    public bool isDying = false;
+    [SerializeField] bool isDying = false;
     public float shieldCurrentLevel;
     public float hullCurrentLevel;
     DamageDealer lastDamageDealerToBeHitBy;
@@ -40,23 +42,29 @@ public class Health : NetworkBehaviour
     {
         shieldCurrentLevel = shieldMax;
         hullCurrentLevel = hullMax;
-        if (hullLevel)
-        {
-            hullLevel.maxValue = hullMax;
-            hullLevel.value = hullCurrentLevel;
-        }
-        if (shieldLevel)
-        {
-            shieldLevel.maxValue = shieldMax;
-            shieldLevel.value = shieldCurrentLevel;
-        }
         SetAudioClips();
         rb = GetComponent<Rigidbody2D>();
-        if (isPlayer)
+
+        if (hasAuthority)
         {
-            playerSR = GetComponent<SpriteRenderer>();
+            HookIntoLocalUI();
         }
     }
+
+    private void HookIntoLocalUI()
+    {
+        ClientInstance ci = ClientInstance.ReturnClientInstance();
+        uim = FindObjectOfType<UIManager>();
+
+        healthSlider = uim.GetHealthSlider(ci);
+        healthSlider.maxValue = hullMax;
+        healthSlider.value = hullCurrentLevel;
+
+        shieldSlider = uim.GetShieldSlider(ci);
+        shieldSlider.maxValue = shieldMax;
+        shieldSlider.value = shieldCurrentLevel;
+    }
+
     private void SetAudioClips()
     {
         if (hurtAudioClip.Length == 0 || dieAudioClip.Length == 0) { return; }
@@ -71,15 +79,6 @@ public class Health : NetworkBehaviour
     {
         LiveOrDie();
         RechargeShield();
-        CheatHeal();
-    }
-
-    private void CheatHeal()
-    {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            ResetHealthTotally();
-        }
     }
 
     private void RechargeShield()
@@ -88,9 +87,9 @@ public class Health : NetworkBehaviour
         {
             shieldCurrentLevel += shieldRegenPerSecond * Time.deltaTime;
         }
-        if (shieldLevel)
+        if (shieldSlider)
         {
-            shieldLevel.value = shieldCurrentLevel;
+            shieldSlider.value = shieldCurrentLevel;
         }
     }
 
@@ -113,29 +112,29 @@ public class Health : NetworkBehaviour
                 ModifyHullLevel(negativeShield);
                 shieldCurrentLevel = 0;
             }
+            if (shieldCurrentLevel < 0 && !affectHullToo)
+            {
+                shieldCurrentLevel = 0;
+            }
         }
         if (shieldCurrentLevel + amount > shieldMax)
         {
             //Debug.Log("can't overcharge the shields");
             shieldCurrentLevel = shieldMax;
         }
-        if (shieldLevel)
+        if (shieldSlider)
         {
-            shieldLevel.value = shieldCurrentLevel;
+            shieldSlider.value = shieldCurrentLevel;
         }
     }
 
-    public void DumpAllShields()
-    {
-        shieldCurrentLevel = 0f;
-    }
     public void ModifyHullLevel(float amount)
     {
         hullCurrentLevel += amount;
         hullCurrentLevel = Mathf.Clamp(hullCurrentLevel, 0, hullMax);
-        if (hullLevel)
+        if (healthSlider)
         {
-            hullLevel.value = hullCurrentLevel;
+            healthSlider.value = hullCurrentLevel;
         }
     }
 
@@ -156,7 +155,6 @@ public class Health : NetworkBehaviour
             {
                 AudioSource.PlayClipAtPoint(chosenDieSound, transform.position);
                 GetComponent<Rigidbody2D>().drag = 5f;
-                playerSR.color = new Color(0, 0, 0, 0);
             }
             if (chosenDieSound && !isPlayer)
             {
@@ -246,9 +244,9 @@ public class Health : NetworkBehaviour
     public void SetMaxHull(float newMaxHull)
     {
         hullMax = newMaxHull;
-        if (hullLevel)
+        if (healthSlider)
         {
-            hullLevel.maxValue = hullMax;
+            healthSlider.maxValue = hullMax;
             maxHulltmp.text = hullMax.ToString();
 
         }
@@ -258,7 +256,7 @@ public class Health : NetworkBehaviour
         shieldMax = newMaxShield;
         if (isPlayer)
         {
-            shieldLevel.maxValue = shieldMax;
+            shieldSlider.maxValue = shieldMax;
             //Debug.Log("new shield max: " + shieldMax);
             maxShieldtmp.text = shieldMax.ToString();
         }

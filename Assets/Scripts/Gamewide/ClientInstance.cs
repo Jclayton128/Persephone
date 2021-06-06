@@ -15,6 +15,7 @@ public class ClientInstance : NetworkBehaviour
     int desiredAvatar;
     public GameObject currentAvatar;
     Scene scene;
+    LevelManager lm;
 
     public static Action<GameObject> OnAvatarSpawned; //Anytime an observer to this event hears it, they get passed a reference Game Object
 
@@ -83,6 +84,7 @@ public class ClientInstance : NetworkBehaviour
         base.OnStartServer();
         GameObject.DontDestroyOnLoad(gameObject);
         avatarShipyard = FindObjectOfType<AvatarShipyard>();
+        lm = FindObjectOfType<LevelManager>();
     }
 
     [Command]
@@ -101,6 +103,16 @@ public class ClientInstance : NetworkBehaviour
         GameObject go = Instantiate(test, transform.position, Quaternion.identity);
         go.GetComponent<IFF>().SetIFFAllegiance(IFF.PlayerIFF);
         NetworkServer.Spawn(go, base.connectionToClient);
+
+        RequestStartingLevelIfFirstPlayer();
+    }
+
+    private void RequestStartingLevelIfFirstPlayer()
+    {
+        if (lm.GetCurrentLevel() == 0)
+        {
+            lm.AdvanceToNextLevel();
+        }
     }
 
 

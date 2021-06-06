@@ -15,6 +15,7 @@ public abstract class Brain : NetworkBehaviour
     [SerializeField] protected GameObject currentAttackTarget;
     [SerializeField] protected Vector3 currentDest = Vector3.zero;
     protected Detector det;
+    protected UnitTracker ut;
 
     //param
     [SerializeField] float detectorRange;
@@ -43,7 +44,7 @@ public abstract class Brain : NetworkBehaviour
 
     protected float timeSinceLastScan = 0;
 
-    protected virtual void Start()
+    public override void OnStartServer()
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
@@ -51,6 +52,8 @@ public abstract class Brain : NetworkBehaviour
         det = GetComponent<Detector>();
         det.SetDetectorRange(detectorRange);
         timeSinceLastScan = UnityEngine.Random.Range(0, timeBetweenScans);
+        ut = FindObjectOfType<UnitTracker>();
+        ut.AddMinion(gameObject);
     }
 
     // Update is called once per frame
@@ -230,6 +233,13 @@ public abstract class Brain : NetworkBehaviour
     }
 
     #endregion
+
+    [Server]
+    private void OnDestroy()
+    {
+        ut.RemoveMinion(gameObject);   
+    }
+
 
 
 

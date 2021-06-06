@@ -29,9 +29,9 @@ public class Trundler_Brain : Brain
 
 
 
-    protected override void Start()
+    public override void OnStartServer()
     {
-        base.Start();
+        base.OnStartServer();
         currentDest = ab.CreateValidRandomPointWithinArena();
         attackRange = shotLifetime * shotSpeed;
     }

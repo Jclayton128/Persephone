@@ -97,14 +97,10 @@ public class ClientInstance : NetworkBehaviour
     private void NetworkSpawnAvatar(int index)
     {
         //Vector3 randomPos = MapHelper.CreateRandomValidStartPoint(); For random start position
-        Debug.Log($"trying to spawn {desiredAvatar} on server");
         GameObject test = FindObjectOfType<PersNetworkManager>().spawnPrefabs[index];
         GameObject go = Instantiate(test, transform.position, Quaternion.identity);
-        Debug.Log($"break 2");
         go.GetComponent<IFF>().SetIFFAllegiance(IFF.PlayerIFF);
-        Debug.Log($"break 3");
         NetworkServer.Spawn(go, base.connectionToClient);
-        Debug.Log($"break 4");
     }
 
 

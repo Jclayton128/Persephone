@@ -82,11 +82,12 @@ public class Trundler_Brain : Brain
         {
             GameObject newBlasterProjectile = Instantiate(weaponPrefab, transform.position, transform.rotation) as GameObject;
             newBlasterProjectile.layer = 11;
+            NetworkServer.Spawn(newBlasterProjectile);
+            uint idToSim = newBlasterProjectile.GetComponent<NetworkIdentity>().netId;
+            RpcMakeBulletSimulatedOnClientSide(idToSim);
             newBlasterProjectile.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-randomSpread, randomSpread)));
             newBlasterProjectile.GetComponent<Rigidbody2D>().velocity = (shotSpeed) * newBlasterProjectile.transform.up;
             DamageDealer damageDealer = newBlasterProjectile.GetComponent<DamageDealer>();
-
-            NetworkServer.Spawn(newBlasterProjectile);
             damageDealer.IsReal = true;
             damageDealer.SetDamage(blasterDamage);
             //SelectRandomFiringSound();
@@ -95,6 +96,22 @@ public class Trundler_Brain : Brain
             timeSinceLastShot = 0;
         }
     }
+
+    [ClientRpc]
+    private void RpcMakeBulletSimulatedOnClientSide(uint bulletNetID)
+    {
+        if (!isClientOnly) { return; }
+        NetworkIdentity bulletNI;
+        NetworkIdentity.spawned.TryGetValue(bulletNetID, out bulletNI);
+        GameObject bulletToSim;
+        if (bulletNI)
+        {
+            bulletToSim = bulletNI.gameObject;
+            bulletToSim.layer = 0;
+        }
+    }
+
+    
 
 
     private void UpdateRandomDestination()

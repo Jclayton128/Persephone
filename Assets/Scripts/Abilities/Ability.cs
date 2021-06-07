@@ -10,7 +10,7 @@ public abstract class Ability : NetworkBehaviour
     [SerializeField] public bool IsPrimaryAbility;
 
     [SerializeField] protected float timeBetweenShots;
-    [SerializeField] protected float damagePerShot;
+    //[SerializeField] protected float damagePerShot;
     [SerializeField] protected float weaponLifetime;
     [SerializeField] protected float weaponSpeed;
     [SerializeField] protected float hullDamage;

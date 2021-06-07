@@ -16,8 +16,9 @@ GameObject:
   - component: {fileID: 6321295644903346578}
   - component: {fileID: 75921052859884571}
   - component: {fileID: -771494761772340393}
+  - component: {fileID: -8238199898084144997}
   m_Layer: 0
-  m_Name: GenericProjectile
+  m_Name: Missile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 374401597
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: d8fa2848709ac8d4c8620b1ce7097693, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -85,7 +86,7 @@ SpriteRenderer:
   m_Size: {x: 0.2, y: 0.35}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!50 &2108456946130303478
@@ -194,3 +195,19 @@ MonoBehaviour:
   damage: 0
   particleExplosionAtImpact: {fileID: 0}
   IsReal: 0
+--- !u!114 &-8238199898084144997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7808813206694901937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ea363dc887886c47bc5733907e4c6e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  normalSpeed: 0
+  maxTurnRate: 180
+  shouldSnake: 0
+  hasReachedTarget: 0

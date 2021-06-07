@@ -19,6 +19,7 @@ public class Ability_Blaster : Ability
     private void CmdRequestFireWeapon()
     {
         GameObject bullet = Instantiate(weaponPrefab, transform.position, transform.rotation) as GameObject;
+        bullet.layer = 9;
         bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * weaponSpeed;
         DamageDealer dd = bullet.GetComponent<DamageDealer>();
         dd.SetDamage(hullDamage);

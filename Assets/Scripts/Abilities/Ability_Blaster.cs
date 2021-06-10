@@ -18,27 +18,14 @@ public class Ability_Blaster : Ability
     [Command]
     private void CmdRequestFireWeapon()
     {
-        GameObject bullet = Instantiate(weaponPrefab, transform.position, transform.rotation) as GameObject;
+        GameObject bullet = Instantiate(abilityPrefabs[0], transform.position, transform.rotation) as GameObject;
+        NetworkServer.Spawn(bullet);
         bullet.layer = 9;
         bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * weaponSpeed;
         DamageDealer dd = bullet.GetComponent<DamageDealer>();
         dd.SetDamage(hullDamage);
         dd.SetDamage(shieldDamage);
         dd.IsReal = true;
-        Destroy(bullet, weaponLifetime);
-
-        RpcCreateDummyWeaponOnAllClientsExceptHost();
-
-    }
-
-    [ClientRpc]
-    private void RpcCreateDummyWeaponOnAllClientsExceptHost()
-    {
-        if (!isClientOnly) { return; }
-        GameObject bullet = Instantiate(weaponPrefab, transform.position, transform.rotation) as GameObject;
-        bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * weaponSpeed;
-        DamageDealer dd = bullet.GetComponent<DamageDealer>();
-        dd.IsReal = false;
         Destroy(bullet, weaponLifetime);
     }
 }

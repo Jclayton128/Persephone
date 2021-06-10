@@ -1506,8 +1506,6 @@ MonoBehaviour:
   spawnPrefabs:
   - {fileID: 2887084537579551194, guid: 140f047c88ffdc5479a70a2ed8b18d70, type: 3}
   - {fileID: 5485847337457805922, guid: 4c758cfbf3fa54342a8e16b94d988ee3, type: 3}
-  - {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
-  - {fileID: 1230300639563859961, guid: e45cb8edce83bb849870fc8563cdb076, type: 3}
   - {fileID: 958226158259032579, guid: eba1bd7a46a628b4aa94342bfbb6e3b9, type: 3}
 --- !u!4 &864886754
 Transform:
@@ -7667,7 +7665,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 29.1, y: 143.1}
+  m_AnchoredPosition: {x: 29.099976, y: 143.1}
   m_SizeDelta: {x: 39.36844, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2040352980

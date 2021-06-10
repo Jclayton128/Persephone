@@ -5,7 +5,7 @@ using UnityEngine;
 
 public abstract class Ability : NetworkBehaviour
 {
-    [SerializeField] protected GameObject weaponPrefab = null;
+    [SerializeField] protected GameObject[] abilityPrefabs = null;
 
     [SerializeField] public bool IsPrimaryAbility;
 
@@ -19,6 +19,14 @@ public abstract class Ability : NetworkBehaviour
     [SerializeField] protected float costPerShot;
 
     Experience exp;
+
+    protected virtual void Awake()
+    {
+        foreach (GameObject prefab in abilityPrefabs)
+        {
+            NetworkClient.RegisterPrefab(prefab);
+        }
+    }
 
     protected virtual void Start()
     {

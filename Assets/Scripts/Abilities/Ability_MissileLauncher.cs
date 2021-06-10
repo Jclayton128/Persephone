@@ -46,7 +46,7 @@ public class Ability_MissileLauncher : Ability
     [Server]
     private void FireMissile()
     {
-        GameObject missile = Instantiate(weaponPrefab, transform.position, transform.rotation) as GameObject;
+        GameObject missile = Instantiate(abilityPrefabs[0], transform.position, transform.rotation) as GameObject;
         missile.layer = 9;
         Missile_AI missileAI = missile.GetComponent<Missile_AI>();
         missileAI.SetNavTarget(GetMouseCursorLocation());
@@ -63,6 +63,6 @@ public class Ability_MissileLauncher : Ability
 
     public override void MouseClickUp()
     {
-        throw new System.NotImplementedException();
+
     }
 }

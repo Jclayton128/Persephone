@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
+  abilityPrefabs:
+  - {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   IsPrimaryAbility: 1
   timeBetweenShots: 0.5
-  damagePerShot: 1
   weaponLifetime: 1
   weaponSpeed: 10
   hullDamage: 1

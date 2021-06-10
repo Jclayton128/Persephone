@@ -235,7 +235,7 @@ public abstract class Brain : NetworkBehaviour
     #endregion
 
     [Server]
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         ut.RemoveMinion(gameObject);   
     }

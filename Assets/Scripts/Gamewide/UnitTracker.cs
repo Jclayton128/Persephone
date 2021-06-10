@@ -6,6 +6,7 @@ using Mirror;
 public class UnitTracker : NetworkBehaviour
 {
     List<GameObject> currentMinions = new List<GameObject>();
+    [SerializeField] int currentMinionCount;
     LevelManager lm;
 
     public override void OnStartServer()
@@ -17,14 +18,16 @@ public class UnitTracker : NetworkBehaviour
     public void AddMinion(GameObject newMinion)
     {
         currentMinions.Add(newMinion);
+        currentMinionCount = currentMinions.Count;
     }
 
     [Server]
     public void RemoveMinion(GameObject deadMinion)
     {
+        Debug.Log("remove minion called");
         currentMinions.Remove(deadMinion);
-
-        if (currentMinions.Count == 0)
+        currentMinionCount = currentMinions.Count;
+        if (currentMinionCount == 0)
         {
             lm.AdvanceToNextLevel();
         }

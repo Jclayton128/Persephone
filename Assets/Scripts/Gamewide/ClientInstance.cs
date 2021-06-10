@@ -109,7 +109,7 @@ public class ClientInstance : NetworkBehaviour
 
     private void RequestStartingLevelIfFirstPlayer()
     {
-        if (lm.GetCurrentLevel() == 0)
+        if (lm.GetCurrentLevelCount() == 0)
         {
             lm.AdvanceToNextLevel();
         }

@@ -7,7 +7,6 @@ using Mirror;
 public class Hammer_Brain : Brain
 {
     //init
-    Rigidbody2D rb;
     [SerializeField] GameObject damageBallPrefab = null;
     [SerializeField] Transform weaponEmitterPoint = null;
     GameObject damageBall;
@@ -38,8 +37,6 @@ public class Hammer_Brain : Brain
     {
         if (!isServer) { return; }
         AcquirePlayerTarget();
-        rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
         timeSinceBeganCharging = 0 + UnityEngine.Random.Range(-1 * randomVarianceToChargeUpTime, randomVarianceToChargeUpTime);
     }
 
@@ -50,13 +47,13 @@ public class Hammer_Brain : Brain
         targetPlayer = players[rand];
     }
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
         if (!isServer) { return; }
         SprintTowardsPlayer();
         ChargeMotorsWhileFacingPlayer();
     }
-    void Update()
+    protected override void Update()
     {
         if (!isServer) { return; }
         TrackPlayer();
@@ -66,8 +63,6 @@ public class Hammer_Brain : Brain
             AcquirePlayerTarget();
         }
     }
-
-
     private void CreateDamageBall()
     {
         if (!damageBall)
@@ -153,8 +148,9 @@ public class Hammer_Brain : Brain
         distanceToPlayer = (targetPlayer.transform.position - transform.position).sqrMagnitude;
     }
 
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         Destroy(damageBall);
     }
 

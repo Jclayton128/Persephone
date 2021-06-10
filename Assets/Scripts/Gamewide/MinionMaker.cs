@@ -15,13 +15,11 @@ public class MinionMaker : NetworkBehaviour
         ab = FindObjectOfType<ArenaBounds>();
     }
 
-    public void SpawnNewMinion()
+    public void SpawnNewMinion(GameObject chosenMinion)
     {
-        GameObject minionPrefab = pnm.spawnPrefabs[2];
         Vector2 startPos = ab.CreateValidRandomPointWithinArena();
-        GameObject newMinion = Instantiate(minionPrefab, startPos, Quaternion.identity) as GameObject;
+        GameObject newMinion = Instantiate(chosenMinion, startPos, Quaternion.identity) as GameObject;
         NetworkServer.Spawn(newMinion);
-
     }
 
 }

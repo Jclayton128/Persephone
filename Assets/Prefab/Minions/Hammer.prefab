@@ -77,6 +77,10 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3157724171066369869, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_LinearDrag
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369871, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

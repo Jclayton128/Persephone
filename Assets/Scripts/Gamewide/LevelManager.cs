@@ -7,10 +7,12 @@ using TMPro;
 
 public class LevelManager : NetworkBehaviour
 {
-    [SyncVar (hook = nameof(UpdateLevelCountUI))]   
-    int currentLevel = 0;
+    [SyncVar(hook = nameof(UpdateLevelCountUI))]
+    int currentLevelCount = 0;
     MinionMaker mm;
     [SerializeField] TextMeshProUGUI levelCounterTMP = null;
+    [SerializeField] List<Level> levelList = null;
+    [SerializeField] Level currentLevel;
 
     public override void OnStartServer()
     {
@@ -18,22 +20,23 @@ public class LevelManager : NetworkBehaviour
         mm = GetComponent<MinionMaker>();
     }
 
-    public int GetCurrentLevel()
+    public int GetCurrentLevelCount()
     {
-        return currentLevel;
+        return currentLevelCount;
     }
 
     public void AdvanceToNextLevel()
     {
+        Debug.Log("Advancing to next level");
         ClearOutOldLevel();
-
+        RemoveCurrentLevelFromList();
+        ChooseNextLevel();
         IncrementLevelCount();
         ResetPlayerPositions();
         SpawnNextLevelMinions();
-
-
-
     }
+
+
     private void ClearOutOldLevel()
     {
         var weapons = FindObjectsOfType<DamageDealer>(); //clear out all weaponry.  Appears to be working.
@@ -41,6 +44,17 @@ public class LevelManager : NetworkBehaviour
         {
             Destroy(weapon.transform.gameObject);
         }
+    }
+
+    private void RemoveCurrentLevelFromList()
+    {
+        levelList.Remove(currentLevel);
+    }
+
+    private void ChooseNextLevel()
+    {
+        int rand = UnityEngine.Random.Range(0, levelList.Count);
+        currentLevel = levelList[rand];
     }
 
     private void ResetPlayerPositions()
@@ -54,20 +68,22 @@ public class LevelManager : NetworkBehaviour
 
     private void SpawnNextLevelMinions()
     {
-        for (int i = currentLevel; i > 0; i--)
+
+        for (int i = currentLevelCount; i > 0; i--)
         {
-            mm.SpawnNewMinion();
+            GameObject minion = currentLevel.ReturnRandomEnemyFromList();
+            mm.SpawnNewMinion(minion);
         }
     }
 
     private void IncrementLevelCount()
     {
-        currentLevel++;
+        currentLevelCount++;
     }
 
     private void UpdateLevelCountUI(int oldValue, int newValue)
     {
-        levelCounterTMP.text = "Level: " + currentLevel.ToString();
+        levelCounterTMP.text = "Level: " + currentLevelCount.ToString();
     }
 
 

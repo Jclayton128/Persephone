@@ -12,7 +12,15 @@ public class LevelManager : NetworkBehaviour
     MinionMaker mm;
     [SerializeField] TextMeshProUGUI levelCounterTMP = null;
     [SerializeField] List<Level> levelList = null;
-    [SerializeField] Level currentLevel;
+    [SerializeField] static Level currentLevel;
+
+    private void Awake()
+    {
+        foreach (Level level in levelList)
+        {
+            level.RegisterLevelMinions();
+        }
+    }
 
     public override void OnStartServer()
     {
@@ -27,7 +35,6 @@ public class LevelManager : NetworkBehaviour
 
     public void AdvanceToNextLevel()
     {
-        Debug.Log("Advancing to next level");
         ClearOutOldLevel();
         RemoveCurrentLevelFromList();
         ChooseNextLevel();
@@ -35,7 +42,6 @@ public class LevelManager : NetworkBehaviour
         ResetPlayerPositions();
         SpawnNextLevelMinions();
     }
-
 
     private void ClearOutOldLevel()
     {
@@ -68,7 +74,6 @@ public class LevelManager : NetworkBehaviour
 
     private void SpawnNextLevelMinions()
     {
-
         for (int i = currentLevelCount; i > 0; i--)
         {
             GameObject minion = currentLevel.ReturnRandomEnemyFromList();
@@ -81,10 +86,15 @@ public class LevelManager : NetworkBehaviour
         currentLevelCount++;
     }
 
+
     private void UpdateLevelCountUI(int oldValue, int newValue)
     {
         levelCounterTMP.text = "Level: " + currentLevelCount.ToString();
     }
 
+    public static Level GetCurrentLevel()
+    {
+        return currentLevel;
+    }
 
 }

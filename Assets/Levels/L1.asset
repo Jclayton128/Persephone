@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d870c194836c4743a0e57d1d26acc16, type: 3}
   m_Name: L1
   m_EditorClassIdentifier: 
-  enemyPrefabs:
+  minionPrefabs:
   - {fileID: 3937818766114237639, guid: 7b6c9240013d41040b4caa5dd5501955, type: 3}
   spawnPoints: []
   portalLocation: {x: 0, y: 1}

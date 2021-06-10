@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System;
 
 public class MinionMaker : NetworkBehaviour
 {
@@ -20,6 +21,7 @@ public class MinionMaker : NetworkBehaviour
         Vector2 startPos = ab.CreateValidRandomPointWithinArena();
         GameObject newMinion = Instantiate(minionPrefab, startPos, Quaternion.identity) as GameObject;
         NetworkServer.Spawn(newMinion);
+
     }
-    
+
 }

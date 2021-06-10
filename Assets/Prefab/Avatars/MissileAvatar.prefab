@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  weaponPrefab: {fileID: 7808813206694901937, guid: ddbfd16522877c347b1b5dccdd69ddf3, type: 3}
+  weaponPrefab: {fileID: 1230300639563859961, guid: e45cb8edce83bb849870fc8563cdb076, type: 3}
   IsPrimaryAbility: 1
   timeBetweenShots: 0.5
   weaponLifetime: 5

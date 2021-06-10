@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class Missile_AI : MonoBehaviour
+public class Missile_AI : NetworkBehaviour
 {
     //init
     Rigidbody2D rb;
@@ -32,7 +33,7 @@ public class Missile_AI : MonoBehaviour
     float timeSinceLastScan = 0f;
     float timeSinceLaunched = 0;
 
-    void Start()
+    public override void OnStartServer()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.velocity = normalSpeed * transform.up;
@@ -42,37 +43,40 @@ public class Missile_AI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timeSinceLaunched += Time.deltaTime;
-        if (timeSinceLaunched >= lifetime)
+        if (isServer)
         {
-            Destroy(gameObject);
-        }
-        if (!hasReachedTarget)  //!acquiredTarget)
-        {
-            ScanForGOTarget();
-            SteerTowardsNavTarget();
-        }
-        distanceToTarget = (navTarget - transform.position).sqrMagnitude;
+            timeSinceLaunched += Time.deltaTime;
+            if (timeSinceLaunched >= lifetime)
+            {
+                Destroy(gameObject);
+            }
+            if (!hasReachedTarget)  //!acquiredTarget)
+            {
+                ScanForGOTarget();
+                SteerTowardsNavTarget();
+            }
+            distanceToTarget = (navTarget - transform.position).sqrMagnitude;
 
-        if (acquiredTarget && hasReachedTarget)
-        {
-            navTarget = acquiredTarget.transform.position;
-            SteerTowardsNavTarget();
-        }
-        rb.velocity = normalSpeed * transform.up;
-        if (distanceToTarget < closeEnough)
-        {
-            hasReachedTarget = true;
-            rb.angularVelocity = 0f;
-        }
+            if (acquiredTarget && hasReachedTarget)
+            {
+                navTarget = acquiredTarget.transform.position;
+                SteerTowardsNavTarget();
+            }
+            rb.velocity = normalSpeed * transform.up;
+            if (distanceToTarget < closeEnough)
+            {
+                hasReachedTarget = true;
+                rb.angularVelocity = 0f;
+            }
+        }      
 
     }
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(transform.position + transform.up * scanRangeMed * 1, 1.0f);
-        //Gizmos.DrawSphere(transform.position + transform.up * scanRangeMed * 1, scanRangeMed);
-        Gizmos.DrawSphere(transform.position + transform.up * scanRangeFar * 1, scanRangeMed);
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.DrawSphere(transform.position + transform.up * scanRangeMed * 1, 1.0f);
+    //    //Gizmos.DrawSphere(transform.position + transform.up * scanRangeMed * 1, scanRangeMed);
+    //    Gizmos.DrawSphere(transform.position + transform.up * scanRangeFar * 1, scanRangeMed);
+    //}
 
     public void SetLifetime(float value)
     {

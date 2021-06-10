@@ -128,8 +128,11 @@ public class Trundler_Brain : Brain
 
     protected override void FixedUpdate()
     {
-        TurnToFaceDestination();
-        FlyTowardsDestination();
-        Debug.DrawLine(transform.position, currentDest, Color.blue);
+        if (isServer)
+        {
+            TurnToFaceDestination();
+            FlyTowardsDestination();
+            Debug.DrawLine(transform.position, currentDest, Color.blue);
+        }
     }
 }

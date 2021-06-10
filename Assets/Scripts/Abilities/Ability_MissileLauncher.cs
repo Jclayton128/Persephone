@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System;
 
 public class Ability_MissileLauncher : Ability
 {
@@ -26,7 +27,9 @@ public class Ability_MissileLauncher : Ability
     public override void MouseClickDown()
     {
         //Check for sufficient Power on client-side
+
         CmdRequestFireMissile();
+
     }
 
     [Command]
@@ -34,6 +37,15 @@ public class Ability_MissileLauncher : Ability
     {
         //Check for sufficient power on server-side
         //Decrement Power Source
+
+        FireMissile();
+
+        //AudioSource.PlayClipAtPoint(missileFiringSound, gameObject.transform.position);
+    }
+
+    [Server]
+    private void FireMissile()
+    {
         GameObject missile = Instantiate(weaponPrefab, transform.position, transform.rotation) as GameObject;
         missile.layer = 9;
         Missile_AI missileAI = missile.GetComponent<Missile_AI>();
@@ -47,9 +59,6 @@ public class Ability_MissileLauncher : Ability
         missileAI.SetLifetime(weaponLifetime);
 
         NetworkServer.Spawn(missile); //This isn't spawning things back on the client sides!! :(
-
-
-        //AudioSource.PlayClipAtPoint(missileFiringSound, gameObject.transform.position);
     }
 
     public override void MouseClickUp()

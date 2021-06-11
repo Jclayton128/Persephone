@@ -13,21 +13,9 @@ public class DebugHelper : NetworkBehaviour
     [SerializeField] GameObject[] testMinion = null;
     public override void OnStartClient()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
-        Scene arena = SceneManager.GetSceneByBuildIndex(1);
-        if (currentScene == arena)
-        {
-            debugModeTMP = GameObject.FindGameObjectWithTag("DebugText").GetComponent<TextMeshProUGUI>();
-        }
-        else
-        {
-            SceneManager.activeSceneChanged += ReloadUI;
-        }
-    }
 
-    private void ReloadUI(Scene arg0, Scene arg1)
-    {
-        debugModeTMP = GameObject.FindGameObjectWithTag("DebugText").GetComponent<TextMeshProUGUI>();
+            debugModeTMP = GameObject.FindGameObjectWithTag("DebugText").GetComponent<TextMeshProUGUI>();
+
     }
 
     // Update is called once per frame

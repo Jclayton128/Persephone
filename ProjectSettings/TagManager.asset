@@ -6,6 +6,7 @@ TagManager:
   tags:
   - WeaponProjectile
   - DebugText
+  - SSPD
   layers:
   - Default
   - TransparentFX

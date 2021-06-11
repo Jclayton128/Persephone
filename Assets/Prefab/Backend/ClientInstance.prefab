@@ -47,7 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  shipPrefab: {fileID: 0}
+  avatarShipyard: {fileID: 0}
+  shipSelectPanel: {fileID: 5656843200464039580, guid: 1f20a396cd36bb244af81979a097126d, type: 3}
   currentAvatar: {fileID: 0}
 --- !u!114 &8602940360580045143
 MonoBehaviour:

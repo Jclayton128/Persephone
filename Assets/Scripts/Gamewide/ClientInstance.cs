@@ -3,18 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using UnityEngine.SceneManagement;
 
 public class ClientInstance : NetworkBehaviour
 {
     [SerializeField] AvatarShipyard avatarShipyard;
+    [SerializeField] GameObject shipSelectPanel = null;
     public static ClientInstance Instance;
     Camera cam;
     //[SerializeField] GameObject desiredAvatar;
     ShipSelectPanelDriver sspd;
     int desiredAvatar;
     public GameObject currentAvatar;
-    Scene scene;
     LevelManager lm;
 
     public static Action<GameObject> OnAvatarSpawned; //Anytime an observer to this event hears it, they get passed a reference Game Object
@@ -36,14 +35,13 @@ public class ClientInstance : NetworkBehaviour
     #endregion
 
     #region Client
-    public override void OnStartLocalPlayer()
+    public override void OnStartClient()
     {
-        base.OnStartLocalPlayer();
+        base.OnStartClient();
         GameObject.DontDestroyOnLoad(gameObject);
-        scene = SceneManager.GetSceneByBuildIndex(1);
         Instance = this;
         cam = Camera.main;
-        avatarShipyard = FindObjectOfType<AvatarShipyard>();
+        //avatarShipyard = FindObjectOfType<AvatarShipyard>();
         if (!isLocalPlayer)
         {
             cam.enabled = false;
@@ -51,8 +49,9 @@ public class ClientInstance : NetworkBehaviour
 
         if (isLocalPlayer)
         {
+            GameObject panel = Instantiate(shipSelectPanel, Vector2.zero, Quaternion.identity) as GameObject;
+            sspd = panel.GetComponent<ShipSelectPanelDriver>();
             HookIntoLocalShipSelectPanel();
-
         }
 
 
@@ -61,10 +60,8 @@ public class ClientInstance : NetworkBehaviour
 
     private void HookIntoLocalShipSelectPanel()
     {
-        sspd = FindObjectOfType<ShipSelectPanelDriver>();
         sspd.ci = this;
-        sspd.DisplayPanel();
-        
+        sspd.DisplayPanel();        
     }
     public void SetDesiredAvatar(int indexForShipyard)
     {
@@ -83,7 +80,7 @@ public class ClientInstance : NetworkBehaviour
     {
         base.OnStartServer();
         GameObject.DontDestroyOnLoad(gameObject);
-        avatarShipyard = FindObjectOfType<AvatarShipyard>();
+        //avatarShipyard = FindObjectOfType<AvatarShipyard>();
         lm = FindObjectOfType<LevelManager>();
     }
 

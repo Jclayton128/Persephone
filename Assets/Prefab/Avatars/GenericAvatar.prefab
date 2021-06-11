@@ -248,14 +248,14 @@ MonoBehaviour:
   syncInterval: 0.1
   hurtAudioClip: []
   dieAudioClip: []
-  healthSlider: {fileID: 0}
+  hullSlider: {fileID: 0}
   shieldSlider: {fileID: 0}
-  maxHulltmp: {fileID: 0}
-  maxShieldtmp: {fileID: 0}
-  regenShieldtmp: {fileID: 0}
+  hullMaxTMP: {fileID: 0}
+  shieldMaxTMP: {fileID: 0}
+  shieldRateTMP: {fileID: 0}
   isPlayer: 0
+  hullMax: 4
   shieldMax: 5
   shieldRegenPerSecond: 0.5
-  hullMax: 4
   countsTowardsScore: 0
   isDying: 0

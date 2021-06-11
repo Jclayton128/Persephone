@@ -14,11 +14,11 @@ public class Health : NetworkBehaviour
     [SerializeField] AudioClip[] dieAudioClip = null;
 
     UIManager uim;
-    [SerializeField] Slider healthSlider;
+    [SerializeField] Slider hullSlider;
     [SerializeField] Slider shieldSlider;
-    [SerializeField] TextMeshProUGUI maxHulltmp = null;
-    [SerializeField] TextMeshProUGUI maxShieldtmp = null;
-    [SerializeField] TextMeshProUGUI regenShieldtmp = null;
+    [SerializeField] TextMeshProUGUI hullMaxTMP = null;
+    [SerializeField] TextMeshProUGUI shieldMaxTMP = null;
+    [SerializeField] TextMeshProUGUI shieldRateTMP = null;
 
     AudioClip chosenHurtSound;
     AudioClip chosenDieSound;
@@ -26,18 +26,28 @@ public class Health : NetworkBehaviour
 
     //param
     [SerializeField] bool isPlayer = false;
-    [SerializeField] float shieldMax = 0;
-    [SerializeField] float shieldRegenPerSecond = 0f;
+
+    [SyncVar(hook = nameof(UpdateUI))]
     [SerializeField] float hullMax = 1;
+
+    [SyncVar(hook = nameof(UpdateUI))]
+    [SerializeField] float shieldMax;
+
+    [SyncVar(hook = nameof(UpdateUI))]
+    [SerializeField] float shieldRegenPerSecond;
+
     float dragAtDeath = 30f;
     [SerializeField] bool countsTowardsScore = false;
 
     //hood
     [SerializeField] bool isDying = false;
+
     [SyncVar(hook = nameof(UpdateUI))]
      float shieldCurrentLevel;
+
     [SyncVar(hook = nameof(UpdateUI))]
     float hullCurrentLevel;
+
     DamageDealer lastDamageDealerToBeHitBy;
     GameObject ownerOfLastDamageDealerToBeHitBy;
     void Start()
@@ -57,14 +67,14 @@ public class Health : NetworkBehaviour
     {
         ClientInstance ci = ClientInstance.ReturnClientInstance();
         uim = FindObjectOfType<UIManager>();
+        UIPack uipack = uim.GetUIPack(ci);
+        hullSlider = uipack.HullSlider;
+        shieldSlider = uipack.ShieldSlider;
+        hullMaxTMP = uipack.HullMaxTMP;
+        shieldMaxTMP = uipack.ShieldMaxTMP;
+        shieldRateTMP = uipack.ShieldRateTMP;
 
-        healthSlider = uim.GetHealthSlider(ci);
-        healthSlider.maxValue = hullMax;
-        healthSlider.value = hullCurrentLevel;
-
-        shieldSlider = uim.GetShieldSlider(ci);
-        shieldSlider.maxValue = shieldMax;
-        shieldSlider.value = shieldCurrentLevel;
+        UpdateUI(0, 0);
     }
 
     private void SetAudioClips()
@@ -225,10 +235,10 @@ public class Health : NetworkBehaviour
     public void SetMaxHull(float newMaxHull)
     {
         hullMax = newMaxHull;
-        if (healthSlider)
+        if (hullSlider)
         {
-            healthSlider.maxValue = hullMax;
-            maxHulltmp.text = hullMax.ToString();
+            hullSlider.maxValue = hullMax;
+            hullMaxTMP.text = hullMax.ToString();
 
         }
     }
@@ -239,7 +249,7 @@ public class Health : NetworkBehaviour
         {
             shieldSlider.maxValue = shieldMax;
             //Debug.Log("new shield max: " + shieldMax);
-            maxShieldtmp.text = shieldMax.ToString();
+            shieldMaxTMP.text = shieldMax.ToString();
         }
     }
 
@@ -249,7 +259,7 @@ public class Health : NetworkBehaviour
         if (isPlayer)
         {
             //Debug.Log("new shield regen: " + shieldRegenPerSecond);
-            regenShieldtmp.text = shieldRegenPerSecond.ToString();
+            shieldRateTMP.text = shieldRegenPerSecond.ToString();
         }
     }
     public float GetMaxHull()
@@ -259,14 +269,25 @@ public class Health : NetworkBehaviour
 
     private void UpdateUI(float oldValue, float newValue)
     {
-        if (healthSlider)
+        if (hullSlider)
         {
-            healthSlider.value = hullCurrentLevel;
+            hullSlider.maxValue = hullMax;
+            hullSlider.value = hullCurrentLevel;
         }
         if (shieldSlider)
         {
+            shieldSlider.maxValue = shieldMax;
             shieldSlider.value = shieldCurrentLevel;
         }
+        if (hullMaxTMP)
+        {
+            hullMaxTMP.text = hullMax.ToString();
+        }
+        if (shieldMaxTMP && shieldRateTMP)
+        {
+            shieldMaxTMP.text = shieldMax.ToString();
+            shieldRateTMP.text = shieldRegenPerSecond.ToString();
+        } 
     }
 
 }

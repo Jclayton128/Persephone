@@ -24,23 +24,20 @@ public class Ability_MissileLauncher : Ability
         Vector2 flatPos = worldPosition;
         return flatPos;
     }
-    public override void MouseClickDown()
+    protected override void MouseClickDownEffect()
     {
-        //Check for sufficient Power on client-side
-
-        CmdRequestFireMissile();
-
+         CmdRequestFireMissile();
     }
+
 
     [Command]
     private void CmdRequestFireMissile()
     {
-        //Check for sufficient power on server-side
-        //Decrement Power Source
+        if (es.CheckDrainEnergy(costPerShot))
+        {
+            FireMissile();
+        }
 
-        FireMissile();
-
-        //AudioSource.PlayClipAtPoint(missileFiringSound, gameObject.transform.position);
     }
 
     [Server]
@@ -58,10 +55,11 @@ public class Ability_MissileLauncher : Ability
         missileAI.SetMissileOwner(gameObject);
         missileAI.SetLifetime(weaponLifetime);
 
-        NetworkServer.Spawn(missile); //This isn't spawning things back on the client sides!! :(
+        // TODO: AudioSource.PlayClipAtPoint(missileFiringSound, gameObject.transform.position);
+        NetworkServer.Spawn(missile);
     }
 
-    public override void MouseClickUp()
+    protected override void MouseClickUpEffect()
     {
 
     }

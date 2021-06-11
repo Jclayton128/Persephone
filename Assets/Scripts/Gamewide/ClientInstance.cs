@@ -41,13 +41,10 @@ public class ClientInstance : NetworkBehaviour
         GameObject.DontDestroyOnLoad(gameObject);
         Instance = this;
         cam = Camera.main;
-        Debug.Log($"looked for camera, found this: {cam}");
         //avatarShipyard = FindObjectOfType<AvatarShipyard>();
         if (!isLocalPlayer)
         {
             cam.enabled = false;
-            uint netIDhere = GetComponent<NetworkIdentity>().netId;
-            Debug.Log($"{netIDhere} is not the local player; Camera turned off");
         }
 
         if (isLocalPlayer)
@@ -57,9 +54,6 @@ public class ClientInstance : NetworkBehaviour
             sspd = panel.GetComponent<ShipSelectPanelDriver>();
             HookIntoLocalShipSelectPanel();
             FindObjectOfType<UIManager>().SetLocalPlayerForUI(this);
-            uint netIDhere = GetComponent<NetworkIdentity>().netId;
-            Debug.Log($"{netIDhere} is local player; set up");
-
         }
 
 
@@ -69,7 +63,6 @@ public class ClientInstance : NetworkBehaviour
     {
         sspd.ci = this;
         sspd.DisplayPanel();        
-        Debug.Log("succesful UI hookup");
     }
     public void SetDesiredAvatar(int indexForShipyard)
     {

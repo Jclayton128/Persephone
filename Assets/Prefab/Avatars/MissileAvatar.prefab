@@ -23,7 +23,7 @@ MonoBehaviour:
   hullDamage: 1
   shieldDamage: 1
   ionDamage: 1
-  costPerShot: 1
+  costPerShot: 10
   missileFiringSound: {fileID: 0}
 --- !u!1001 &4311644716161591293
 PrefabInstance:

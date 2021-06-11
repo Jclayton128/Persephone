@@ -9,9 +9,9 @@ using Mirror;
 public class EnergySource : NetworkBehaviour
 {
     //init
-    Slider energySlider;
-    TextMeshProUGUI energyMaxTMP;
-    TextMeshProUGUI energyRateTMP;
+    [SerializeField] Slider energySlider;
+    [SerializeField] TextMeshProUGUI energyMaxTMP;
+    [SerializeField] TextMeshProUGUI energyRateTMP;
 
     //param
 
@@ -24,23 +24,27 @@ public class EnergySource : NetworkBehaviour
     //float maxTimeInBonusMode = 10;
 
     //hood
+    [SyncVar(hook = nameof(UpdateUI))]
     float energyCurrent;
+
     //bool isInMegaEnergyBonusMode = false;
     //float timeInBonusMode = 0;
     void Start()
     {
-        energyCurrent = energyMax;
         if (hasAuthority)
         {
+            Debug.Log("tried to hook into UI");
             HookIntoLocalUI();
         }
+        energyCurrent = energyMax;
     }
 
     private void HookIntoLocalUI()
     {
-        UIManager uim = FindObjectOfType<UIManager>();
         ClientInstance ci = ClientInstance.ReturnClientInstance();
+        UIManager uim = FindObjectOfType<UIManager>();
         UIPack uipack = uim.GetUIPack(ci);
+        Debug.Log("received: " + uipack);
         energySlider = uipack.EnergySlider;
         energyMaxTMP = uipack.EnergyMaxTMP;
         energyRateTMP = uipack.EnergyRateTMP;
@@ -58,8 +62,11 @@ public class EnergySource : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        RegenPower();
-        energyCurrent = Mathf.Clamp(energyCurrent, 0, energyMax);
+        if (isServer)
+        {
+            RegenPower();
+            energyCurrent = Mathf.Clamp(energyCurrent, 0, energyMax);
+        }
     }
 
     private void RegenPower()
@@ -75,10 +82,37 @@ public class EnergySource : NetworkBehaviour
         return energyCurrent;
     }
 
-    public void ModifyCurrentPowerLevel(float powerChange)
+    public bool CheckEnergy(float value)
     {
-        energyCurrent += powerChange;
+        if (energyCurrent - value >= 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
+
+    public bool CheckDrainEnergy(float value)
+    {
+        if (energyCurrent - value >= 0)
+        {
+            energyCurrent -= value;
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    //public void ModifyCurrentPowerLevel(float powerChange)
+    //{
+    //    energyCurrent += powerChange;
+    //}
 
     public void ResetPowerLevel()
     {

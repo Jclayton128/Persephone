@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[RequireComponent(typeof(EnergySource))]
 
 public abstract class Ability : NetworkBehaviour
 {
@@ -17,8 +18,10 @@ public abstract class Ability : NetworkBehaviour
     [SerializeField] protected float shieldDamage;
     [SerializeField] protected float ionDamage;
     [SerializeField] protected float costPerShot;
+    [SerializeField] AudioClip insufficientEnergySound = null;
 
-    Experience exp;
+    protected Experience exp;
+    protected EnergySource es;
 
     protected virtual void Awake()
     {
@@ -31,11 +34,27 @@ public abstract class Ability : NetworkBehaviour
     protected virtual void Start()
     {
         exp = GetComponent<Experience>();
+        es = GetComponent<EnergySource>();
     }
 
-    public abstract void MouseClickDown();
+    public virtual void MouseClickDownValidate()
+    {
+        if (es.CheckEnergy(costPerShot))
+        {
+            MouseClickDownEffect();
+        }
+        else
+        {
+            //TODO play insufficient power sound;
+        }
+    }
+    protected abstract void MouseClickDownEffect();
 
-    public abstract void MouseClickUp();
+    public virtual void MouseClickUpValidate()
+    {
+        MouseClickUpEffect();
+    }
+    protected abstract void MouseClickUpEffect();
 
 
 

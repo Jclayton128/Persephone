@@ -65,6 +65,7 @@ public class Health : NetworkBehaviour
 
     private void HookIntoLocalUI()
     {
+
         ClientInstance ci = ClientInstance.ReturnClientInstance();
         uim = FindObjectOfType<UIManager>();
         UIPack uipack = uim.GetUIPack(ci);

@@ -107,21 +107,21 @@ public class PlayerInput : NetworkBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            priAbility.MouseClickDown();
+            priAbility.MouseClickDownValidate();
             //gd.primaryGadget.OnClickDown(mousePos, transform);
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            priAbility.MouseClickUp();
+            priAbility.MouseClickUpValidate();
             //gd.primaryGadget.OnClickUp(mousePos);
         }
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            secAbility.MouseClickDown();
+            secAbility.MouseClickDownValidate();
         }
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
-            secAbility.MouseClickUp();
+            secAbility.MouseClickUpValidate();
         }
     }
 

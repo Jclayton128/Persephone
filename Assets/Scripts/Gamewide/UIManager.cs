@@ -41,11 +41,13 @@ public class UIManager : MonoBehaviour
                 EnergyRateTMP = energyRateTMP
                 //Throttle = throttle;
             };
+            Debug.Log("sent UI Pack");
             return uipack;
 
         }
         else
         {
+            Debug.Log("No UI Pack for you!");
             return null;
         }
 

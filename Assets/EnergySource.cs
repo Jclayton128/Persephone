@@ -6,113 +6,137 @@ using UnityEngine.UI;
 using TMPro;
 using Mirror;
 
-public class PowerSource : NetworkBehaviour
+public class EnergySource : NetworkBehaviour
 {
     //init
-    [SerializeField] Slider powerReserve = null;
-    [SerializeField] TextMeshProUGUI maxEnergytmp = null;
-    [SerializeField] TextMeshProUGUI regenEnergytmp = null;
+    Slider energySlider;
+    TextMeshProUGUI energyMaxTMP;
+    TextMeshProUGUI energyRateTMP;
 
     //param
-    float maxPower = 10;
-    float powerRegenPerSecond = 0;
-    float megaPowerRegenPerSecond = 50.0f;
-    float maxTimeInBonusMode = 10;
+
+    [SyncVar(hook = nameof(UpdateUI))]
+    [SerializeField] float energyMax;
+
+    [SyncVar(hook = nameof(UpdateUI))]
+    [SerializeField] float energyRate;
+    //float megaPowerRegenPerSecond = 50.0f;
+    //float maxTimeInBonusMode = 10;
 
     //hood
-    float currentPower;
-    bool isInMegaEnergyBonusMode = false;
-    float timeInBonusMode = 0;
+    float energyCurrent;
+    //bool isInMegaEnergyBonusMode = false;
+    //float timeInBonusMode = 0;
     void Start()
     {
-        currentPower = maxPower;
-        powerReserve.maxValue = maxPower;
+        energyCurrent = energyMax;
+        if (hasAuthority)
+        {
+            HookIntoLocalUI();
+        }
+    }
+
+    private void HookIntoLocalUI()
+    {
+        UIManager uim = FindObjectOfType<UIManager>();
+        ClientInstance ci = ClientInstance.ReturnClientInstance();
+        UIPack uipack = uim.GetUIPack(ci);
+        energySlider = uipack.EnergySlider;
+        energyMaxTMP = uipack.EnergyMaxTMP;
+        energyRateTMP = uipack.EnergyRateTMP;
+        UpdateUI(0,0);
+    }
+
+    private void UpdateUI(float oldValue, float newValue)
+    {
+        energySlider.maxValue = energyMax;
+        energySlider.value = energyCurrent;
+        energyMaxTMP.text = energyMax.ToString();
+        energyRateTMP.text = energyRate.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
         RegenPower();
-        currentPower = Mathf.Clamp(currentPower, 0, maxPower);
-        powerReserve.value = currentPower;
-
+        energyCurrent = Mathf.Clamp(energyCurrent, 0, energyMax);
     }
 
     private void RegenPower()
     {
-        if (currentPower < maxPower)
+        if (energyCurrent < energyMax)
         {
-            currentPower += powerRegenPerSecond * Time.deltaTime;
+            energyCurrent += energyRate * Time.deltaTime;
         }
     }
 
     public float GetCurrentPowerLevel()
     {
-        return currentPower;
+        return energyCurrent;
     }
 
     public void ModifyCurrentPowerLevel(float powerChange)
     {
-        currentPower += powerChange;
+        energyCurrent += powerChange;
     }
 
     public void ResetPowerLevel()
     {
-        currentPower = maxPower;
+        energyCurrent = energyMax;
     }
 
     public float GetMaxPower()
     {
-        return maxPower;
+        return energyMax;
     }
 
     public float GetPowerRegen()
     {
-        return powerRegenPerSecond;
+        return energyRate;
     }
     public void SetMaxPower(float newMaxPower)
     {
-        maxPower = newMaxPower;
-        if (powerReserve && maxEnergytmp)
+        energyMax = newMaxPower;
+        if (energySlider && energyMaxTMP)
         {
-            powerReserve.maxValue = maxPower;
-            maxEnergytmp.text = maxPower.ToString();
+            energySlider.maxValue = energyMax;
+            energyMaxTMP.text = energyMax.ToString();
             //Debug.Log("attempting to adjust max energy text");
         }
     }
 
     public void SetPowerRegen(float newRegen)
     {
-        powerRegenPerSecond = newRegen;
-        if (regenEnergytmp)
+        energyRate = newRegen;
+        if (energyRateTMP)
         {
-            regenEnergytmp.text = powerRegenPerSecond.ToString("F1");
+            energyRateTMP.text = energyRate.ToString("F1");
             //Debug.Log("attempting to adjust energy regen text");
         }
     }
 
-    public void SetMegaPowerBonusMode()
-    {
-        isInMegaEnergyBonusMode = true;
-        StartCoroutine(MegaPowerBonusModeTimer());
-        powerRegenPerSecond += megaPowerRegenPerSecond;
-        regenEnergytmp.text = powerRegenPerSecond.ToString("F1");
-    }
+    //public void SetMegaPowerBonusMode()
+    //{
+    //    isInMegaEnergyBonusMode = true;
+    //    StartCoroutine(MegaPowerBonusModeTimer());
+    //    energyRate += megaPowerRegenPerSecond;
+    //    energyRateTMP.text = energyRate.ToString("F1");
+    //}
 
-    IEnumerator MegaPowerBonusModeTimer()
-    {
-        while (true)
-        {
-            timeInBonusMode += Time.deltaTime;
-            if (timeInBonusMode >= maxTimeInBonusMode)
-            {
-                isInMegaEnergyBonusMode = false;
-                timeInBonusMode = 0;
-                powerRegenPerSecond -= megaPowerRegenPerSecond;
-                regenEnergytmp.text = powerRegenPerSecond.ToString("F1");
-                yield break;
-            }
-            yield return new WaitForFixedUpdate();
-        }
-    }
+    //IEnumerator MegaPowerBonusModeTimer()
+    //{
+    //    while (true)
+    //    {
+    //        timeInBonusMode += Time.deltaTime;
+    //        if (timeInBonusMode >= maxTimeInBonusMode)
+    //        {
+    //            isInMegaEnergyBonusMode = false;
+    //            timeInBonusMode = 0;
+    //            energyRate -= megaPowerRegenPerSecond;
+    //            energyRateTMP.text = energyRate.ToString("F1");
+    //            yield break;
+    //        }
+    //        yield return new WaitForFixedUpdate();
+    //    }
+    //}
 }

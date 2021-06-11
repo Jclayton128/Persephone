@@ -9,7 +9,7 @@ public class ClientInstance : NetworkBehaviour
     [SerializeField] AvatarShipyard avatarShipyard;
     [SerializeField] GameObject shipSelectPanel = null;
     public static ClientInstance Instance;
-    Camera cam;
+    [SerializeField] Camera cam;
     //[SerializeField] GameObject desiredAvatar;
     ShipSelectPanelDriver sspd;
     int desiredAvatar;
@@ -35,33 +35,41 @@ public class ClientInstance : NetworkBehaviour
     #endregion
 
     #region Client
-    public override void OnStartClient()
+    public override void OnStartLocalPlayer()
     {
-        base.OnStartClient();
+        base.OnStartLocalPlayer();
         GameObject.DontDestroyOnLoad(gameObject);
         Instance = this;
         cam = Camera.main;
+        Debug.Log($"looked for camera, found this: {cam}");
         //avatarShipyard = FindObjectOfType<AvatarShipyard>();
         if (!isLocalPlayer)
         {
             cam.enabled = false;
+            uint netIDhere = GetComponent<NetworkIdentity>().netId;
+            Debug.Log($"{netIDhere} is not the local player; Camera turned off");
         }
 
         if (isLocalPlayer)
         {
+            cam.enabled = true;
             GameObject panel = Instantiate(shipSelectPanel, Vector2.zero, Quaternion.identity) as GameObject;
             sspd = panel.GetComponent<ShipSelectPanelDriver>();
             HookIntoLocalShipSelectPanel();
+            FindObjectOfType<UIManager>().SetLocalPlayerForUI(this);
+            uint netIDhere = GetComponent<NetworkIdentity>().netId;
+            Debug.Log($"{netIDhere} is local player; set up");
+
         }
 
 
-        FindObjectOfType<UIManager>().SetLocalPlayerForUI(this);
     }
 
     private void HookIntoLocalShipSelectPanel()
     {
         sspd.ci = this;
         sspd.DisplayPanel();        
+        Debug.Log("succesful UI hookup");
     }
     public void SetDesiredAvatar(int indexForShipyard)
     {

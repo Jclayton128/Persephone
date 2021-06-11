@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 414204541270967377}
   - component: {fileID: 6441007859182316285}
   - component: {fileID: 5030652208682602083}
+  - component: {fileID: 8322484285054519442}
   m_Layer: 8
   m_Name: GenericAvatar
   m_TagString: Player
@@ -259,3 +260,19 @@ MonoBehaviour:
   shieldRegenPerSecond: 0.5
   countsTowardsScore: 0
   isDying: 0
+--- !u!114 &8322484285054519442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644570496936021407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42a9afb5396da14dadc1757bbbd1cb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  energyMax: 0
+  energyRate: 0

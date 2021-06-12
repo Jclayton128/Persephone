@@ -13,12 +13,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] Slider hullSlider = null;
     [SerializeField] Slider shieldSlider = null;
     [SerializeField] Slider energySlider = null;
-    [SerializeField] Slider throttle = null;
     [SerializeField] TextMeshProUGUI hullMaxTMP = null;
     [SerializeField] TextMeshProUGUI shieldMaxTMP = null;
     [SerializeField] TextMeshProUGUI energyMaxTMP = null;
     [SerializeField] TextMeshProUGUI shieldRateTMP = null;
     [SerializeField] TextMeshProUGUI energyRateTMP = null;
+
+    [SerializeField] Slider throttle = null;
+
+    [SerializeField] Image scrapBar = null;
+    [SerializeField] TextMeshProUGUI upgradePointsTMP = null;
 
 
     public void SetLocalPlayerForUI(ClientInstance ci)
@@ -38,8 +42,11 @@ public class UIManager : MonoBehaviour
                 ShieldMaxTMP = shieldMaxTMP,
                 EnergyMaxTMP = energyMaxTMP,
                 ShieldRateTMP = shieldRateTMP,
-                EnergyRateTMP = energyRateTMP
-                //Throttle = throttle;
+                EnergyRateTMP = energyRateTMP,
+                ScrapBar = scrapBar,
+                UpgradePointsTMP = upgradePointsTMP
+                //Throttle = throttle;  
+
             };
             Debug.Log("sent UI Pack");
             return uipack;
@@ -50,7 +57,5 @@ public class UIManager : MonoBehaviour
             Debug.Log("No UI Pack for you!");
             return null;
         }
-
     }
-
 }

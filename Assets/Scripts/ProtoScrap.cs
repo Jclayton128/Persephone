@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class ProtoScrap : MonoBehaviour
+public class ProtoScrap : NetworkBehaviour
 {
     //init
     [SerializeField] Sprite[] scrapSprites = null;
+    [SerializeField] CircleCollider2D trigColl = null;
     SpriteRenderer sr;
 
     //parameter
@@ -26,6 +28,10 @@ public class ProtoScrap : MonoBehaviour
         Sprite selectedSprite = SelectARandomSprite();
         sr = GetComponent<SpriteRenderer>();
         sr.sprite = selectedSprite;
+        if (isClient)
+        {
+            trigColl.enabled = false;
+        }
     }
 
     private Sprite SelectARandomSprite()

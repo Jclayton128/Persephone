@@ -191,6 +191,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cde8334af60f04b429ee6045298514cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   scrapSprites:
   - {fileID: 21300000, guid: ffbcf2e1655d8a54490cb6c456ba6731, type: 3}
   - {fileID: 21300000, guid: 02780c24c0d3f964b87c9714077b8b4c, type: 3}
@@ -201,3 +203,4 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7ba86ef91a5815c498858ca9e466ddae, type: 3}
   - {fileID: 21300000, guid: ad565446021c85845a241a98559bf93c, type: 3}
   - {fileID: 21300000, guid: c43f5b26b42abd644bf9521a4131ee12, type: 3}
+  trigColl: {fileID: -5934226802915403351}

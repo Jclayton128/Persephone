@@ -4,16 +4,13 @@ using UnityEngine;
 using TMPro;
 using System;
 using Mirror;
+[RequireComponent(typeof(UpgradeManager))]
 
 public class ScrapCollector : NetworkBehaviour
 {
     //init
     [SerializeField] AudioClip scrapPickupSound = null;
-    //[SerializeField] TextMeshProUGUI scrapDisplayer = null;
-
-    //param
-    [SyncVar]
-    int scrapCollected = 0;
+    UpgradeManager um;
 
     [SerializeField] float catchDistance;
     [SerializeField] CircleCollider2D scrapVacuum = null;
@@ -22,21 +19,23 @@ public class ScrapCollector : NetworkBehaviour
     private void Start()
     {
         scrapVacuum.radius = scrapVacuumSize;
+        um = GetComponent<UpgradeManager>();
     }
+
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (!isServer) { return; }
         if (collision.transform.gameObject.GetComponent<ProtoScrap>())
         {
             float dist = (collision.transform.position - transform.position).magnitude;
             if (dist < catchDistance)
             {
-                scrapCollected++;
                 //TODO play picked up scrap audioclip
-                Destroy(collision.transform.gameObject);
+                um.GainScrap(1);
+                Destroy(collision.gameObject);
             }
         }
+
     }
 
 }

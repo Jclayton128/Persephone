@@ -15,6 +15,8 @@ public class UIPack : Object
     public TextMeshProUGUI EnergyMaxTMP;
     public TextMeshProUGUI ShieldRateTMP;
     public TextMeshProUGUI EnergyRateTMP;
+    public Image ScrapBar;
+    public TextMeshProUGUI UpgradePointsTMP;
 
     public UIPack()
     {

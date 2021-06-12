@@ -20,7 +20,7 @@ public abstract class Ability : NetworkBehaviour
     [SerializeField] protected float costPerShot;
     [SerializeField] AudioClip insufficientEnergySound = null;
 
-    protected Experience exp;
+
     protected EnergySource es;
 
     protected virtual void Awake()
@@ -33,7 +33,7 @@ public abstract class Ability : NetworkBehaviour
 
     protected virtual void Start()
     {
-        exp = GetComponent<Experience>();
+
         es = GetComponent<EnergySource>();
     }
 

@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
-public class ScrapDropper : MonoBehaviour
+public class ScrapDropper : NetworkBehaviour
 {
     //init
     [SerializeField] GameObject scrapPrefab = null;
@@ -22,8 +23,19 @@ public class ScrapDropper : MonoBehaviour
 
     void Start()
     {
-        Health health = GetComponent<Health>();
-        health.EntityIsDying += SpawnScrapAtDeath;
+        if (isServer)
+        {
+            Health health = GetComponent<Health>();
+            health.EntityIsDying += SpawnScrapAtDeath;
+        }
+        if (isClient)
+        {
+            NetworkClient.RegisterPrefab(scrapPrefab);
+            foreach (GameObject asteroid in asteroidPrefabs)
+            {
+                NetworkClient.RegisterPrefab(asteroid);
+            }
+        }
         // TODO maybe have some minions or weapons where scrap flies off if damaged? //health.EntityWasDamaged += 
 
     }
@@ -46,6 +58,8 @@ public class ScrapDropper : MonoBehaviour
             scrapRB.velocity = driftDir.normalized * driftSpeed;
             //Debug.Log("drift dir: " + driftDir + " velocity: " + scrapRB.velocity);
             scrapRB.angularVelocity = Random.Range(-maxAngularVelocity, maxAngularVelocity);
+
+            NetworkServer.Spawn(scrap);
         }
         if (asteroidPrefabs.Length > 0 && numberOfAsteroids > 0)
         {

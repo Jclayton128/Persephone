@@ -63,7 +63,6 @@ public class ProtoScrap : MonoBehaviour
         {
             timeSpentFading += Time.deltaTime;
             factor = (fadeoutDuration - timeSpentFading);
-            Debug.Log($"factor: {factor} and timesincefadestart: {timeSpentFading}");
             sr.color = new Color(1, 1, 1, factor);
             yield return new WaitForEndOfFrame();
         }

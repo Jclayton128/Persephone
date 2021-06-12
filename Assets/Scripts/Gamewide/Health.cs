@@ -50,6 +50,10 @@ public class Health : NetworkBehaviour
 
     DamageDealer lastDamageDealerToBeHitBy;
     GameObject ownerOfLastDamageDealerToBeHitBy;
+
+    public Action EntityWasDamaged;
+    public Action EntityIsDying;
+
     void Start()
     {
         shieldCurrentLevel = shieldMax;
@@ -151,6 +155,7 @@ public class Health : NetworkBehaviour
 
             //    GetComponent<ScrapDropper>().bonusScrapThreshold = bonusScrapThresh;
             //}
+            EntityIsDying.Invoke();
             BroadcastMessage("DyingActions", ownerOfLastDamageDealerToBeHitBy, SendMessageOptions.DontRequireReceiver);
             if (isPlayer)
             {

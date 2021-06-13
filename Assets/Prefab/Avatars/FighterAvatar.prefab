@@ -24,6 +24,7 @@ MonoBehaviour:
   shieldDamage: 1
   ionDamage: 1
   costPerShot: 2
+  insufficientEnergySound: {fileID: 0}
 --- !u!1001 &6910583446029087813
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33,6 +34,14 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: shieldMax
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: shieldMax_current
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: shieldRate_current
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8322484285054519442, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}

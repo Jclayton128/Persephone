@@ -16,7 +16,7 @@ public abstract class Ability : NetworkBehaviour
     [SerializeField] protected float weaponSpeed;
     [SerializeField] protected float hullDamage;
     [SerializeField] protected float shieldDamage;
-    [SerializeField] protected float ionDamage;
+    [SerializeField] protected float ionDamage;  // Should be something between 0 and 1;
     [SerializeField] protected float costPerShot;
     [SerializeField] AudioClip insufficientEnergySound = null;
 

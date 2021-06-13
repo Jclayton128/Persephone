@@ -14,11 +14,12 @@ public class Health : NetworkBehaviour
     [SerializeField] AudioClip[] dieAudioClip = null;
 
     UIManager uim;
-    [SerializeField] Slider hullSlider;
-    [SerializeField] Slider shieldSlider;
-    [SerializeField] TextMeshProUGUI hullMaxTMP = null;
-    [SerializeField] TextMeshProUGUI shieldMaxTMP = null;
-    [SerializeField] TextMeshProUGUI shieldRateTMP = null;
+    Slider hullSlider;
+    Slider shieldSlider;
+    TextMeshProUGUI hullMaxTMP;
+    TextMeshProUGUI shieldMaxTMP;
+    TextMeshProUGUI shieldRateTMP;
+    Slider shieldIonizationSlider;
 
     AudioClip chosenHurtSound;
     AudioClip chosenDieSound;
@@ -31,14 +32,25 @@ public class Health : NetworkBehaviour
     [SerializeField] float hullMax = 1;
 
     [SyncVar(hook = nameof(UpdateUI))]
-    [SerializeField] float shieldMax;
+    [SerializeField] float shieldMax_normal;  // What the shield Max can be under ideal conditions, and what shows on UI.
+
+    [SyncVar]
+    float shieldMax_current;  // What the shield Max can be accounting for Ionization
+
+    [SyncVar]
+    [SerializeField] float shieldRate_normal;  // What the shield Regen can be under ideal conditions.
 
     [SyncVar(hook = nameof(UpdateUI))]
-    [SerializeField] float shieldRegenPerSecond;
+    float shieldRate_current; // What the shield Regen can be accounting for Ionization, and what shows on UI
+
+    [SyncVar]
+    [SerializeField] float ionizationRemovalRate;  // points per second. Ionization scales from 0 to 1
 
     float dragAtDeath = 30f;
-    [SerializeField] bool countsTowardsScore = false;
+    float maximumIonization = 1;
 
+
+    #region Init: current state
     //hood
     [SerializeField] bool isDying = false;
 
@@ -48,16 +60,24 @@ public class Health : NetworkBehaviour
     [SyncVar(hook = nameof(UpdateUI))]
     float hullCurrentLevel;
 
+    [SyncVar(hook = nameof(UpdateUI))]
+    float ionizationLevel;
+
     DamageDealer lastDamageDealerToBeHitBy;
     GameObject ownerOfLastDamageDealerToBeHitBy;
+
+    #endregion
 
     public Action EntityWasDamaged;
     public Action EntityIsDying;
 
     void Start()
     {
-        shieldCurrentLevel = shieldMax;
+        shieldCurrentLevel = shieldMax_normal;
+        shieldMax_current = shieldMax_normal;
         hullCurrentLevel = hullMax;
+        ionizationLevel = 0;
+
         SetAudioClips();
         rb = GetComponent<Rigidbody2D>();
 
@@ -69,7 +89,6 @@ public class Health : NetworkBehaviour
 
     private void HookIntoLocalUI()
     {
-
         ClientInstance ci = ClientInstance.ReturnClientInstance();
         uim = FindObjectOfType<UIManager>();
         UIPack uipack = uim.GetUIPack(ci);
@@ -78,6 +97,7 @@ public class Health : NetworkBehaviour
         hullMaxTMP = uipack.HullMaxTMP;
         shieldMaxTMP = uipack.ShieldMaxTMP;
         shieldRateTMP = uipack.ShieldRateTMP;
+        shieldIonizationSlider = uipack.ShieldIonizationSlider;
 
         UpdateUI(0, 0);
     }
@@ -95,22 +115,38 @@ public class Health : NetworkBehaviour
     void Update()
     {
         LiveOrDie();
+        ProcessIonization();
         RechargeShield();
+
+    }
+
+    private void ProcessIonization()
+    { 
+        //Remove Ionization
+        ionizationLevel -= ionizationRemovalRate * Time.deltaTime;
+        ionizationLevel = Mathf.Clamp01(ionizationLevel);
+
+        //Process Ionization effects
+        float factor = (1 - ionizationLevel);
+        Debug.Log("factor: " + factor);
+        shieldMax_current = factor * shieldMax_normal;
+        shieldRate_current = factor * shieldRate_normal;
     }
 
     private void RechargeShield()
     {
-        if (shieldCurrentLevel < shieldMax)
-        {
-            shieldCurrentLevel += shieldRegenPerSecond * Time.deltaTime;
-        }
+        shieldCurrentLevel += shieldRate_current * Time.deltaTime;
+        shieldCurrentLevel = Mathf.Clamp(shieldCurrentLevel, 0, shieldMax_normal);
+
     }
 
     public void ModifyShieldLevel(float amount, bool affectHullToo)
     {
         //if (GetComponentInChildren<PhaseShield>()) { return; } //phase shield prevent all damage
 
-        BroadcastMessage("ReceivedDamage", ownerOfLastDamageDealerToBeHitBy, SendMessageOptions.DontRequireReceiver);
+        //BroadcastMessage("ReceivedDamage", ownerOfLastDamageDealerToBeHitBy, SendMessageOptions.DontRequireReceiver);
+        //TODO convert whatever listens for this^ to rely on a EntityWasDamaged event.
+
         if (shieldCurrentLevel < 0 && affectHullToo)
         {
             ModifyHullLevel(amount); //Go direct to hull and do no shield damage
@@ -130,10 +166,10 @@ public class Health : NetworkBehaviour
                 shieldCurrentLevel = 0;
             }
         }
-        if (shieldCurrentLevel + amount > shieldMax)
+        if (shieldCurrentLevel + amount > shieldMax_current)
         {
             //Debug.Log("can't overcharge the shields");
-            shieldCurrentLevel = shieldMax;
+            shieldCurrentLevel = shieldMax_current;
         }
     }
 
@@ -188,13 +224,17 @@ public class Health : NetworkBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
+
+        //Begin check for validity of received damage - "should this weapon actually affect me?"
         if (!damageDealer) { return; }
         if (damageDealer.IsReal == false) { return; }
-        if (gameObject == damageDealer.GetSafeObject()) { return; }
+        if (gameObject == damageDealer.GetOwningEntity()) { return; }
+
+        // Its a valid hit; begin responding
         lastDamageDealerToBeHitBy = damageDealer;
-        if (damageDealer.GetSafeObject())
+        if (damageDealer.GetOwningEntity())
         {
-            ownerOfLastDamageDealerToBeHitBy = damageDealer.GetSafeObject();
+            ownerOfLastDamageDealerToBeHitBy = damageDealer.GetOwningEntity();
         }
 
         if (damageDealer.particleExplosionAtImpact)
@@ -203,28 +243,32 @@ public class Health : NetworkBehaviour
             Destroy(damageParticleEffect, 10);
         }
 
-        if (damageDealer.GetKnockBack() == true)
+        Damage damage = damageDealer.GetDamage();
+
+        if (damage.KnockbackAmount != 0)
         {
             Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
             Rigidbody2D collRB = other.transform.GetComponent<Rigidbody2D>();
-            rb2d.AddForce(damageDealer.GetKnockBackAmount() * collRB.velocity, ForceMode2D.Impulse);
+            rb2d.AddForce(damage.KnockbackAmount * collRB.velocity, ForceMode2D.Impulse);
         }
 
-        if (Mathf.Abs(damageDealer.GetSpeedModifier()) > 0)
+        if (Mathf.Abs(damage.SpeedModifier) > 0)
         {
             rb.velocity = (rb.velocity.magnitude * damageDealer.GetSpeedModifier()) * rb.velocity.normalized;
         }
 
-        float incomingDamage = damageDealer.GetDamage();
-        if (incomingDamage == 0) { return; } //Don't do anymore work if the impact doesn't cause damage
+        if (damage.Ionization > 0)
+        {
+            ionizationLevel += damage.Ionization;
+        }
 
-        ModifyShieldLevel(incomingDamage * -1, true);
+        ModifyShieldLevel(damage.ShieldBonusDamage * -1, false);
+        ModifyShieldLevel(damage.RegularDamage * -1, true);
 
         if (chosenHurtSound)
         {
             AudioSource.PlayClipAtPoint(chosenHurtSound, transform.position);
         }
-        //Debug.Log("destroying projectile");
 
         damageDealer.ModifyPenetration(-1);
         if (damageDealer.GetPenetration() <= 0)
@@ -235,38 +279,21 @@ public class Health : NetworkBehaviour
 
     public void ResetShields()
     {
-        shieldCurrentLevel = shieldMax;
+        shieldCurrentLevel = shieldMax_current;
     }
 
-    public void SetMaxHull(float newMaxHull)
+    public void ResetHull(float newMaxHull)
     {
         hullMax = newMaxHull;
-        if (hullSlider)
-        {
-            hullSlider.maxValue = hullMax;
-            hullMaxTMP.text = hullMax.ToString();
-
-        }
     }
     public void SetMaxShield(float newMaxShield)
     {
-        shieldMax = newMaxShield;
-        if (isPlayer)
-        {
-            shieldSlider.maxValue = shieldMax;
-            //Debug.Log("new shield max: " + shieldMax);
-            shieldMaxTMP.text = shieldMax.ToString();
-        }
+        shieldMax_normal = newMaxShield;
     }
 
     public void SetShieldRegen(float newShieldRegen)
     {
-        shieldRegenPerSecond = newShieldRegen;
-        if (isPlayer)
-        {
-            //Debug.Log("new shield regen: " + shieldRegenPerSecond);
-            shieldRateTMP.text = shieldRegenPerSecond.ToString();
-        }
+        shieldRate_current = newShieldRegen;
     }
     public float GetMaxHull()
     {
@@ -282,7 +309,7 @@ public class Health : NetworkBehaviour
         }
         if (shieldSlider)
         {
-            shieldSlider.maxValue = shieldMax;
+            shieldSlider.maxValue = shieldMax_normal;
             shieldSlider.value = shieldCurrentLevel;
         }
         if (hullMaxTMP)
@@ -291,9 +318,13 @@ public class Health : NetworkBehaviour
         }
         if (shieldMaxTMP && shieldRateTMP)
         {
-            shieldMaxTMP.text = shieldMax.ToString();
-            shieldRateTMP.text = shieldRegenPerSecond.ToString();
+            shieldMaxTMP.text = shieldMax_normal.ToString();
+            shieldRateTMP.text = shieldRate_current.ToString();
         } 
+        if (shieldIonizationSlider)
+        {
+            shieldIonizationSlider.value = ionizationLevel;
+        }
     }
 
 }

@@ -48,7 +48,7 @@ public class Ability_MissileLauncher : Ability
         Missile_AI missileAI = missile.GetComponent<Missile_AI>();
         missileAI.SetNavTarget(GetMouseCursorLocation());
         DamageDealer dd = missile.GetComponent<DamageDealer>();
-        dd.SetDamage(hullDamage);
+        dd.SetRegularDamage(hullDamage);
         dd.SetSafeObject(gameObject);
         dd.IsReal = true;
         missileAI.normalSpeed = weaponSpeed;

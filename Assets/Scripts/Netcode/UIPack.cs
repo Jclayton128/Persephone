@@ -17,6 +17,8 @@ public class UIPack : Object
     public TextMeshProUGUI EnergyRateTMP;
     public Image ScrapBar;
     public TextMeshProUGUI UpgradePointsTMP;
+    public Slider ShieldIonizationSlider;
+    public Slider EnergyIonizationSlider;
 
     public UIPack()
     {

@@ -71,7 +71,7 @@ public class Hammer_Brain : Brain
             damageBall.layer = 11;  //11 means that the hammer won't hurt other enemy units
             NetworkServer.Spawn(damageBall);
             //damageBall.transform.parent = gameObject.transform;  // I think having a child with a netidentity is bad.
-            damageBall.GetComponent<DamageDealer>().SetDamage(0.0f);
+            damageBall.GetComponent<DamageDealer>().SetRegularDamage(0.0f);  
             dbsr = damageBall.GetComponent<SpriteRenderer>();
             dbsr.color = new Color(1, 1, 1, 0);
         }
@@ -86,7 +86,7 @@ public class Hammer_Brain : Brain
                 damageBall.GetComponent<Rigidbody2D>().angularVelocity = chargeFractionRemaining * 720f;
                 if (chargeFractionRemaining >= 0.8)
                 {
-                    damageBall.GetComponent<DamageDealer>().SetDamage(damageBallDamage);
+                    damageBall.GetComponent<DamageDealer>().SetRegularDamage(damageBallDamage);
                     //damageBall.GetComponent<CircleCollider2D>().enabled = true;
                 }
             }

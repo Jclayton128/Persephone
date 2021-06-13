@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI energyMaxTMP = null;
     [SerializeField] TextMeshProUGUI shieldRateTMP = null;
     [SerializeField] TextMeshProUGUI energyRateTMP = null;
+    [SerializeField] Slider shieldIonizationSlider = null;
+    [SerializeField] Slider energyIonizationSlider = null;
 
     [SerializeField] Slider throttle = null;
 
@@ -43,12 +45,13 @@ public class UIManager : MonoBehaviour
                 EnergyMaxTMP = energyMaxTMP,
                 ShieldRateTMP = shieldRateTMP,
                 EnergyRateTMP = energyRateTMP,
+                ShieldIonizationSlider = shieldIonizationSlider,
+                EnergyIonizationSlider = energyIonizationSlider,           
                 ScrapBar = scrapBar,
                 UpgradePointsTMP = upgradePointsTMP
                 //Throttle = throttle;  
 
             };
-            Debug.Log("sent UI Pack");
             return uipack;
 
         }

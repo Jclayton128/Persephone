@@ -320,16 +320,11 @@ MonoBehaviour:
   syncInterval: 0.1
   hurtAudioClip: []
   dieAudioClip: []
-  hullSlider: {fileID: 0}
-  shieldSlider: {fileID: 0}
-  hullMaxTMP: {fileID: 0}
-  shieldMaxTMP: {fileID: 0}
-  shieldRateTMP: {fileID: 0}
   isPlayer: 0
   hullMax: 4
-  shieldMax: 5
-  shieldRegenPerSecond: 0.5
-  countsTowardsScore: 0
+  shieldMax_normal: 5
+  shieldRate_normal: 0.5
+  ionizationRemovalRate: 0.1
   isDying: 0
 --- !u!114 &8322484285054519442
 MonoBehaviour:
@@ -380,3 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 429b64c5b28792e47a863d0e4d603294, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  scrapBar: {fileID: 0}
+  upgradePointsAvailableTMP: {fileID: 0}

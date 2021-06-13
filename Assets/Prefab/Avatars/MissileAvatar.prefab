@@ -24,6 +24,7 @@ MonoBehaviour:
   shieldDamage: 1
   ionDamage: 1
   costPerShot: 10
+  insufficientEnergySound: {fileID: 0}
   missileFiringSound: {fileID: 0}
 --- !u!1001 &4311644716161591293
 PrefabInstance:
@@ -46,6 +47,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8322484285054519442, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: energyRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322484285054519442, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: energyMax_normal
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8322484285054519442, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: energyRate_normal
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8644570496936021376, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}

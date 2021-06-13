@@ -33,7 +33,7 @@ public class Ability_MissileLauncher : Ability
     [Command]
     private void CmdRequestFireMissile()
     {
-        if (es.CheckDrainEnergy(costPerShot))
+        if (es.CheckSpendEnergy(costPerShot))
         {
             FireMissile();
         }

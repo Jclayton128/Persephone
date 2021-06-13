@@ -18,7 +18,7 @@ public class Ability_Blaster : Ability
     [Command]
     private void CmdRequestFireWeapon()
     {
-        if (es.CheckDrainEnergy(costPerShot))
+        if (es.CheckSpendEnergy(costPerShot))
         {
             GameObject bullet = Instantiate(abilityPrefabs[0], transform.position, transform.rotation) as GameObject;
             NetworkServer.Spawn(bullet);

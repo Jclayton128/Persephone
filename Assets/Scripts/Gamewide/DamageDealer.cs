@@ -7,9 +7,10 @@ public class DamageDealer : MonoBehaviour
     float regularDamage = 0;
     float shieldBonusDamage = 0;
     float ionization = 0;
+    float draining = 0;
     float knockBack = 0;
-
     float speedModifier = 0; //this is a speed multiplier. 0 creates a sudden halt, 2 creates a doubling of speed.
+
     GameObject safeObject = null;
     int penetration = 1;
 
@@ -33,6 +34,11 @@ public class DamageDealer : MonoBehaviour
     {
         ionization = value;
     }
+
+    public void SetDraining(float value)
+    {
+        draining = value;
+    }
      public void SetKnockback(float amount)
     {
         knockBack = amount;
@@ -50,7 +56,8 @@ public class DamageDealer : MonoBehaviour
             ShieldBonusDamage = shieldBonusDamage,
             Ionization = ionization,
             KnockbackAmount = knockBack,
-            SpeedModifier = speedModifier
+            SpeedModifier = speedModifier,
+            Draining = draining
         };
         return damage;
     }

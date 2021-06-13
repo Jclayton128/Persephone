@@ -90,7 +90,8 @@ public class Trundler_Brain : Brain
             DamageDealer damageDealer = newBlasterProjectile.GetComponent<DamageDealer>();
             damageDealer.IsReal = true;
             damageDealer.SetRegularDamage(blasterDamage);
-            damageDealer.SetIonization(0.1f);
+            damageDealer.SetIonization(1f);
+            damageDealer.SetDraining(1f);
             //SelectRandomFiringSound();
             //AudioSource.PlayClipAtPoint(selectedBlasterSound, gameObject.transform.position);
             Destroy(newBlasterProjectile, shotLifetime);

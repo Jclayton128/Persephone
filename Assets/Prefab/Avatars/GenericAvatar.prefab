@@ -324,7 +324,7 @@ MonoBehaviour:
   hullMax: 4
   shieldMax_normal: 5
   shieldRate_normal: 0.5
-  ionizationRemovalRate: 0.1
+  purificationRate: 0.5
   isDying: 0
 --- !u!114 &8322484285054519442
 MonoBehaviour:
@@ -340,11 +340,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  energySlider: {fileID: 0}
-  energyMaxTMP: {fileID: 0}
-  energyRateTMP: {fileID: 0}
-  energyMax: 0
-  energyRate: 0
+  energyMax_normal: 10
+  energyRate_normal: 1
 --- !u!114 &-1544245098169655685
 MonoBehaviour:
   m_ObjectHideFlags: 0

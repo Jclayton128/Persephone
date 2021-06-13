@@ -13,20 +13,23 @@ public class Health : NetworkBehaviour
     [SerializeField] AudioClip[] hurtAudioClip = null;
     [SerializeField] AudioClip[] dieAudioClip = null;
 
+    EnergySource es;
+
     UIManager uim;
     Slider hullSlider;
     Slider shieldSlider;
     TextMeshProUGUI hullMaxTMP;
     TextMeshProUGUI shieldMaxTMP;
     TextMeshProUGUI shieldRateTMP;
-    Slider shieldIonizationSlider;
+    Slider shieldDrainingSlider;
+    // [SerializeField] Particle  //TODO cause drain thing to have a Purple particle effect 
 
     AudioClip chosenHurtSound;
     AudioClip chosenDieSound;
     Rigidbody2D rb;
 
     //param
-    [SerializeField] bool isPlayer = false;
+    bool isPlayer = true;
 
     [SyncVar(hook = nameof(UpdateUI))]
     [SerializeField] float hullMax = 1;
@@ -43,11 +46,11 @@ public class Health : NetworkBehaviour
     [SyncVar(hook = nameof(UpdateUI))]
     float shieldRate_current; // What the shield Regen can be accounting for Ionization, and what shows on UI
 
-    [SyncVar]
-    [SerializeField] float ionizationRemovalRate;  // points per second. Ionization scales from 0 to 1
+    [SyncVar(hook = nameof(UpdateUI))]
+    [SerializeField] float purificationRate;  // points per second. Ionization and Draining scales from 0 to max Energy/Shield level;
+
 
     float dragAtDeath = 30f;
-    float maximumIonization = 1;
 
 
     #region Init: current state
@@ -55,16 +58,19 @@ public class Health : NetworkBehaviour
     [SerializeField] bool isDying = false;
 
     [SyncVar(hook = nameof(UpdateUI))]
-     float shieldCurrentLevel;
+    float shieldCurrentLevel;
 
     [SyncVar(hook = nameof(UpdateUI))]
     float hullCurrentLevel;
 
     [SyncVar(hook = nameof(UpdateUI))]
-    float ionizationLevel;
+    float drainAmount;
+
+    float drainFactor = 0;
 
     DamageDealer lastDamageDealerToBeHitBy;
     GameObject ownerOfLastDamageDealerToBeHitBy;
+
 
     #endregion
 
@@ -76,12 +82,17 @@ public class Health : NetworkBehaviour
         shieldCurrentLevel = shieldMax_normal;
         shieldMax_current = shieldMax_normal;
         hullCurrentLevel = hullMax;
-        ionizationLevel = 0;
+        drainAmount = 0;
 
         SetAudioClips();
         rb = GetComponent<Rigidbody2D>();
+        es = GetComponent<EnergySource>();
 
-        if (hasAuthority)
+        if (gameObject.tag != "Player")
+        {
+            isPlayer = false;
+        }
+        if (hasAuthority && isPlayer)
         {
             HookIntoLocalUI();
         }
@@ -97,7 +108,7 @@ public class Health : NetworkBehaviour
         hullMaxTMP = uipack.HullMaxTMP;
         shieldMaxTMP = uipack.ShieldMaxTMP;
         shieldRateTMP = uipack.ShieldRateTMP;
-        shieldIonizationSlider = uipack.ShieldIonizationSlider;
+        shieldDrainingSlider = uipack.ShieldIonizationSlider;
 
         UpdateUI(0, 0);
     }
@@ -114,29 +125,36 @@ public class Health : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        LiveOrDie();
-        ProcessIonization();
-        RechargeShield();
+        if (isServer)
+        {
+            LiveOrDie();
+            ProcessDraining();
+            RechargeShield();
+        }
 
     }
 
-    private void ProcessIonization()
+    private void ProcessDraining()
     { 
-        //Remove Ionization
-        ionizationLevel -= ionizationRemovalRate * Time.deltaTime;
-        ionizationLevel = Mathf.Clamp01(ionizationLevel);
+        //Remove Draining
+        drainAmount -= purificationRate * Time.deltaTime;
+        drainAmount = Mathf.Clamp(drainAmount, 0, shieldMax_normal);
 
-        //Process Ionization effects
-        float factor = (1 - ionizationLevel);
-        Debug.Log("factor: " + factor);
-        shieldMax_current = factor * shieldMax_normal;
-        shieldRate_current = factor * shieldRate_normal;
+        if (drainAmount > 0)
+        {
+            //TODO spawn a particle effect. Ensure it is seen on all clients
+        }
+
+        //Process Draining effects
+        drainFactor = 1- ((shieldMax_normal - drainAmount) / shieldMax_normal);
+        shieldMax_current = (1 - drainFactor) * shieldMax_normal;
+        shieldRate_current = (1 - drainFactor) * shieldRate_normal;
     }
 
     private void RechargeShield()
     {
         shieldCurrentLevel += shieldRate_current * Time.deltaTime;
-        shieldCurrentLevel = Mathf.Clamp(shieldCurrentLevel, 0, shieldMax_normal);
+        shieldCurrentLevel = Mathf.Clamp(shieldCurrentLevel, 0, shieldMax_current);
 
     }
 
@@ -259,7 +277,12 @@ public class Health : NetworkBehaviour
 
         if (damage.Ionization > 0)
         {
-            ionizationLevel += damage.Ionization;
+            es.ReceiveIonizationDamage(damage.Ionization);
+        }
+
+        if (damage.Draining > 0)
+        {
+            drainAmount += damage.Draining;
         }
 
         ModifyShieldLevel(damage.ShieldBonusDamage * -1, false);
@@ -302,6 +325,7 @@ public class Health : NetworkBehaviour
 
     private void UpdateUI(float oldValue, float newValue)
     {
+        if (!isPlayer) { return; }
         if (hullSlider)
         {
             hullSlider.maxValue = hullMax;
@@ -321,10 +345,15 @@ public class Health : NetworkBehaviour
             shieldMaxTMP.text = shieldMax_normal.ToString();
             shieldRateTMP.text = shieldRate_current.ToString();
         } 
-        if (shieldIonizationSlider)
+        if (shieldDrainingSlider)
         {
-            shieldIonizationSlider.value = ionizationLevel;
+            shieldDrainingSlider.value = drainFactor;
         }
+    }
+
+    public float GetPurificationRate()
+    {
+        return purificationRate;
     }
 
 }

@@ -9,34 +9,54 @@ using Mirror;
 public class EnergySource : NetworkBehaviour
 {
     //init
-    [SerializeField] Slider energySlider;
-    [SerializeField] TextMeshProUGUI energyMaxTMP;
-    [SerializeField] TextMeshProUGUI energyRateTMP;
+    Slider energySlider;
+    TextMeshProUGUI energyMaxTMP;
+    TextMeshProUGUI energyRateTMP;
+    Slider energyIonizationSlider;
 
     //param
 
     [SyncVar(hook = nameof(UpdateUI))]
-    [SerializeField] float energyMax;
+    [SerializeField] float energyMax_normal;
+
+    [SyncVar]
+    float energyMax_current;
+
+    [SyncVar]
+    [SerializeField] float energyRate_normal;
 
     [SyncVar(hook = nameof(UpdateUI))]
-    [SerializeField] float energyRate;
+    float energyRate_current;
+
+    [SyncVar(hook = nameof(UpdateUI))]
+    float ionizationAmount = 0;
+
+    float ionFactor = 0;
     //float megaPowerRegenPerSecond = 50.0f;
     //float maxTimeInBonusMode = 10;
 
     //hood
     [SyncVar(hook = nameof(UpdateUI))]
-    float energyCurrent;
+    float energyCurrentLevel;
+
+    float ionizationRemoveRate;
+    bool isPlayer = true;
 
     //bool isInMegaEnergyBonusMode = false;
     //float timeInBonusMode = 0;
     void Start()
     {
-        if (hasAuthority)
+        if (gameObject.tag != "Player")
+        {
+            isPlayer = false;
+        }
+        if (hasAuthority && isPlayer)
         {
             Debug.Log("tried to hook into UI");
             HookIntoLocalUI();
         }
-        energyCurrent = energyMax;
+        energyCurrentLevel = energyMax_normal;
+        ionizationRemoveRate = GetComponent<Health>().GetPurificationRate();
     }
 
     private void HookIntoLocalUI()
@@ -48,15 +68,18 @@ public class EnergySource : NetworkBehaviour
         energySlider = uipack.EnergySlider;
         energyMaxTMP = uipack.EnergyMaxTMP;
         energyRateTMP = uipack.EnergyRateTMP;
+        energyIonizationSlider = uipack.EnergyIonizationSlider;
         UpdateUI(0,0);
     }
 
     private void UpdateUI(float oldValue, float newValue)
     {
-        energySlider.maxValue = energyMax;
-        energySlider.value = energyCurrent;
-        energyMaxTMP.text = energyMax.ToString();
-        energyRateTMP.text = energyRate.ToString();
+        if (!isPlayer) { return; };
+        energySlider.maxValue = energyMax_normal;
+        energySlider.value = energyCurrentLevel;
+        energyMaxTMP.text = energyMax_normal.ToString();
+        energyRateTMP.text = energyRate_current.ToString();
+        energyIonizationSlider.value = ionFactor;
     }
 
     // Update is called once per frame
@@ -64,27 +87,43 @@ public class EnergySource : NetworkBehaviour
     {
         if (isServer)
         {
-            RegenPower();
-            energyCurrent = Mathf.Clamp(energyCurrent, 0, energyMax);
+            ProcessIonization();
+            RegenerateEnergy();
         }
     }
 
-    private void RegenPower()
+    private void ProcessIonization()
     {
-        if (energyCurrent < energyMax)
+        //Remove Ionization
+        ionizationAmount -= ionizationRemoveRate * Time.deltaTime;
+        ionizationAmount = Mathf.Clamp(ionizationAmount, 0, energyMax_normal);
+
+        if (ionizationAmount > 0)
         {
-            energyCurrent += energyRate * Time.deltaTime;
+            //TODO spawn/maintain a particle effect. Ensure it is seen on all clients
         }
+
+        //Process Ionization effects
+        ionFactor = 1 - ((energyMax_normal - ionizationAmount) / energyMax_normal);
+        energyMax_current = (1 - ionFactor) * energyMax_normal;
+        energyRate_current = (1 - ionFactor) * energyRate_normal;
+    }
+
+    private void RegenerateEnergy()
+    {
+        energyCurrentLevel += energyRate_current * Time.deltaTime;
+        energyCurrentLevel = Mathf.Clamp(energyCurrentLevel, 0, energyMax_current);
+
     }
 
     public float GetCurrentPowerLevel()
     {
-        return energyCurrent;
+        return energyCurrentLevel;
     }
 
     public bool CheckEnergy(float value)
     {
-        if (energyCurrent - value >= 0)
+        if (energyCurrentLevel - value >= 0)
         {
             return true;
         }
@@ -94,11 +133,11 @@ public class EnergySource : NetworkBehaviour
         }
     }
 
-    public bool CheckDrainEnergy(float value)
+    public bool CheckSpendEnergy(float value)
     {
-        if (energyCurrent - value >= 0)
+        if (energyCurrentLevel - value >= 0)
         {
-            energyCurrent -= value;
+            energyCurrentLevel -= value;
 
             return true;
         }
@@ -116,38 +155,38 @@ public class EnergySource : NetworkBehaviour
 
     public void ResetPowerLevel()
     {
-        energyCurrent = energyMax;
+        energyCurrentLevel = energyMax_normal;
     }
 
     public float GetMaxPower()
     {
-        return energyMax;
+        return energyMax_normal;
     }
 
     public float GetPowerRegen()
     {
-        return energyRate;
+        return energyRate_current;
     }
     public void SetMaxPower(float newMaxPower)
     {
-        energyMax = newMaxPower;
-        if (energySlider && energyMaxTMP)
-        {
-            energySlider.maxValue = energyMax;
-            energyMaxTMP.text = energyMax.ToString();
-            //Debug.Log("attempting to adjust max energy text");
-        }
+        energyMax_normal = newMaxPower;
+        UpdateUI(0,0);
     }
 
-    public void SetPowerRegen(float newRegen)
+    public void ReceiveIonizationDamage(float value)
     {
-        energyRate = newRegen;
-        if (energyRateTMP)
-        {
-            energyRateTMP.text = energyRate.ToString("F1");
-            //Debug.Log("attempting to adjust energy regen text");
-        }
+        ionizationAmount += value;
     }
+
+    //public void SetPowerRegen(float newRegen)
+    //{
+    //    energyRate_current = newRegen;
+    //    if (energyRateTMP)
+    //    {
+    //        energyRateTMP.text = energyRate_current.ToString("F1");
+    //        //Debug.Log("attempting to adjust energy regen text");
+    //    }
+    //}
 
     //public void SetMegaPowerBonusMode()
     //{

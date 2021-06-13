@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 5688006805919652889}
   - component: {fileID: 8591628276914722625}
   - component: {fileID: 7004619822151118274}
+  - component: {fileID: 4906215226377361269}
   m_Layer: 10
   m_Name: GenericMinion
   m_TagString: Untagged
@@ -182,16 +183,11 @@ MonoBehaviour:
   syncInterval: 0.1
   hurtAudioClip: []
   dieAudioClip: []
-  hullSlider: {fileID: 0}
-  shieldSlider: {fileID: 0}
-  hullMaxTMP: {fileID: 0}
-  shieldMaxTMP: {fileID: 0}
-  shieldRateTMP: {fileID: 0}
   isPlayer: 0
   hullMax: 1
-  shieldMax: 0
-  shieldRegenPerSecond: 0
-  countsTowardsScore: 0
+  shieldMax_normal: 1
+  shieldRate_normal: 0
+  purificationRate: 0
   isDying: 0
 --- !u!114 &5688006805919652889
 MonoBehaviour:
@@ -234,10 +230,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67f59efd87d25a74eacfd851e90e8ee0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
   scrapPrefab: {fileID: 4675570019543552568, guid: bd60087241d73ba40b5ec647fdfaab32, type: 3}
   asteroidPrefabs: []
   numberOfScraps: 1
   numberOfAsteroids: 0
+--- !u!114 &4906215226377361269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3157724171066369873}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c42a9afb5396da14dadc1757bbbd1cb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  energyMax_normal: 1
+  energyRate_normal: 1
 --- !u!1 &6340048504810831814
 GameObject:
   m_ObjectHideFlags: 0

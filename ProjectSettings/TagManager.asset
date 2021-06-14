@@ -8,6 +8,7 @@ TagManager:
   - DebugText
   - SSPD
   - Persephone
+  - WarpPortal
   layers:
   - Default
   - TransparentFX

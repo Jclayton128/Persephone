@@ -9,6 +9,7 @@ public class UnitTracker : NetworkBehaviour
     [SerializeField] int currentMinionCount;
     LevelManager lm;
 
+    
     public override void OnStartServer()
     {
         lm = GetComponent<LevelManager>();
@@ -24,13 +25,23 @@ public class UnitTracker : NetworkBehaviour
     [Server]
     public void RemoveMinion(GameObject deadMinion)
     {
-        Debug.Log("remove minion called");
         currentMinions.Remove(deadMinion);
         currentMinionCount = currentMinions.Count;
         if (currentMinionCount == 0)
         {
-            lm.AdvanceToNextLevel();
+            // TODO Speed up the Pers since there aren't any enemies left?
         }
+    }
+
+    [Server]
+    public void DestroyAllMinions()
+    {
+        GameObject[] minionArray = currentMinions.ToArray();
+        for (int i = minionArray.Length-1; i >= 0; i--)
+        {
+            Destroy(minionArray[i]);
+        }
+        currentMinions.Clear();
     }
 
 

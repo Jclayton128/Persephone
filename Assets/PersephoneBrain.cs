@@ -11,7 +11,9 @@ public class PersephoneBrain : NetworkBehaviour
     //init
     [SerializeField] Slider healthSlider;
     [SerializeField] TextMeshProUGUI statusTMP;
+    SpriteRenderer[] srs;
     Rigidbody2D rb;
+    LevelManager lm;
 
     //param
     float TimeRequiredToWarpIn;
@@ -19,10 +21,13 @@ public class PersephoneBrain : NetworkBehaviour
     string persCountdownText = "Arrival in: ";
 
     float speed_WarpingIn = 30f;
-    float speed_InSystem = 3f;
+    float speed_InSystem = 1f;
     float turnRate = 45f;
     float minTravelDist = 16f;
     float closeEnoughDist = 3f;
+    float timeRequiredForWarpChargeUp = 10f;
+    float drainAmount = 0;  // Slows Pers' warp engine charge time, which increases her vulnerability
+    float ionizationAmount = 0; // Slows Pers' move speed, which increases her vulnerability
 
     //hood
 
@@ -37,17 +42,20 @@ public class PersephoneBrain : NetworkBehaviour
     float speed_Current;
     Vector3 positionOfWarpPortal;
     float distToWarpPortal;
+    float timeLeftForWarpCharging = 99;
 
 
     void Start()
     {
+        rb = GetComponent<Rigidbody2D>();
+        lm = FindObjectOfType<LevelManager>();
+
         if (isClient)
         {
             UIManager uim = FindObjectOfType<UIManager>();
             healthSlider = uim.GetPersephoneHealthSlider();
             statusTMP = uim.GetPersephoneStatusTMP();
-            rb = GetComponent<Rigidbody2D>();
-
+            srs = GetComponentsInChildren<SpriteRenderer>();
         }
     }
 
@@ -56,27 +64,38 @@ public class PersephoneBrain : NetworkBehaviour
     {
         if (isClient)
         {
-            HandleHealthBarVisibility();
+            HandleVisibility();
         }
 
         if (isServer && isStarted)
         {
             HandleArrivalTimer();
             FaceWarpPortal();
+            distToWarpPortal = (transform.position - positionOfWarpPortal).magnitude;
             MoveTowardsWarpPortal();
+            ChargeWarpEngineIfClosedEnough();
         }
 
     }
 
-    private void HandleHealthBarVisibility()
+    private void HandleVisibility()
     {
         if (!isInArena)
         {
             healthSlider.gameObject.SetActive(false);
+            foreach(SpriteRenderer sr in srs)
+            {
+                sr.enabled = false;
+            }
+
         }
         else
         {
             healthSlider.gameObject.SetActive(true);
+            foreach (SpriteRenderer sr in srs)
+            {
+                sr.enabled = true;
+            }
         }
     }
 
@@ -101,8 +120,10 @@ public class PersephoneBrain : NetworkBehaviour
         // TODO play an warp-in sound
         // Update StatusText
         // Locate Position of WarpPortal;
-        // Insta-rotate to face locationOfWarpPortal
+        timeLeftForWarpCharging = timeRequiredForWarpChargeUp;
+        gameObject.layer = 0;
         speed_Current = speed_WarpingIn;
+        statusText = "In Transit";
     }
 
     private void FaceWarpPortal()
@@ -122,17 +143,36 @@ public class PersephoneBrain : NetworkBehaviour
 
     private void AdjustSpeedBasedOnDistanceToWarpPortal()
     {
-        distToWarpPortal = (transform.position - positionOfWarpPortal).magnitude;
-
         if (distToWarpPortal <= minTravelDist)
         {
+            gameObject.layer = 8;
             float factor = Mathf.Clamp01(distToWarpPortal / closeEnoughDist);
             speed_Current = speed_InSystem * factor;
-        }
-
-        Debug.Log($"current speed: {speed_Current} at distance: {distToWarpPortal}");
-        
+        }      
     }
+    private void ChargeWarpEngineIfClosedEnough()
+    {
+        if (distToWarpPortal < closeEnoughDist)
+        {
+            timeLeftForWarpCharging -= Time.deltaTime;
+            int round = Mathf.RoundToInt(timeLeftForWarpCharging);
+            statusText = "Time To Warp: " + round;
+        }
+        if (timeLeftForWarpCharging <= 0 && isInArena)
+        {
+            WarpOut();
+        }
+    }
+
+    private void WarpOut()
+    {
+        transform.position = startingSpot;
+        lm.AdvanceToNextLevel();
+        gameObject.layer = 0;
+        isInArena = false;
+
+    }
+
 
 
     #region Public Methods

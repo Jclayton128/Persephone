@@ -92,12 +92,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5904163103716560001}
   - component: {fileID: 5950632253272247945}
-  - component: {fileID: 175193551509567251}
   - component: {fileID: 2985852380958085449}
   - component: {fileID: 5156996213916725621}
   - component: {fileID: 356606832852358336}
   - component: {fileID: 3669389023936005043}
   - component: {fileID: 2640863181522011322}
+  - component: {fileID: 7275082862253601120}
   m_Layer: 0
   m_Name: Persephone
   m_TagString: Persephone
@@ -134,7 +134,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 20
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -143,22 +143,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &175193551509567251
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1647500759589659975}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.5, y: 1}
-  m_Direction: 0
 --- !u!114 &2985852380958085449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,7 +157,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  startingSpot: {x: 0, y: 0, z: 0}
+  healthSlider: {fileID: 0}
+  statusTMP: {fileID: 0}
+  startingSpot: {x: -20, y: 0, z: 0}
+  isInArena: 0
 --- !u!212 &5156996213916725621
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -285,6 +272,42 @@ MonoBehaviour:
   interpolateScale: 1
   syncScale: 1
   target: {fileID: 7315411222629329840}
+--- !u!60 &7275082862253601120
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1647500759589659975}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.36, y: 6.3}
+    newSize: {x: 1.18, y: 3.15}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.62809926, y: -3.141939}
+      - {x: 0.7382059, y: -2.0974436}
+      - {x: 1.18, y: -1.9699999}
+      - {x: 1.1241502, y: 0.7443203}
+      - {x: 0.4118095, y: 2.805496}
+      - {x: 0.040017933, y: 3.1739962}
+      - {x: -0.35999998, y: 2.85}
+      - {x: -1.14, y: 0.72999996}
+      - {x: -1.2119952, y: -1.98592}
+      - {x: -0.71999997, y: -2.1043136}
+      - {x: -0.64, y: -3.1499999}
 --- !u!1 &5378772104406862925
 GameObject:
   m_ObjectHideFlags: 0

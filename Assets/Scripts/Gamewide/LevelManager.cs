@@ -7,13 +7,16 @@ using TMPro;
 
 public class LevelManager : NetworkBehaviour
 {
-    [SyncVar(hook = nameof(UpdateLevelCountUI))]
-    int currentLevelCount = 0;
     MinionMaker mm;
+    UnitTracker ut;
+
     [SerializeField] TextMeshProUGUI levelCounterTMP = null;
     [SerializeField] List<Level> levelList = null;
-    [SerializeField] static Level currentLevel;
-    [SerializeField] PersephoneBrain pb;
+    static Level currentLevel;
+    PersephoneBrain pb;
+
+    [SyncVar(hook = nameof(UpdateLevelCountUI))]
+    int currentLevelCount = 0;
 
     float timeUntilPersephoneArrives = 5f;
 
@@ -29,6 +32,14 @@ public class LevelManager : NetworkBehaviour
     {
         base.OnStartServer();
         mm = GetComponent<MinionMaker>();
+        ut = GetComponent<UnitTracker>();
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        GameObject warpPortal = GameObject.FindGameObjectWithTag("WarpPortal");
+        warpPortal.GetComponent<Rigidbody2D>().angularVelocity = 10f;
     }
 
     private void Start()
@@ -60,6 +71,8 @@ public class LevelManager : NetworkBehaviour
         {
             Destroy(weapon.transform.gameObject);
         }
+        ut.DestroyAllMinions();
+        
     }
 
     private void RemoveCurrentLevelFromList()

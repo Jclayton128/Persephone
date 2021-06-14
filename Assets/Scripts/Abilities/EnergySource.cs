@@ -39,7 +39,7 @@ public class EnergySource : NetworkBehaviour
     [SyncVar(hook = nameof(UpdateUI))]
     float energyCurrentLevel;
 
-    float ionizationRemoveRate;
+    [SerializeField] float ionizationRemoveRate;
     bool isPlayer = true;
 
     //bool isInMegaEnergyBonusMode = false;

@@ -46,8 +46,8 @@ public class Health : NetworkBehaviour
     [SyncVar(hook = nameof(UpdateUI))]
     float shieldRate_current; // What the shield Regen can be accounting for Ionization, and what shows on UI
 
-    [SyncVar(hook = nameof(UpdateUI))]
-    [SerializeField] float purificationRate;  // points per second. Ionization and Draining scales from 0 to max Energy/Shield level;
+    [SyncVar]
+    [SerializeField] float purificationRate = 0.3f;  // points per second. Ionization and Draining scales from 0 to max Energy/Shield level;
 
 
     float dragAtDeath = 30f;

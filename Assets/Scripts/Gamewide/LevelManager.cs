@@ -13,6 +13,9 @@ public class LevelManager : NetworkBehaviour
     [SerializeField] TextMeshProUGUI levelCounterTMP = null;
     [SerializeField] List<Level> levelList = null;
     [SerializeField] static Level currentLevel;
+    [SerializeField] PersephoneBrain pb;
+
+    float timeUntilPersephoneArrives = 5f;
 
     private void Awake()
     {
@@ -28,6 +31,11 @@ public class LevelManager : NetworkBehaviour
         mm = GetComponent<MinionMaker>();
     }
 
+    private void Start()
+    {
+        pb = GameObject.FindGameObjectWithTag("Persephone").GetComponent<PersephoneBrain>();
+    }
+
     public int GetCurrentLevelCount()
     {
         return currentLevelCount;
@@ -35,12 +43,14 @@ public class LevelManager : NetworkBehaviour
 
     public void AdvanceToNextLevel()
     {
+        StartPersephone(); // Only really needed to start the first level
         ClearOutOldLevel();
         RemoveCurrentLevelFromList();
         ChooseNextLevel();
         IncrementLevelCount();
         ResetPlayerPositions();
         SpawnNextLevelMinions();
+        SetTimeUntilPersephoneArrives();
     }
 
     private void ClearOutOldLevel()
@@ -72,6 +82,11 @@ public class LevelManager : NetworkBehaviour
         }
     }
 
+    private void IncrementLevelCount()
+    {
+        currentLevelCount++;
+    }
+
     private void SpawnNextLevelMinions()
     {
         for (int i = currentLevelCount; i > 0; i--)
@@ -81,11 +96,15 @@ public class LevelManager : NetworkBehaviour
         }
     }
 
-    private void IncrementLevelCount()
+    private void StartPersephone()
     {
-        currentLevelCount++;
+        pb.StartPersephone();
     }
 
+    private void SetTimeUntilPersephoneArrives()
+    {
+        pb.SetTimerUponLevelStart(timeUntilPersephoneArrives);
+    }
 
     private void UpdateLevelCountUI(int oldValue, int newValue)
     {

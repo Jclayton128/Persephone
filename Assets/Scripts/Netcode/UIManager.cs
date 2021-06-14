@@ -26,6 +26,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] Image scrapBar = null;
     [SerializeField] TextMeshProUGUI upgradePointsTMP = null;
 
+    [SerializeField] Slider persephoneHealth = null;
+    [SerializeField] TextMeshProUGUI persephoneStatusTMP = null;
+
 
     public void SetLocalPlayerForUI(ClientInstance ci)
     {
@@ -60,5 +63,14 @@ public class UIManager : MonoBehaviour
             Debug.Log("No UI Pack for you!");
             return null;
         }
+    }
+
+    public Slider GetPersephoneHealthSlider()
+    {
+        return persephoneHealth;
+    }
+    public TextMeshProUGUI GetPersephoneStatusTMP()
+    {
+        return persephoneStatusTMP;
     }
 }

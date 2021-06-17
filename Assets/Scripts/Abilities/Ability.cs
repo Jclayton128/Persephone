@@ -57,6 +57,11 @@ public abstract class Ability : NetworkBehaviour
     }
     protected abstract void MouseClickUpEffect();
 
+    public int GetUnlockLevel()
+    {
+        return unlockLevel;
+    }
+
 
 
 

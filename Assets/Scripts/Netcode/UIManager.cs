@@ -93,7 +93,6 @@ public class UIManager : MonoBehaviour
             {
                 secondaryAbilityPlaceholders[i-1].enabled = false;
             }
-
             return iconsToSend;
         }
         else

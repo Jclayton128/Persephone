@@ -11,7 +11,8 @@ public class UpgradeManager : NetworkBehaviour
     [SerializeField] Image scrapBar;
     [SerializeField] TextMeshProUGUI upgradePointsAvailableTMP;
 
-    int currentUpgradeLevel = 1;
+    public int CurrentLevel = 1;
+    //public int CurrentLevel { get; private set; } = 1;
     int baseUpgradeCost = 10; //This is the scrap required for the first upgrade.
     int currentUpgradeCost; //This is calculated by multiplying the current upgrade level by base cost. Each upgrade costs more than last.
 
@@ -53,13 +54,13 @@ public class UpgradeManager : NetworkBehaviour
     public void GainScrap(int amount)
     {
         if (!isServer) { return; }
-        currentUpgradeCost = baseUpgradeCost * currentUpgradeLevel;
+        currentUpgradeCost = baseUpgradeCost * CurrentLevel;
         currentScrap += amount;
 
         if (currentScrap >= currentUpgradeCost)
         {
             Debug.Log("more scrap than required to level up");
-            currentUpgradeLevel++;
+            CurrentLevel++;
             currentUpgradePoints++;
             currentScrap = 0;
             scrapBarFactor = 0;

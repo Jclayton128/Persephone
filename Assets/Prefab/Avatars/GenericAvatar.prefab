@@ -389,3 +389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd2ea85f79f9394439c51e985c990469, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  lockedAbilitySprite: {fileID: 21300000, guid: faa6e913a1cffc04b8dbbba1123dbf4b, type: 3}

@@ -8,22 +8,34 @@ using UnityEngine.UI;
 public class AbilityManager : NetworkBehaviour
 {
     Image[] abilityIcons;
+    UpgradeManager um;
+    [SerializeField] AudioClip invalidSelectionAudioClip = null;
+    [SerializeField] Sprite lockedAbilitySprite = null;
+    Ability_Dummy dummyAbility;
 
     List<Ability> secondaryAbilities = new List<Ability>();
+    List<Ability> unlockedSecondaryAbilities = new List<Ability>();
     public Ability SelectedSecondaryAbility { get; private set; }
     public Ability PrimaryAbility { get; private set; }
 
-    int selectedSecondaryAbilityIndex = 0;
-    Dictionary<int, int> unlockLevels = new Dictionary<int, int>();
+    int selectedUnlockedSecondaryAbilityIndex = 0;
 
     private void Start()
     {
+        um = GetComponent<UpgradeManager>();
+        
         PrepAllAbilities();
+        CheckUnlockNewAbility();
+
         if (hasAuthority)
         {
             HookIntoLocalUI(secondaryAbilities.Count + 1);
+            DarkenAllSecondaryAbilities();
+           
         }
+
     }
+
 
     private void PrepAllAbilities()
     {
@@ -40,8 +52,10 @@ public class AbilityManager : NetworkBehaviour
                 secondaryAbilities.Add(allAbilities[i]);
             }
         }
-        selectedSecondaryAbilityIndex = 0;
-        SelectedSecondaryAbility = secondaryAbilities[selectedSecondaryAbilityIndex];
+        selectedUnlockedSecondaryAbilityIndex = -1;
+        dummyAbility = gameObject.AddComponent<Ability_Dummy>();
+        dummyAbility.dummyAbilityAttemptedAudioClip = invalidSelectionAudioClip;
+        SelectedSecondaryAbility = dummyAbility;
 
     }
     private void HookIntoLocalUI(int numberOfAbilitiesToPull)
@@ -53,7 +67,15 @@ public class AbilityManager : NetworkBehaviour
         abilityIcons[0].sprite = PrimaryAbility.AbilityIcon;
         for(int i = 1; i < numberOfAbilitiesToPull; i++)
         {
-            abilityIcons[i].sprite = secondaryAbilities[i - 1].AbilityIcon;
+            if (secondaryAbilities[i - 1].GetUnlockLevel() <= um.CurrentLevel)
+            {
+                abilityIcons[i].sprite = secondaryAbilities[i - 1].AbilityIcon;
+            }
+            else
+            {
+                abilityIcons[i].sprite = lockedAbilitySprite;
+            }
+
         }
         
     }
@@ -66,16 +88,87 @@ public class AbilityManager : NetworkBehaviour
 
     public void ScrollUpThruAbilities()
     {
-        // THis should check that the other abilities are unlocked by level.
+        CheckUnlockNewAbility();
+        if (selectedUnlockedSecondaryAbilityIndex == -1)
+        {
+            Debug.Log("still no unlocked abilities");         
+        }
+
+        else
+        {
+            selectedUnlockedSecondaryAbilityIndex++;
+            if (selectedUnlockedSecondaryAbilityIndex > unlockedSecondaryAbilities.Count - 1)
+            {
+                selectedUnlockedSecondaryAbilityIndex = 0;
+            }
+        }
+
+        SelectedSecondaryAbility = unlockedSecondaryAbilities[selectedUnlockedSecondaryAbilityIndex];
+        UpdateSelectionUI();
     }
+
+
 
     public void ScrollDownThroughAbilities()
     {
+        CheckUnlockNewAbility();
+        if (selectedUnlockedSecondaryAbilityIndex == -1)
+        {
+            Debug.Log("still no unlocked abilities");
+        }
+        else
+        {
+            selectedUnlockedSecondaryAbilityIndex--;
+            if (selectedUnlockedSecondaryAbilityIndex <= 0)
+            {
+                selectedUnlockedSecondaryAbilityIndex = unlockedSecondaryAbilities.Count - 1;
+            }
+        }
+
+        SelectedSecondaryAbility = unlockedSecondaryAbilities[selectedUnlockedSecondaryAbilityIndex];
+        UpdateSelectionUI();
 
     }
 
-    public void CheckUnlockNewAbility(int newLevel)
+    public void CheckUnlockNewAbility()
     {
-        // use this to unlock new abilities upon gaining a level.
+        foreach (Ability ability in secondaryAbilities)
+        {
+            if (ability.GetUnlockLevel() <= um.CurrentLevel)
+            {
+                int secondaryToUnlock = secondaryAbilities.IndexOf(ability);
+                //if (isClient)
+                //{
+                //    abilityIcons[secondaryToUnlock + 1].sprite = ability.AbilityIcon;
+                //}
+                unlockedSecondaryAbilities.Add(ability);
+
+                if (selectedUnlockedSecondaryAbilityIndex == -1)
+                {
+                    selectedUnlockedSecondaryAbilityIndex = 0;
+                }
+            }
+            
+        }
+
+    }
+
+    private void UpdateSelectionUI()
+    {
+        DarkenAllSecondaryAbilities();
+        HighlightSelectedUIAbility();
+    }
+
+    private void DarkenAllSecondaryAbilities()
+    {
+        for (int i = 1; i < abilityIcons.Length; i++)
+        {
+            abilityIcons[i].color = Color.grey;
+        }
+    }
+
+    private void HighlightSelectedUIAbility()
+    {
+        abilityIcons[selectedUnlockedSecondaryAbilityIndex + 1].color = Color.white;
     }
 }

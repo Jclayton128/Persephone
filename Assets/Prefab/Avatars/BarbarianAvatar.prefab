@@ -1,12 +1,39 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-409827538814987371
+--- !u!114 &7235979305216916552
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2887084537579551194}
+  m_GameObject: {fileID: 831018614288581221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad88432a9ccffb847ab9d768432ff385, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  AbilityIcon: {fileID: 21300000, guid: 1f4dd0a9b423f9444898d3d240c44ea8, type: 3}
+  unlockLevel: 0
+  abilityPrefabs: []
+  IsPrimaryAbility: 0
+  timeBetweenShots: 0
+  weaponLifetime: 0
+  weaponSpeed: 0
+  hullDamage: 0
+  shieldDamage: 0
+  ionDamage: 0
+  costPerShot: 0
+  insufficientEnergySound: {fileID: 0}
+  deployedSprite: {fileID: 21300000, guid: 06e85c583abb6424d86aa78feb873349, type: 3}
+--- !u!114 &4958164154846462901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 831018614288581221}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16eb98a7a8f272845b8783636422b6df, type: 3}
@@ -14,55 +41,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  abilityPrefabs:
-  - {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
+  AbilityIcon: {fileID: 21300000, guid: 53c2bc68ba0abbd439507663a38f6cc6, type: 3}
+  unlockLevel: 0
+  abilityPrefabs: []
   IsPrimaryAbility: 1
-  timeBetweenShots: 0.5
-  weaponLifetime: 1
-  weaponSpeed: 10
-  hullDamage: 1
-  shieldDamage: 1
-  ionDamage: 1
-  costPerShot: 2
+  timeBetweenShots: 0
+  weaponLifetime: 0
+  weaponSpeed: 0
+  hullDamage: 0
+  shieldDamage: 0
+  ionDamage: 0
+  costPerShot: 0
   insufficientEnergySound: {fileID: 0}
---- !u!1001 &6910583446029087813
+--- !u!1001 &8971152960895127546
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
-      propertyPath: shieldMax
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
-      propertyPath: shieldMax_current
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
-      propertyPath: shieldRate_current
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6441007859182316285, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
-      value: 0.8
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6441007859182316285, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.y
-      value: 0.84
+      value: 1.08
       objectReference: {fileID: 0}
-    - target: {fileID: 8322484285054519442, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
-      propertyPath: energyMax
-      value: 10
+    - target: {fileID: 6441007859182316285, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8322484285054519442, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
-      propertyPath: energyRate
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8322484285054519442, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
-      propertyPath: energyRate_normal
-      value: 2
+    - target: {fileID: 6441007859182316285, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 1.08
       objectReference: {fileID: 0}
     - target: {fileID: 8644570496936021376, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_AssetId
@@ -112,34 +124,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8644570496936021379, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 98fce1993854b514e84047ddcc4ebde3, type: 3}
+      objectReference: {fileID: 21300000, guid: d8d9753941a79904ab0353ce45943b9a, type: 3}
+    - target: {fileID: 8644570496936021379, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021379, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_Size.y
+      value: 1.08
+      objectReference: {fileID: 0}
     - target: {fileID: 8644570496936021379, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8644570496936021407, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_Name
-      value: FighterAvatar
-      objectReference: {fileID: 0}
-    - target: {fileID: 8644570496936021407, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
-      propertyPath: m_TagString
-      value: Player
+      value: BarbarianAvatar
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
---- !u!1 &2887084537579551194 stripped
+--- !u!1 &831018614288581221 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8644570496936021407, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
-  m_PrefabInstance: {fileID: 6910583446029087813}
+  m_PrefabInstance: {fileID: 8971152960895127546}
   m_PrefabAsset: {fileID: 0}

@@ -89,6 +89,7 @@ GameObject:
   - component: {fileID: 8322484285054519442}
   - component: {fileID: -1544245098169655685}
   - component: {fileID: 5508274861021996712}
+  - component: {fileID: -7943953684487488827}
   m_Layer: 8
   m_Name: GenericAvatar
   m_TagString: Player
@@ -320,7 +321,6 @@ MonoBehaviour:
   syncInterval: 0.1
   hurtAudioClip: []
   dieAudioClip: []
-  isPlayer: 0
   hullMax: 4
   shieldMax_normal: 5
   shieldRate_normal: 0.5
@@ -342,6 +342,7 @@ MonoBehaviour:
   syncInterval: 0.1
   energyMax_normal: 10
   energyRate_normal: 1
+  ionizationRemoveRate: 0
 --- !u!114 &-1544245098169655685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -376,3 +377,15 @@ MonoBehaviour:
   syncInterval: 0.1
   scrapBar: {fileID: 0}
   upgradePointsAvailableTMP: {fileID: 0}
+--- !u!114 &-7943953684487488827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644570496936021407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd2ea85f79f9394439c51e985c990469, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

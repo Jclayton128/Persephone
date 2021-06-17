@@ -6,6 +6,8 @@ using UnityEngine;
 
 public abstract class Ability : NetworkBehaviour
 {
+    [SerializeField] public Sprite AbilityIcon = null;
+    [SerializeField] int unlockLevel;
     [SerializeField] protected GameObject[] abilityPrefabs = null;
 
     [SerializeField] public bool IsPrimaryAbility;
@@ -33,7 +35,6 @@ public abstract class Ability : NetworkBehaviour
 
     protected virtual void Start()
     {
-
         es = GetComponent<EnergySource>();
     }
 

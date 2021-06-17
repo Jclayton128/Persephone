@@ -29,6 +29,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] Slider persephoneHealth = null;
     [SerializeField] TextMeshProUGUI persephoneStatusTMP = null;
 
+    [SerializeField] Image primaryAbilityPlaceholder = null;
+    [SerializeField] Image[] secondaryAbilityPlaceholders = null;
+
 
     public void SetLocalPlayerForUI(ClientInstance ci)
     {
@@ -72,5 +75,30 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI GetPersephoneStatusTMP()
     {
         return persephoneStatusTMP;
+    }
+
+    public Image[] GetAbilityIcons(ClientInstance askingCI , int numberOfIconsToReturn)
+    {
+        if (askingCI == playerAtThisComputer)
+        {
+            Image[] iconsToSend = new Image[numberOfIconsToReturn];
+
+            iconsToSend[0] = primaryAbilityPlaceholder;
+
+            for (int i = 1; i < numberOfIconsToReturn; i++)
+            {
+                iconsToSend[i] = secondaryAbilityPlaceholders[i - 1];
+            }
+            for (int i = numberOfIconsToReturn; i <= secondaryAbilityPlaceholders.Length; i++)
+            {
+                secondaryAbilityPlaceholders[i-1].enabled = false;
+            }
+
+            return iconsToSend;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

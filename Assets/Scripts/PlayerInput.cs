@@ -12,9 +12,7 @@ public class PlayerInput : NetworkBehaviour
     ClientInstance playerAtThisComputer;
     IFF iff;
     Rigidbody2D rb;
-    GadgetDriver gd;
-    Ability priAbility;
-    Ability secAbility;
+    AbilityManager am;
 
     //param
     [SerializeField] float accelRate_normal;
@@ -33,34 +31,16 @@ public class PlayerInput : NetworkBehaviour
 
     void Start()
     {
-        HookIntoLocalUI();
+
         iff = GetComponent<IFF>();
         rb = GetComponent<Rigidbody2D>();
-        gd = GetComponent<GadgetDriver>();
-        SetupAbilites();
-
-    }
-
-    private void SetupAbilites()
-    {
-        Ability[] abilities = GetComponents<Ability>();
-        foreach (Ability ab in abilities)
-        {
-            if (ab.IsPrimaryAbility)
-            {
-                priAbility = ab;
-            }
-            else
-            {
-                secAbility = ab;
-            }
-        }
+        am = GetComponent<AbilityManager>();
+        HookIntoLocalUI();
     }
 
     private void HookIntoLocalUI()
     {
         playerAtThisComputer = ClientInstance.ReturnClientInstance();
-        //uim = FindObjectOfType<UIManager>();
     }
 
 
@@ -95,11 +75,11 @@ public class PlayerInput : NetworkBehaviour
     {
         if (Input.mouseScrollDelta.y * scrollSensitivity < 0)
         {
-            gd.IncrementGadgetSelection();
+            am.ScrollUpThruAbilities();
         }
         if (Input.mouseScrollDelta.y * scrollSensitivity > 0)
         {
-            gd.DecrementGadgetSelection();
+            am.ScrollUpThruAbilities();
         }
     }
 
@@ -107,21 +87,21 @@ public class PlayerInput : NetworkBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            priAbility.MouseClickDownValidate();
+            am.PrimaryAbility.MouseClickDownValidate();
             //gd.primaryGadget.OnClickDown(mousePos, transform);
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            priAbility.MouseClickUpValidate();
+            am.PrimaryAbility.MouseClickUpValidate();
             //gd.primaryGadget.OnClickUp(mousePos);
         }
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            secAbility.MouseClickDownValidate();
+            am.SelectedSecondaryAbility.MouseClickDownValidate();
         }
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
-            secAbility.MouseClickUpValidate();
+            am.SelectedSecondaryAbility.MouseClickUpValidate();
         }
     }
 

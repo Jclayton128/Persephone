@@ -32,9 +32,6 @@ public class PersephoneBrain : NetworkBehaviour
 
     //hood
 
-    [SyncVar(hook = nameof(UpdateHealthUI))]
-    float currentHealth;
-
     [SyncVar(hook = nameof(UpdateStatusUI))]
     string statusText;
 
@@ -54,6 +51,8 @@ public class PersephoneBrain : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         lm = FindObjectOfType<LevelManager>();
+        RegisterPrefabs();
+
 
         if (isClient)
         {
@@ -62,6 +61,12 @@ public class PersephoneBrain : NetworkBehaviour
             statusTMP = uim.GetPersephoneStatusTMP();
             srs = GetComponentsInChildren<SpriteRenderer>();
         }
+    }
+
+    private void RegisterPrefabs()
+    {
+        NetworkClient.RegisterPrefab(wreckerDronePrefab);
+
     }
 
     // Update is called once per frame
@@ -79,7 +84,6 @@ public class PersephoneBrain : NetworkBehaviour
             distToWarpPortal = (transform.position - positionOfWarpPortal).magnitude;
             MoveTowardsWarpPortal();
             ChargeWarpEngineIfClosedEnough();
-            FixUpDisabledPlayers();
         }
 
     }
@@ -179,10 +183,29 @@ public class PersephoneBrain : NetworkBehaviour
     }
 
     #region Player Repairs
-    private void FixUpDisabledPlayers()
+
+    [Server]
+    public void AddDisabledPlayer(GameObject player)
     {
+        disabledPlayers.Add(player);
+        float repairCost = player.GetComponent<Health>().GetMaxHull();
+        FixUpDisabledPlayer(player);
 
     }
+
+    [Server]
+    public void RemoveDisabledPlayer(GameObject player)
+    {
+        disabledPlayers.Remove(player);
+    }
+
+    private void FixUpDisabledPlayer(GameObject player)
+    {
+        GameObject newDrone = Instantiate(wreckerDronePrefab, transform.position, transform.rotation) as GameObject;
+        newDrone.GetComponent<WreckerDroneBrain>().SetRepairTarget(player);
+        NetworkServer.Spawn(newDrone);
+    }
+
 
     #endregion
 
@@ -202,11 +225,6 @@ public class PersephoneBrain : NetworkBehaviour
     #endregion
 
     #region UI
-    private void UpdateHealthUI(float v1, float v2)
-    {
-        healthSlider.value = currentHealth;
-    }
-
     private void UpdateStatusUI(string v1, string v2)
     {
         statusTMP.text = statusText;

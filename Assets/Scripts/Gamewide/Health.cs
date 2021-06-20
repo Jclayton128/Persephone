@@ -15,6 +15,7 @@ public class Health : NetworkBehaviour
 
     EnergySource es;
     PlayerInput pi;
+    PersephoneBrain pb;
 
     UIManager uim;
     Slider hullSlider;
@@ -99,6 +100,7 @@ public class Health : NetworkBehaviour
         {
             pi = GetComponent<PlayerInput>();
             HookIntoLocalUI();
+            pb = FindObjectOfType<PersephoneBrain>();
         }
     }
 
@@ -224,7 +226,12 @@ public class Health : NetworkBehaviour
             BroadcastMessage("DyingActions", ownerOfLastDamageDealerToBeHitBy, SendMessageOptions.DontRequireReceiver);
             if (isPlayer)
             {
-                //AudioSource.PlayClipAtPoint(chosenDieSound, transform.position);  //TODO play a powerdown disabled sound          
+                if (isServer)
+                {
+                    pb.AddDisabledPlayer(gameObject);
+                }
+                //AudioSource.PlayClipAtPoint(chosenDieSound, transform.position);  //TODO play a powerdown disabled sound     
+                //TODO some kind of UI feedback to signal being disabled. Hud Cracks?
 
             }
             if (chosenDieSound && !isPlayer)

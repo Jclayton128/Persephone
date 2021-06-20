@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 8718589304910423886}
   - component: {fileID: 8718589304910423889}
   - component: {fileID: 9214899434392558914}
+  - component: {fileID: 3435027887243644100}
   m_Layer: 16
   m_Name: PersWreckerDrone
   m_TagString: Untagged
@@ -202,3 +203,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fab6207a93dd8484cb55de2867fa63fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3435027887243644100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8718589304910423880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58e52d6e2c40003489dddc3803d2a98d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  hurtAudioClip: []
+  dieAudioClip: []
+  hullMax: 1
+  shieldMax_normal: 0
+  shieldRate_normal: 0
+  purificationRate: 0.3

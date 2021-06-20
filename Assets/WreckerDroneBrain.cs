@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class WreckerDroneBrain : MonoBehaviour
 {
+    //init
+    GameObject repairTarget;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        Debug.Log("here I am, ready to fix things");
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void SetRepairTarget(GameObject target)
+    {
+        repairTarget = target;
     }
 }

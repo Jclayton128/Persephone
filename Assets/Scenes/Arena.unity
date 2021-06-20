@@ -9189,6 +9189,10 @@ PrefabInstance:
       propertyPath: startingSpot.x
       value: -25
       objectReference: {fileID: 0}
+    - target: {fileID: 2985852380958085449, guid: 22bde83cf5a51264e9db4eab4bd3145b, type: 3}
+      propertyPath: wreckerDronePrefab
+      value: 
+      objectReference: {fileID: 8718589304910423880, guid: 5ce537c319e1c1d4caef93901c3d5590, type: 3}
     - target: {fileID: 5904163103716560001, guid: 22bde83cf5a51264e9db4eab4bd3145b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -21.105293

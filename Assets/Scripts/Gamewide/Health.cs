@@ -14,6 +14,7 @@ public class Health : NetworkBehaviour
     [SerializeField] AudioClip[] dieAudioClip = null;
 
     EnergySource es;
+    PlayerInput pi;
 
     UIManager uim;
     Slider hullSlider;
@@ -50,12 +51,13 @@ public class Health : NetworkBehaviour
     [SerializeField] float purificationRate = 0.3f;  // points per second. Ionization and Draining scales from 0 to max Energy/Shield level;
 
 
-    float dragAtDeath = 30f;
+    float dragAtDeath = 3f;
+    float angularDragAtDeath = 0.4f;
 
 
     #region Init: current state
     //hood
-    [SerializeField] bool isDying = false;
+    bool isDying = false;
 
     [SyncVar(hook = nameof(UpdateUI))]
     float shieldCurrentLevel;
@@ -64,9 +66,9 @@ public class Health : NetworkBehaviour
     float hullCurrentLevel;
 
     [SyncVar(hook = nameof(UpdateUI))]
-    float drainAmount;
+    float ionizationAmount;
 
-    float drainFactor = 0;
+    float ionFactor = 0;
 
     DamageDealer lastDamageDealerToBeHitBy;
     GameObject ownerOfLastDamageDealerToBeHitBy;
@@ -76,13 +78,14 @@ public class Health : NetworkBehaviour
 
     public Action EntityWasDamaged;
     public Action EntityIsDying;
+    public Action EntityIsRepaired;
 
     void Start()
     {
         shieldCurrentLevel = shieldMax_normal;
         shieldMax_current = shieldMax_normal;
         hullCurrentLevel = hullMax;
-        drainAmount = 0;
+        ionizationAmount = 0;
 
         SetAudioClips();
         rb = GetComponent<Rigidbody2D>();
@@ -94,6 +97,7 @@ public class Health : NetworkBehaviour
         }
         if (hasAuthority && isPlayer)
         {
+            pi = GetComponent<PlayerInput>();
             HookIntoLocalUI();
         }
     }
@@ -128,27 +132,29 @@ public class Health : NetworkBehaviour
         if (isServer)
         {
             LiveOrDie();
-            ProcessDraining();
-            RechargeShield();
+            ProcessIonization();
+            if (isDying == false)
+            {
+                RechargeShield();
+            }
         }
-
     }
 
-    private void ProcessDraining()
+    private void ProcessIonization()
     { 
         //Remove Draining
-        drainAmount -= purificationRate * Time.deltaTime;
-        drainAmount = Mathf.Clamp(drainAmount, 0, shieldMax_normal);
+        ionizationAmount -= purificationRate * Time.deltaTime;
+        ionizationAmount = Mathf.Clamp(ionizationAmount, 0, shieldMax_normal);
 
-        if (drainAmount > 0)
+        if (ionizationAmount > 0)
         {
             //TODO spawn a particle effect. Ensure it is seen on all clients
         }
 
         //Process Draining effects
-        drainFactor = 1- ((shieldMax_normal - drainAmount) / shieldMax_normal);
-        shieldMax_current = (1 - drainFactor) * shieldMax_normal;
-        shieldRate_current = (1 - drainFactor) * shieldRate_normal;
+        ionFactor = 1- ((shieldMax_normal - ionizationAmount) / shieldMax_normal);
+        shieldMax_current = (1 - ionFactor) * shieldMax_normal;
+        shieldRate_current = (1 - ionFactor) * shieldRate_normal;
     }
 
     private void RechargeShield()
@@ -194,6 +200,10 @@ public class Health : NetworkBehaviour
     public void ModifyHullLevel(float amount)
     {
         hullCurrentLevel += amount;
+        if (hullCurrentLevel >= hullMax)
+        {
+            SignalRepairIsComplete();
+        }
         hullCurrentLevel = Mathf.Clamp(hullCurrentLevel, 0, hullMax);
     }
 
@@ -202,6 +212,7 @@ public class Health : NetworkBehaviour
         if (hullCurrentLevel <= 0 && !isDying)
         {
             rb.drag = dragAtDeath; //This slows the wreckage down.
+            rb.angularDrag = angularDragAtDeath;  //This slows the wreckage down.
             isDying = true;
             //if (lastDamageDealerToBeHitBy && GetComponent<ScrapDropper>() == true)
             //{
@@ -209,12 +220,12 @@ public class Health : NetworkBehaviour
 
             //    GetComponent<ScrapDropper>().bonusScrapThreshold = bonusScrapThresh;
             //}
-            EntityIsDying.Invoke();
+            EntityIsDying?.Invoke();
             BroadcastMessage("DyingActions", ownerOfLastDamageDealerToBeHitBy, SendMessageOptions.DontRequireReceiver);
             if (isPlayer)
             {
-                AudioSource.PlayClipAtPoint(chosenDieSound, transform.position);
-                GetComponent<Rigidbody2D>().drag = 5f;
+                //AudioSource.PlayClipAtPoint(chosenDieSound, transform.position);  //TODO play a powerdown disabled sound          
+
             }
             if (chosenDieSound && !isPlayer)
             {
@@ -233,7 +244,6 @@ public class Health : NetworkBehaviour
                 //    sk.IncreaseScore();
                 //}
                 Destroy(gameObject);
-
             }
 
         }
@@ -282,7 +292,7 @@ public class Health : NetworkBehaviour
 
         if (damage.Draining > 0)
         {
-            drainAmount += damage.Draining;
+            ionizationAmount += damage.Draining;
         }
 
         ModifyShieldLevel(damage.ShieldBonusDamage * -1, false);
@@ -302,10 +312,15 @@ public class Health : NetworkBehaviour
         shieldCurrentLevel = shieldMax_current;
     }
 
-    public void ResetHull(float newMaxHull)
+    public void SignalRepairIsComplete()
     {
-        hullMax = newMaxHull;
+        //TODO play a Ratchet sound
+        isDying = false;
+        rb.drag = 0;
+        rb.angularDrag = 0;
+        EntityIsRepaired?.Invoke();
     }
+
     public void SetMaxShield(float newMaxShield)
     {
         shieldMax_normal = newMaxShield;
@@ -344,7 +359,7 @@ public class Health : NetworkBehaviour
         } 
         if (shieldDrainingSlider)
         {
-            shieldDrainingSlider.value = drainFactor;
+            shieldDrainingSlider.value = ionFactor;
         }
     }
 

@@ -13,6 +13,7 @@ public class PlayerInput : NetworkBehaviour
     IFF iff;
     Rigidbody2D rb;
     AbilityManager am;
+    Health health;
 
     //param
     [SerializeField] float accelRate_normal;
@@ -28,6 +29,7 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] Vector2 desAimDir = Vector2.zero;
     [SerializeField] float desMoveSpeed = 0;
     Vector3 mousePos = Vector3.zero;
+    bool isDisabled = false;
 
     void Start()
     {
@@ -35,8 +37,14 @@ public class PlayerInput : NetworkBehaviour
         iff = GetComponent<IFF>();
         rb = GetComponent<Rigidbody2D>();
         am = GetComponent<AbilityManager>();
+        health = GetComponent<Health>();
+        health.EntityIsDying += ReactToBecomingDisabled;
+        health.EntityIsRepaired += ReactToBecomingRepaired;
         HookIntoLocalUI();
+
+    
     }
+
 
     private void HookIntoLocalUI()
     {
@@ -48,7 +56,7 @@ public class PlayerInput : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (hasAuthority)
+        if (hasAuthority && isDisabled == false)
         {
             HandleMouseInput();
             HandleKeyboardInput();
@@ -130,6 +138,7 @@ public class PlayerInput : NetworkBehaviour
 
     private void FixedUpdate()
     {
+        if (isDisabled) { return; }
         if (isServer)
         {
             ExecuteTurn(desAimDir);
@@ -163,4 +172,16 @@ public class PlayerInput : NetworkBehaviour
         }
 
     }
+
+
+    private void ReactToBecomingDisabled()
+    {
+        isDisabled = true;
+    }
+
+    private void ReactToBecomingRepaired()
+    {
+        isDisabled = false;
+    }
+
 }

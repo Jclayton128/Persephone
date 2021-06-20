@@ -1448,7 +1448,7 @@ MonoBehaviour:
   levelCounterTMP: {fileID: 1502423975}
   levelList:
   - {fileID: 11400000, guid: 3c7979046c354714cb63025e05836154, type: 2}
-  - {fileID: 11400000, guid: 391873bafcab08b47860926a75e6dd91, type: 2}
+  - {fileID: 11400000, guid: 3c7979046c354714cb63025e05836154, type: 2}
   - {fileID: 11400000, guid: 3c7979046c354714cb63025e05836154, type: 2}
   - {fileID: 11400000, guid: 3c7979046c354714cb63025e05836154, type: 2}
   - {fileID: 11400000, guid: 3c7979046c354714cb63025e05836154, type: 2}
@@ -9183,7 +9183,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1647500759589659975, guid: 22bde83cf5a51264e9db4eab4bd3145b, type: 3}
       propertyPath: m_Name
-      value: Persephone (1)
+      value: Persephone
       objectReference: {fileID: 0}
     - target: {fileID: 2985852380958085449, guid: 22bde83cf5a51264e9db4eab4bd3145b, type: 3}
       propertyPath: startingSpot.x

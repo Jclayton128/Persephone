@@ -89,6 +89,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: shieldMax_normal
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: hullMax
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: shieldRate_normal
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: purificationRate
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6441007859182316285, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 1

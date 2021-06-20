@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 3669389023936005043}
   - component: {fileID: 2640863181522011322}
   - component: {fileID: 7275082862253601120}
+  - component: {fileID: -3622550910895373042}
   m_Layer: 0
   m_Name: Persephone
   m_TagString: Persephone
@@ -308,6 +309,21 @@ PolygonCollider2D:
       - {x: -1.2119952, y: -1.98592}
       - {x: -0.71999997, y: -2.1043136}
       - {x: -0.64, y: -3.1499999}
+--- !u!114 &-3622550910895373042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1647500759589659975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a19c7e19d70179247b3e5fc84da5ff02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  iffAllegiance: 0
 --- !u!1 &5378772104406862925
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,8 +9,9 @@ using System;
 public class PersephoneBrain : NetworkBehaviour
 {
     //init
-    [SerializeField] Slider healthSlider;
-    [SerializeField] TextMeshProUGUI statusTMP;
+    [SerializeField] GameObject wreckerDronePrefab = null;
+    Slider healthSlider;
+    TextMeshProUGUI statusTMP;
     SpriteRenderer[] srs;
     Rigidbody2D rb;
     LevelManager lm;
@@ -44,6 +45,10 @@ public class PersephoneBrain : NetworkBehaviour
     float distToWarpPortal;
     float timeLeftForWarpCharging = 99;
 
+    bool isRepairingPlayers = false;
+    List<GameObject> wreckingDronesInUse = new List<GameObject>();
+    List<GameObject> disabledPlayers = new List<GameObject>();
+
 
     void Start()
     {
@@ -74,10 +79,10 @@ public class PersephoneBrain : NetworkBehaviour
             distToWarpPortal = (transform.position - positionOfWarpPortal).magnitude;
             MoveTowardsWarpPortal();
             ChargeWarpEngineIfClosedEnough();
+            FixUpDisabledPlayers();
         }
 
     }
-
     private void HandleVisibility()
     {
         if (!isInArena)
@@ -173,6 +178,13 @@ public class PersephoneBrain : NetworkBehaviour
 
     }
 
+    #region Player Repairs
+    private void FixUpDisabledPlayers()
+    {
+
+    }
+
+    #endregion
 
 
     #region Public Methods

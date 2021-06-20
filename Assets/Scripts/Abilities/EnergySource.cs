@@ -41,6 +41,7 @@ public class EnergySource : NetworkBehaviour
 
     [SerializeField] float ionizationRemoveRate;
     bool isPlayer = true;
+    bool isDisabled = false;
 
     //bool isInMegaEnergyBonusMode = false;
     //float timeInBonusMode = 0;
@@ -52,9 +53,15 @@ public class EnergySource : NetworkBehaviour
         }
         if (hasAuthority && isPlayer)
         {
-            Debug.Log("tried to hook into UI");
             HookIntoLocalUI();
         }
+        if (isServer)
+        {
+            Health health = GetComponent<Health>();
+            health.EntityIsDying += ReactToBecomingDisabled;
+            health.EntityIsRepaired += ReactToBecomingRepaired;
+        }
+
         energyCurrentLevel = energyMax_normal;
         ionizationRemoveRate = GetComponent<Health>().GetPurificationRate();
     }
@@ -64,7 +71,6 @@ public class EnergySource : NetworkBehaviour
         ClientInstance ci = ClientInstance.ReturnClientInstance();
         UIManager uim = FindObjectOfType<UIManager>();
         UIPack uipack = uim.GetUIPack(ci);
-        Debug.Log("received: " + uipack);
         energySlider = uipack.EnergySlider;
         energyMaxTMP = uipack.EnergyMaxTMP;
         energyRateTMP = uipack.EnergyRateTMP;
@@ -105,12 +111,16 @@ public class EnergySource : NetworkBehaviour
 
         //Process Ionization effects
         ionFactor = 1 - ((energyMax_normal - ionizationAmount) / energyMax_normal);
-        energyMax_current = (1 - ionFactor) * energyMax_normal;
-        energyRate_current = (1 - ionFactor) * energyRate_normal;
+        if (isDisabled == false)
+        {
+            energyMax_current = (1 - ionFactor) * energyMax_normal;
+            energyRate_current = (1 - ionFactor) * energyRate_normal;
+        }
     }
 
     private void RegenerateEnergy()
     {
+        if (isDisabled) { return; }
         energyCurrentLevel += energyRate_current * Time.deltaTime;
         energyCurrentLevel = Mathf.Clamp(energyCurrentLevel, 0, energyMax_current);
 
@@ -123,6 +133,7 @@ public class EnergySource : NetworkBehaviour
 
     public bool CheckEnergy(float value)
     {
+        if (isDisabled) { return false; }
         if (energyCurrentLevel - value >= 0)
         {
             return true;
@@ -135,6 +146,7 @@ public class EnergySource : NetworkBehaviour
 
     public bool CheckSpendEnergy(float value)
     {
+        if (isDisabled) { return false; }
         if (energyCurrentLevel - value >= 0)
         {
             energyCurrentLevel -= value;
@@ -212,4 +224,17 @@ public class EnergySource : NetworkBehaviour
     //        yield return new WaitForFixedUpdate();
     //    }
     //}
+
+    public void ReactToBecomingDisabled()
+    {
+        isDisabled = true;
+        energyCurrentLevel = 0;
+        energyRate_current = 0;
+    }
+
+    public void ReactToBecomingRepaired()
+    {
+        isDisabled = true;
+    }
+
 }

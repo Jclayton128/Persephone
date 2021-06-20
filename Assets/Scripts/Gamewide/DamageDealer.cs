@@ -87,6 +87,10 @@ public class DamageDealer : MonoBehaviour
     public void ModifyPenetration(int amount)
     {
         penetration += amount;
+        if (penetration <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     #endregion

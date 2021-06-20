@@ -294,10 +294,7 @@ public class Health : NetworkBehaviour
         }
 
         damageDealer.ModifyPenetration(-1);
-        if (damageDealer.GetPenetration() <= 0)
-        {
-            Destroy(other.gameObject);
-        }
+
     }
 
     public void ResetShields()

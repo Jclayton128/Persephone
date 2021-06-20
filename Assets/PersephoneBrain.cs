@@ -145,7 +145,7 @@ public class PersephoneBrain : NetworkBehaviour
     {
         if (distToWarpPortal <= minTravelDist)
         {
-            gameObject.layer = 8;
+            gameObject.layer = 10; // 8;
             float factor = Mathf.Clamp01(distToWarpPortal / closeEnoughDist);
             speed_Current = speed_InSystem * factor;
         }      

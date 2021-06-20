@@ -15,6 +15,7 @@ public class PersephoneBrain : NetworkBehaviour
     SpriteRenderer[] srs;
     Rigidbody2D rb;
     LevelManager lm;
+    PersephoneHealth ph;
 
     //param
     float TimeRequiredToWarpIn;
@@ -36,22 +37,31 @@ public class PersephoneBrain : NetworkBehaviour
     string statusText;
 
     bool isStarted = false;
+
+    [SyncVar]
     [SerializeField] bool isInArena = false;
+
     float speed_Current;
     Vector3 positionOfWarpPortal;
     float distToWarpPortal;
     float timeLeftForWarpCharging = 99;
 
     bool isRepairingPlayers = false;
-    List<GameObject> wreckingDronesInUse = new List<GameObject>();
-    List<GameObject> disabledPlayers = new List<GameObject>();
+    [SerializeField] List<GameObject> wreckingDronesInUse = new List<GameObject>();
+    [SerializeField] List<GameObject> disabledPlayers = new List<GameObject>();
 
+
+    private void Awake()
+    {
+        RegisterPrefabs();
+    }
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         lm = FindObjectOfType<LevelManager>();
-        RegisterPrefabs();
+        ph = GetComponent<PersephoneHealth>();
+
 
 
         if (isClient)
@@ -124,7 +134,9 @@ public class PersephoneBrain : NetworkBehaviour
 
     private void WarpIn()
     {
+
         isInArena = true;
+        Debug.Log($"is in arena: {isInArena}");
         // Flash the background white, like a phase bomb
         // TODO play an warp-in sound
         // Update StatusText
@@ -157,17 +169,27 @@ public class PersephoneBrain : NetworkBehaviour
             gameObject.layer = 10; // 8;
             float factor = Mathf.Clamp01(distToWarpPortal / closeEnoughDist);
             speed_Current = speed_InSystem * factor;
+            if (disabledPlayers.Count > 0 && wreckingDronesInUse.Count == 0)
+            {
+                FixUpDisabledPlayers();
+            }
         }      
     }
     private void ChargeWarpEngineIfClosedEnough()
     {
-        if (distToWarpPortal < closeEnoughDist)
+        if (distToWarpPortal < closeEnoughDist  && timeLeftForWarpCharging > 0)
         {
             timeLeftForWarpCharging -= Time.deltaTime;
             int round = Mathf.RoundToInt(timeLeftForWarpCharging);
             statusText = "Time To Warp: " + round;
         }
-        if (timeLeftForWarpCharging <= 0 && isInArena)
+        if (distToWarpPortal < closeEnoughDist && timeLeftForWarpCharging <= 0 && wreckingDronesInUse.Count > 0)
+        {
+            statusText = "Waiting On Drones";
+        }
+
+
+        if (timeLeftForWarpCharging <= 0 && isInArena && wreckingDronesInUse.Count == 0)
         {
             WarpOut();
         }
@@ -189,8 +211,7 @@ public class PersephoneBrain : NetworkBehaviour
     {
         disabledPlayers.Add(player);
         float repairCost = player.GetComponent<Health>().GetMaxHull();
-        FixUpDisabledPlayer(player);
-
+        ph.CheckPayPlayerRepairCost(repairCost);
     }
 
     [Server]
@@ -199,11 +220,21 @@ public class PersephoneBrain : NetworkBehaviour
         disabledPlayers.Remove(player);
     }
 
-    private void FixUpDisabledPlayer(GameObject player)
+    private void FixUpDisabledPlayers()
     {
-        GameObject newDrone = Instantiate(wreckerDronePrefab, transform.position, transform.rotation) as GameObject;
-        newDrone.GetComponent<WreckerDroneBrain>().SetRepairTarget(player);
-        NetworkServer.Spawn(newDrone);
+        foreach(GameObject player in disabledPlayers)
+        {
+            GameObject newDrone = Instantiate(wreckerDronePrefab, transform.position, transform.rotation) as GameObject;
+            newDrone.GetComponent<WreckerDroneBrain>().SetRepairTarget(player);
+            wreckingDronesInUse.Add(newDrone);
+            NetworkServer.Spawn(newDrone);
+        }
+    }
+
+    public void RecoverWreckerDrone(GameObject drone)  // a Drone calls this once it is close enough to Persphone and done repairing.
+    {
+        wreckingDronesInUse.Remove(drone);
+        Destroy(drone);
     }
 
 

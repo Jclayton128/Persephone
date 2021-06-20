@@ -81,11 +81,14 @@ public class EnergySource : NetworkBehaviour
     private void UpdateUI(float oldValue, float newValue)
     {
         if (!isPlayer) { return; };
-        energySlider.maxValue = energyMax_normal;
-        energySlider.value = energyCurrentLevel;
-        energyMaxTMP.text = energyMax_normal.ToString();
-        energyRateTMP.text = energyRate_current.ToString();
-        energyIonizationSlider.value = ionFactor;
+        if (hasAuthority)
+        {
+            energySlider.maxValue = energyMax_normal;
+            energySlider.value = energyCurrentLevel;
+            energyMaxTMP.text = energyMax_normal.ToString();
+            energyRateTMP.text = energyRate_current.ToString();
+            energyIonizationSlider.value = ionFactor;
+        }
     }
 
     // Update is called once per frame

@@ -87,6 +87,7 @@ public class Health : NetworkBehaviour
         shieldMax_current = shieldMax_normal;
         hullCurrentLevel = hullMax;
         ionizationAmount = 0;
+        pb = FindObjectOfType<PersephoneBrain>();
 
         SetAudioClips();
         rb = GetComponent<Rigidbody2D>();
@@ -100,7 +101,6 @@ public class Health : NetworkBehaviour
         {
             pi = GetComponent<PlayerInput>();
             HookIntoLocalUI();
-            pb = FindObjectOfType<PersephoneBrain>();
         }
     }
 

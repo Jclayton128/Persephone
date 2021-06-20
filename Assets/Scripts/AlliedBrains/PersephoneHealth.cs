@@ -162,6 +162,16 @@ public class PersephoneHealth : NetworkBehaviour
         }        
     }
 
-
+    internal void CheckPayPlayerRepairCost(float repairCost)
+    {
+        if (repairCost > currentHealth)
+        {
+            Debug.Log("Persephone is too damaged to repair a player.");
+        }
+        else
+        {
+            currentHealth -= repairCost;
+        }
+    }
 }
 

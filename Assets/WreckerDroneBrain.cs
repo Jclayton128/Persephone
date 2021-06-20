@@ -12,7 +12,7 @@ public class WreckerDroneBrain : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("here I am, ready to fix things");
+        Debug.Log($"here I am, ready to fix {repairTarget}");
     }
 
     // Update is called once per frame

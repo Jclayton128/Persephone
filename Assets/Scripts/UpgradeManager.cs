@@ -27,7 +27,7 @@ public class UpgradeManager : NetworkBehaviour
     float scrapBarZeroPoint = 0.1f;
     float scrapBarOnePoint = 0.9f;
 
-
+    public Action<int> OnLevelUp;
     void Start()
     {        
         if (hasAuthority)
@@ -59,17 +59,15 @@ public class UpgradeManager : NetworkBehaviour
 
         if (currentScrap >= currentUpgradeCost)
         {
-            Debug.Log("more scrap than required to level up");
             CurrentLevel++;
             currentUpgradePoints++;
             currentScrap = 0;
             scrapBarFactor = 0;
+            OnLevelUp?.Invoke(CurrentLevel);
             UpdateUI(0, 0);
         }
         if (currentScrap < currentUpgradeCost)
         {
-            Debug.Log($"Scrap: {currentScrap}/{currentUpgradeCost}");
-            Debug.Log("Scrap Bar Factor: " + scrapBarFactor);
             scrapBarFactor = (float)currentScrap / (float)currentUpgradeCost;
             UpdateUI(0, 0);
         }

@@ -77,21 +77,31 @@ public class UIManager : MonoBehaviour
         return persephoneStatusTMP;
     }
 
-    public Image[] GetAbilityIcons(ClientInstance askingCI , int numberOfIconsToReturn)
+    public Image GetPrimaryAbilityIcon(ClientInstance askingCI)
+    {
+        if (askingCI == playerAtThisComputer)
+        {
+            return primaryAbilityPlaceholder;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public Image[] GetSecondaryAbilityIcons(ClientInstance askingCI, int numberOfIconsToReturn)
     {
         if (askingCI == playerAtThisComputer)
         {
             Image[] iconsToSend = new Image[numberOfIconsToReturn];
 
-            iconsToSend[0] = primaryAbilityPlaceholder;
 
-            for (int i = 1; i < numberOfIconsToReturn; i++)
+            for (int i = 0; i < numberOfIconsToReturn; i++)
             {
-                iconsToSend[i] = secondaryAbilityPlaceholders[i - 1];
+                iconsToSend[i] = secondaryAbilityPlaceholders[i];
             }
-            for (int i = numberOfIconsToReturn; i <= secondaryAbilityPlaceholders.Length; i++)
+            for (int i = numberOfIconsToReturn; i < secondaryAbilityPlaceholders.Length; i++)
             {
-                secondaryAbilityPlaceholders[i-1].enabled = false;
+                secondaryAbilityPlaceholders[i].enabled = false;
             }
             return iconsToSend;
         }

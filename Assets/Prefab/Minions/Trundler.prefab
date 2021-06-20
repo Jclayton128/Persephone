@@ -107,7 +107,7 @@ PrefabInstance:
       objectReference: {fileID: 4675570019543552568, guid: bd60087241d73ba40b5ec647fdfaab32, type: 3}
     - target: {fileID: 7004619822151118274, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: numberOfScraps
-      value: 3
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}

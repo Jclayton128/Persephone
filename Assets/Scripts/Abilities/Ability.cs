@@ -24,6 +24,7 @@ public abstract class Ability : NetworkBehaviour
 
 
     protected EnergySource es;
+    public bool IsLocked { get; protected set; } = true;
 
     protected virtual void Awake()
     {
@@ -36,6 +37,10 @@ public abstract class Ability : NetworkBehaviour
     protected virtual void Start()
     {
         es = GetComponent<EnergySource>();
+        if (unlockLevel >= 2 || IsPrimaryAbility)
+        {
+            IsLocked = false;
+        }
     }
 
     public virtual void MouseClickDownValidate()
@@ -60,6 +65,11 @@ public abstract class Ability : NetworkBehaviour
     public int GetUnlockLevel()
     {
         return unlockLevel;
+    }
+
+    public void UnlockAbility()
+    {
+        IsLocked = false;
     }
 
 

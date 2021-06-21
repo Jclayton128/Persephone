@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8718589304910423889}
   - component: {fileID: 9214899434392558914}
   - component: {fileID: 3435027887243644100}
-  m_Layer: 16
+  m_Layer: 10
   m_Name: PersWreckerDrone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,8 +139,8 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
+  m_Mass: 0.1
+  m_LinearDrag: 3
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -203,6 +203,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fab6207a93dd8484cb55de2867fa63fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  thrust: 40
+  turnSpeed: 180
 --- !u!114 &3435027887243644100
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,7 +223,9 @@ MonoBehaviour:
   syncInterval: 0.1
   hurtAudioClip: []
   dieAudioClip: []
-  hullMax: 1
-  shieldMax_normal: 0
-  shieldRate_normal: 0
-  purificationRate: 0.3
+  hullMax: 3
+  shieldMax_normal: 1
+  shieldRate_normal: 1
+  purificationRate: 1
+  isDying: 0
+  AssignedWreckerDrone: {fileID: 0}

@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -96.57, y: -108.48}
-  m_SizeDelta: {x: 160.84927, y: 60.951416}
+  m_AnchoredPosition: {x: -96.57, y: -211.36}
+  m_SizeDelta: {x: 160.84927, y: 266.70587}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &35957212
 MonoBehaviour:
@@ -501,29 +501,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 129382098}
   m_CullTransparentMesh: 0
---- !u!1 &148215298 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1647500759589659975, guid: 22bde83cf5a51264e9db4eab4bd3145b, type: 3}
-  m_PrefabInstance: {fileID: 1929780588}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &148215307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 148215298}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da045feb96539344f8f754f23bc3f837, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  hurtAudioClip: []
-  dieAudioClip: []
-  startingHealth: 30
-  isDying: 0
 --- !u!1 &176500010
 GameObject:
   m_ObjectHideFlags: 0
@@ -9185,14 +9162,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Persephone
       objectReference: {fileID: 0}
-    - target: {fileID: 2985852380958085449, guid: 22bde83cf5a51264e9db4eab4bd3145b, type: 3}
-      propertyPath: startingSpot.x
-      value: -25
-      objectReference: {fileID: 0}
-    - target: {fileID: 2985852380958085449, guid: 22bde83cf5a51264e9db4eab4bd3145b, type: 3}
-      propertyPath: wreckerDronePrefab
-      value: 
-      objectReference: {fileID: 8718589304910423880, guid: 5ce537c319e1c1d4caef93901c3d5590, type: 3}
     - target: {fileID: 5904163103716560001, guid: 22bde83cf5a51264e9db4eab4bd3145b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -21.105293

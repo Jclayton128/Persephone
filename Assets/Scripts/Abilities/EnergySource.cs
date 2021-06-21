@@ -237,7 +237,7 @@ public class EnergySource : NetworkBehaviour
 
     public void ReactToBecomingRepaired()
     {
-        isDisabled = true;
+        isDisabled = false;
     }
 
 }

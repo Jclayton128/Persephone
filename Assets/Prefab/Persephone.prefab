@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 2640863181522011322}
   - component: {fileID: 7275082862253601120}
   - component: {fileID: -3622550910895373042}
+  - component: {fileID: 148215307}
   m_Layer: 0
   m_Name: Persephone
   m_TagString: Persephone
@@ -158,10 +159,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  healthSlider: {fileID: 0}
-  statusTMP: {fileID: 0}
-  startingSpot: {x: -20, y: 0, z: 0}
+  wreckerDronePrefab: {fileID: 8718589304910423880, guid: 5ce537c319e1c1d4caef93901c3d5590, type: 3}
+  startingSpot: {x: -25, y: 0, z: 0}
   isInArena: 0
+  wreckingDronesInUse: []
+  disabledPlayers: []
 --- !u!212 &5156996213916725621
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -201,7 +203,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 568453131
   m_SortingLayer: 2
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: c6f24a38c98ce8847bc4cef041a3a802, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -324,6 +326,24 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   iffAllegiance: 0
+--- !u!114 &148215307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1647500759589659975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da045feb96539344f8f754f23bc3f837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  hurtAudioClip: []
+  dieAudioClip: []
+  startingHealth: 100
+  isDying: 0
 --- !u!1 &5378772104406862925
 GameObject:
   m_ObjectHideFlags: 0

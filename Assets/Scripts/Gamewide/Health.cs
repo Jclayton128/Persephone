@@ -58,7 +58,7 @@ public class Health : NetworkBehaviour
 
     #region Init: current state
     //hood
-    bool isDying = false;
+    [SerializeField] bool isDying = false;
 
     [SyncVar(hook = nameof(UpdateUI))]
     float shieldCurrentLevel;
@@ -70,6 +70,7 @@ public class Health : NetworkBehaviour
     float ionizationAmount;
 
     float ionFactor = 0;
+    public GameObject AssignedWreckerDrone;
 
     DamageDealer lastDamageDealerToBeHitBy;
     GameObject ownerOfLastDamageDealerToBeHitBy;
@@ -133,7 +134,6 @@ public class Health : NetworkBehaviour
     {
         if (isServer)
         {
-            LiveOrDie();
             ProcessIonization();
             if (isDying == false)
             {
@@ -175,7 +175,7 @@ public class Health : NetworkBehaviour
 
         if (shieldCurrentLevel < 0 && affectHullToo)
         {
-            ModifyHullLevel(amount); //Go direct to hull and do no shield damage
+            ModifyHullLevel(amount, false); //Go direct to hull and do no shield damage
         }
 
         if (shieldCurrentLevel >= 0)
@@ -184,7 +184,7 @@ public class Health : NetworkBehaviour
             if (shieldCurrentLevel < 0 && affectHullToo)  //If shield was positive, takes damage, and becomes negative, pass the negative amount on to the hull;
             {
                 float negativeShield = shieldCurrentLevel;
-                ModifyHullLevel(negativeShield);
+                ModifyHullLevel(negativeShield, false);
                 shieldCurrentLevel = 0;
             }
             if (shieldCurrentLevel < 0 && !affectHullToo)
@@ -199,17 +199,29 @@ public class Health : NetworkBehaviour
         }
     }
 
-    public void ModifyHullLevel(float amount)
+    public void ModifyHullLevel(float amount, bool shouldPurifyToo)
     {
         hullCurrentLevel += amount;
         if (hullCurrentLevel >= hullMax)
         {
             SignalRepairIsComplete();
         }
+        if (shouldPurifyToo)
+        {
+            ionizationAmount = 0;
+        }
         hullCurrentLevel = Mathf.Clamp(hullCurrentLevel, 0, hullMax);
-    }
 
-    private void LiveOrDie()
+        if (isClient)
+        {
+            UpdateUI(0, 0);
+        }
+
+        AssessDeathCondition();
+
+    }    
+
+    private void AssessDeathCondition()
     {
         if (hullCurrentLevel <= 0 && !isDying)
         {
@@ -325,7 +337,10 @@ public class Health : NetworkBehaviour
         isDying = false;
         rb.drag = 0;
         rb.angularDrag = 0;
+        pb.RemoveDisabledPlayer(gameObject);
+        AssignedWreckerDrone = null;
         EntityIsRepaired?.Invoke();
+
     }
 
     public void SetMaxShield(float newMaxShield)
@@ -340,6 +355,11 @@ public class Health : NetworkBehaviour
     public float GetMaxHull()
     {
         return hullMax;
+    }
+
+    public float GetCurrentHull()
+    {
+        return hullCurrentLevel;
     }
 
     private void UpdateUI(float oldValue, float newValue)

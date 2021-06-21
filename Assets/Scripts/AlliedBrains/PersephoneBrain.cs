@@ -28,8 +28,8 @@ public class PersephoneBrain : NetworkBehaviour
     float minTravelDist = 16f;
     float closeEnoughDist = 3f;
     float timeRequiredForWarpChargeUp = 10f;
-    float drainAmount = 0;  // Slows Pers' warp engine charge time, which increases her vulnerability
-    float ionizationAmount = 0; // Slows Pers' move speed, which increases her vulnerability
+
+    float repairCost = 10f;
 
     //hood
 
@@ -61,8 +61,6 @@ public class PersephoneBrain : NetworkBehaviour
         rb = GetComponent<Rigidbody2D>();
         lm = FindObjectOfType<LevelManager>();
         ph = GetComponent<PersephoneHealth>();
-
-
 
         if (isClient)
         {
@@ -136,7 +134,7 @@ public class PersephoneBrain : NetworkBehaviour
     {
 
         isInArena = true;
-        Debug.Log($"is in arena: {isInArena}");
+
         // Flash the background white, like a phase bomb
         // TODO play an warp-in sound
         // Update StatusText
@@ -166,7 +164,7 @@ public class PersephoneBrain : NetworkBehaviour
     {
         if (distToWarpPortal <= minTravelDist)
         {
-            gameObject.layer = 10; // 8;
+            gameObject.layer = 8;
             float factor = Mathf.Clamp01(distToWarpPortal / closeEnoughDist);
             speed_Current = speed_InSystem * factor;
             if (disabledPlayers.Count > 0 && wreckingDronesInUse.Count == 0)
@@ -204,14 +202,16 @@ public class PersephoneBrain : NetworkBehaviour
 
     }
 
-    #region Player Repairs
+    #region Player Repair
 
     [Server]
     public void AddDisabledPlayer(GameObject player)
     {
         disabledPlayers.Add(player);
-        float repairCost = player.GetComponent<Health>().GetMaxHull();
-        ph.CheckPayPlayerRepairCost(repairCost);
+        if (isInArena)
+        {
+            FixUpDisabledPlayers();
+        }
     }
 
     [Server]
@@ -224,8 +224,27 @@ public class PersephoneBrain : NetworkBehaviour
     {
         foreach(GameObject player in disabledPlayers)
         {
+            Health health = player.GetComponent<Health>();
+            if (health.AssignedWreckerDrone) { return; }
+            SpawnWreckerDrone(player, health);
+        }
+    }
+    private void FixUpSpecificPlayer(GameObject player)
+    {
+        Health health = player.GetComponent<Health>();
+        if (health.AssignedWreckerDrone) { return; }
+        SpawnWreckerDrone(player, health);
+    }
+    private void SpawnWreckerDrone(GameObject player, Health health)
+    {
+        if (ph.CheckPayPlayerRepairCost(repairCost))
+        {
             GameObject newDrone = Instantiate(wreckerDronePrefab, transform.position, transform.rotation) as GameObject;
-            newDrone.GetComponent<WreckerDroneBrain>().SetRepairTarget(player);
+            WreckerDroneBrain wreckerDroneBrain = newDrone.GetComponent<WreckerDroneBrain>();
+            wreckerDroneBrain.SetRepairTarget(player);
+            wreckerDroneBrain.Persephone = gameObject;
+
+            health.AssignedWreckerDrone = newDrone;
             wreckingDronesInUse.Add(newDrone);
             NetworkServer.Spawn(newDrone);
         }
@@ -236,6 +255,16 @@ public class PersephoneBrain : NetworkBehaviour
         wreckingDronesInUse.Remove(drone);
         Destroy(drone);
     }
+
+    public void HandleDestroyedWreckerDrone(WreckerDroneBrain droneWDB)
+    {
+        Debug.Log("send another wrecker drone, i'm dead!");
+        GameObject playerInNeed = droneWDB.RepairTarget;
+        FixUpSpecificPlayer(playerInNeed);
+        wreckingDronesInUse.Remove(droneWDB.gameObject);
+
+    }
+
 
 
     #endregion

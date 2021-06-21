@@ -29,7 +29,7 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] Vector2 desAimDir = Vector2.zero;
     [SerializeField] float desMoveSpeed = 0;
     Vector3 mousePos = Vector3.zero;
-    bool isDisabled = false;
+    [SerializeField] bool isDisabled = false;
 
     void Start()
     {

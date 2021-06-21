@@ -169,7 +169,7 @@ public abstract class Brain : NetworkBehaviour
     #region Facing
     protected virtual void TurnToFaceNavTarget() //Optimize to decrease velocity with small angles off;
     {
-        float factor = Mathf.Abs(angleToDest) / 5;
+        float factor = Mathf.Abs(angleToDest) / 5f;
         factor = Mathf.Clamp01(factor);
         Debug.Log("turn speed: " + maxTurnSpeed_normal * factor);
         if (angleToDest > 0)

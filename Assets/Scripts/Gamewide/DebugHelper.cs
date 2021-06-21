@@ -23,6 +23,39 @@ public class DebugHelper : NetworkBehaviour
     {
         HandleDebugModeToggle();
         HandleDebugMinionSpawn();
+        HandlePlayerDisableUndisable();
+        HandlePlayerEnergyReset();
+    }
+
+    private void HandlePlayerEnergyReset()
+    {
+        if (isInDebugMode && Input.GetKeyDown(KeyCode.P))
+        {
+            EnergySource es = GetComponent<ClientInstance>().currentAvatar.GetComponent<EnergySource>();
+            es.ResetPowerLevel();
+            Debug.Log("debug reset energy");
+        }
+    }
+
+    private void HandlePlayerDisableUndisable()
+    {
+        if (isInDebugMode && Input.GetKeyDown(KeyCode.H))
+        {
+            Health health = GetComponent<ClientInstance>().currentAvatar.GetComponent<Health>();
+            if (health.GetCurrentHull() > 0)
+            {
+                Debug.Log("debug disable");
+                health.ModifyHullLevel(-1 * health.GetMaxHull(), false);
+                return;
+            }
+            if (health.GetCurrentHull() <= 0)
+            {
+                health.ModifyHullLevel(health.GetMaxHull()*10f, true);
+                Debug.Log("debug repair");
+                return;
+            }
+
+        }
     }
 
     private void HandleDebugMinionSpawn()
@@ -41,7 +74,7 @@ public class DebugHelper : NetworkBehaviour
             isInDebugMode = !isInDebugMode;
             if (isInDebugMode)
             {
-                debugModeTMP.text = "DEBUG";
+                debugModeTMP.text = "DEBUG, H = heal toggle, P = reset energy";
             }
             else
             {

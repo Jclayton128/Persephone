@@ -16,6 +16,7 @@ public class PersephoneBrain : NetworkBehaviour
     Rigidbody2D rb;
     LevelManager lm;
     PersephoneHealth ph;
+    Turret_AI[] turrets;
 
     //param
     float TimeRequiredToWarpIn;
@@ -61,6 +62,7 @@ public class PersephoneBrain : NetworkBehaviour
         rb = GetComponent<Rigidbody2D>();
         lm = FindObjectOfType<LevelManager>();
         ph = GetComponent<PersephoneHealth>();
+        turrets = GetComponentsInChildren<Turret_AI>();
 
         if (isClient)
         {
@@ -156,17 +158,21 @@ public class PersephoneBrain : NetworkBehaviour
     private void MoveTowardsWarpPortal()
     {
         if (!isInArena) { return; }
-        AdjustSpeedBasedOnDistanceToWarpPortal();
+        HandleInSystemActions();
         rb.velocity = transform.up * speed_Current;
     }
 
-    private void AdjustSpeedBasedOnDistanceToWarpPortal()
+    private void HandleInSystemActions()
     {
         if (distToWarpPortal <= minTravelDist)
         {
             gameObject.layer = 8;
             float factor = Mathf.Clamp01(distToWarpPortal / closeEnoughDist);
             speed_Current = speed_InSystem * factor;
+            foreach (Turret_AI turret in turrets)
+            {
+                turret.enabled = true;
+            }
             if (disabledPlayers.Count > 0 && wreckingDronesInUse.Count == 0)
             {
                 FixUpDisabledPlayers();
@@ -198,6 +204,11 @@ public class PersephoneBrain : NetworkBehaviour
         transform.position = startingSpot;
         lm.AdvanceToNextLevel();
         gameObject.layer = 0;
+        foreach (Turret_AI turret in turrets)
+        {
+            turret.ResetTurret();
+            turret.enabled = false;
+        }
         isInArena = false;
 
     }

@@ -54,7 +54,7 @@ public class Trundler_Brain : Brain
         if(targets.Count > 0)
         {
 
-            currentAttackTarget = targets[0];
+            currentAttackTarget = targets[0].gameObject;
             currentDest = currentAttackTarget.transform.position;
         }
         else

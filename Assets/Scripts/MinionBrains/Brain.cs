@@ -10,7 +10,7 @@ public abstract class Brain : NetworkBehaviour
     protected Rigidbody2D rb;
     protected SpriteRenderer sr;
     protected ArenaBounds ab;
-    protected List<GameObject> targets = new List<GameObject>();
+    [SerializeField] protected List<IFF> targets = new List<IFF>();
     protected GameObject incomingDamager;
     [SerializeField] protected GameObject currentAttackTarget;
     [SerializeField] protected Vector3 currentDest = Vector3.zero;
@@ -89,12 +89,13 @@ public abstract class Brain : NetworkBehaviour
     }
 
     #region Targeting
-    public void AddTargetToList(GameObject target)
+    public void AddTargetToList(IFF target)
     {
         targets.Add(target);
+        ResortListBasedOnImportance();
     }
 
-    public void RemoveTargetFromList(GameObject target)
+    public void RemoveTargetFromList(IFF target)
     {
         targets.Remove(target);
     }
@@ -102,6 +103,13 @@ public abstract class Brain : NetworkBehaviour
     public void WarnOfIncomingDamageDealer(GameObject damager)
     {
         incomingDamager = damager;
+    }
+
+    public void ResortListBasedOnImportance()
+    {
+        IFF iif = new IFF();
+        targets.Sort(iif);
+        Debug.Log("New target list: " + targets.ToString());
     }
 
     #endregion

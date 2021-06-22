@@ -32,7 +32,8 @@ public class Detector : MonoBehaviour
             }
             if (collIFF.GetIFFAllegiance() != ownIFF)
             {
-                brain.AddTargetToList(collision.gameObject);
+                brain.AddTargetToList(collIFF);
+                collIFF.OnModifyImportance += brain.ResortListBasedOnImportance;
             }
         }
         if (collision.gameObject.GetComponent<DamageDealer>())
@@ -44,7 +45,15 @@ public class Detector : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        brain.RemoveTargetFromList(collision.gameObject);
+        IFF collIFF;
+        if (collision.gameObject.TryGetComponent<IFF>(out collIFF))
+        {
+            brain.RemoveTargetFromList(collIFF);
+            collIFF.OnModifyImportance -= brain.ResortListBasedOnImportance;
+        }
+
+
     }
+
 
 }

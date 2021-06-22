@@ -210,6 +210,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   iffAllegiance: 0
+  importance: 0
 --- !u!114 &2754486748955791981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +232,7 @@ MonoBehaviour:
   turnAccelRate_normal: 30
   desAimDir: {x: 0, y: 0}
   desMoveSpeed: 0
+  isDisabled: 0
 --- !u!50 &8706150506697623497
 Rigidbody2D:
   serializedVersion: 4
@@ -326,6 +328,8 @@ MonoBehaviour:
   shieldMax_normal: 5
   shieldRate_normal: 0.5
   purificationRate: 0.5
+  isDying: 0
+  AssignedWreckerDrone: {fileID: 0}
 --- !u!114 &8322484285054519442
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,3 +416,4 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   iffAllegiance: 0
+  importance: 1

@@ -4,7 +4,7 @@ using UnityEngine;
 using Mirror;
 using System;
 
-public class Turret_AI : NetworkBehaviour
+public class Turret_AI : MonoBehaviour
 {
     //init
     [SerializeField] GameObject weaponPrefab = null;
@@ -35,18 +35,18 @@ public class Turret_AI : NetworkBehaviour
     float angleToTargetFromBoresight;
     float distToTarget;
 
+    bool isServer;
+
 
     private void Awake()
     {
-        if (isClient)
-        {
-            NetworkClient.RegisterPrefab(weaponPrefab);
-        }
+        NetworkClient.RegisterPrefab(weaponPrefab);
     }
 
     void Start()
     {
         range = (weaponLifetime * weaponSpeed);
+        isServer = GetComponentInParent<PersephoneBrain>().isServer;
     }
 
     // Update is called once per frame

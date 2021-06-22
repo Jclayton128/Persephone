@@ -116,13 +116,19 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
-  weaponSpeed: 10
-  weaponLifetime: 2
-  timeBetweenShots: 0.25
-  weaponDamage: 0.1
-  weaponKnockback: 1
-  turretTurnRate: 30
+  weaponSpeed: 20
+  weaponLifetime: 0.5
+  timeBetweenShots: 0.2
+  weaponDamage: 0.3
+  weaponBonusShieldDamage: 0.3
+  weaponIonDamage: 0
+  weaponKnockback: 0
+  turretTurnRate: 360
   leadsForVelocity: 1
+  randomSpread: 5
+  boresightTolerance: 3
+  weaponPhysicsLayer: 9
+  enemyLayerToTarget: 10
   target: {fileID: 0}
 --- !u!1 &1647500759589659975
 GameObject:
@@ -138,10 +144,12 @@ GameObject:
   - component: {fileID: 5156996213916725621}
   - component: {fileID: 356606832852358336}
   - component: {fileID: 3669389023936005043}
-  - component: {fileID: 2640863181522011322}
   - component: {fileID: 7275082862253601120}
   - component: {fileID: -3622550910895373042}
   - component: {fileID: 148215307}
+  - component: {fileID: 2640863181522011322}
+  - component: {fileID: 1437551619557721675}
+  - component: {fileID: 2104754002060373701}
   m_Layer: 0
   m_Name: Persephone
   m_TagString: Persephone
@@ -295,28 +303,6 @@ MonoBehaviour:
   compressRotation: 0
   interpolateScale: 1
   syncScale: 1
---- !u!114 &2640863181522011322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1647500759589659975}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 734b48bea0b204338958ee3d885e11f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 0
-  localPositionSensitivity: 0.01
-  localRotationSensitivity: 0.01
-  localScaleSensitivity: 0.01
-  compressRotation: 0
-  interpolateScale: 1
-  syncScale: 1
-  target: {fileID: 7315411222629329840}
 --- !u!60 &7275082862253601120
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -368,6 +354,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   iffAllegiance: 0
+  importance: 9
 --- !u!114 &148215307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -386,6 +373,72 @@ MonoBehaviour:
   dieAudioClip: []
   startingHealth: 100
   isDying: 0
+--- !u!114 &2640863181522011322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1647500759589659975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734b48bea0b204338958ee3d885e11f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  localPositionSensitivity: 0.01
+  localRotationSensitivity: 0.01
+  localScaleSensitivity: 0.01
+  compressRotation: 0
+  interpolateScale: 1
+  syncScale: 1
+  target: {fileID: 7315411222629329840}
+--- !u!114 &1437551619557721675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1647500759589659975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734b48bea0b204338958ee3d885e11f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  localPositionSensitivity: 0.01
+  localRotationSensitivity: 0.01
+  localScaleSensitivity: 0.01
+  compressRotation: 0
+  interpolateScale: 1
+  syncScale: 1
+  target: {fileID: 7617992039653371673}
+--- !u!114 &2104754002060373701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1647500759589659975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734b48bea0b204338958ee3d885e11f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 0
+  localPositionSensitivity: 0.01
+  localRotationSensitivity: 0.01
+  localScaleSensitivity: 0.01
+  compressRotation: 0
+  interpolateScale: 1
+  syncScale: 1
+  target: {fileID: 7785009667177866023}
 --- !u!1 &5378772104406862925
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,12 +556,18 @@ MonoBehaviour:
   syncInterval: 0.1
   weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   weaponSpeed: 10
-  weaponLifetime: 2
-  timeBetweenShots: 0.25
-  weaponDamage: 0.1
+  weaponLifetime: 3
+  timeBetweenShots: 1
+  weaponDamage: 3
+  weaponBonusShieldDamage: 0
+  weaponIonDamage: 0
   weaponKnockback: 1
-  turretTurnRate: 30
+  turretTurnRate: 90
   leadsForVelocity: 1
+  randomSpread: 0
+  boresightTolerance: 1
+  weaponPhysicsLayer: 9
+  enemyLayerToTarget: 10
   target: {fileID: 0}
 --- !u!1 &8846137857058579488
 GameObject:
@@ -627,10 +686,16 @@ MonoBehaviour:
   syncInterval: 0.1
   weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   weaponSpeed: 10
-  weaponLifetime: 2
-  timeBetweenShots: 0.25
-  weaponDamage: 0.1
+  weaponLifetime: 3
+  timeBetweenShots: 1
+  weaponDamage: 3
+  weaponBonusShieldDamage: 0
+  weaponIonDamage: 0
   weaponKnockback: 1
-  turretTurnRate: 30
+  turretTurnRate: 90
   leadsForVelocity: 1
+  randomSpread: 0
+  boresightTolerance: 1
+  weaponPhysicsLayer: 9
+  enemyLayerToTarget: 10
   target: {fileID: 0}

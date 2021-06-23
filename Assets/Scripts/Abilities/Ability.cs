@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(EnergySource))]
 
-public abstract class Ability : NetworkBehaviour
+public abstract class Ability : NetworkBehaviour, IComparer<Ability>
 {
     [SerializeField] public Sprite AbilityIcon = null;
     [SerializeField] int unlockLevel;
@@ -70,6 +70,26 @@ public abstract class Ability : NetworkBehaviour
     public void UnlockAbility()
     {
         IsLocked = false;
+    }
+
+    public virtual int Compare(Ability x, Ability y)
+    {
+        if (x == null || y == null)
+        {
+            return 0;
+        }
+        if (x.unlockLevel > y.unlockLevel)
+        {
+            return 1;
+        }
+        if (x.unlockLevel < y.unlockLevel)
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
 

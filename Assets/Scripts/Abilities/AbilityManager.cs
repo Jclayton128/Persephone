@@ -49,7 +49,7 @@ public class AbilityManager : NetworkBehaviour
     private void IdentifyAllAbilities()
     {
         Ability[] allAbilities = GetComponents<Ability>();
-        List<Ability> unorderedSecondaryAbilities = new List<Ability>();
+
         for (int i = 0; i < allAbilities.Length; i++)
         {
             if (allAbilities[i].IsPrimaryAbility)
@@ -62,8 +62,7 @@ public class AbilityManager : NetworkBehaviour
             }
         }
 
-        //TODO sort the secondaryAbilities list by Unlock Level so that they display logically, and then can be scrolled thru.
-        
+        secondaryAbilities.Sort(secondaryAbilities[0]);
 
     }
     private void HookIntoLocalUI(int numberOfAbilitiesToPull)

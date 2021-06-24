@@ -210,7 +210,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   iffAllegiance: 0
-  importance: 0
+  normalImportance: 2
 --- !u!114 &2754486748955791981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,10 +396,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  secondaryAbilityIcons: []
   invalidSelectionAudioClip: {fileID: 0}
   lockedAbilitySprite: {fileID: 21300000, guid: faa6e913a1cffc04b8dbbba1123dbf4b, type: 3}
-  secondaryAbilities: []
   unlockedSecondaryAbilities: []
 --- !u!114 &-3361430503782286581
 MonoBehaviour:
@@ -416,4 +414,4 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   iffAllegiance: 0
-  importance: 1
+  normalImportance: 2

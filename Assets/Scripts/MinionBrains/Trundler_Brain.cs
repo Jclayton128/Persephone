@@ -51,8 +51,15 @@ public class Trundler_Brain : Brain
 
     private void EvaluateTarget()
     {
+
         if(targets.Count > 0)
         {
+
+            if (targets[0].GetCurrentImportance() <= 0)
+            {
+                targets.RemoveAt(0);
+            }
+
 
             currentAttackTarget = targets[0].gameObject;
             currentDest = currentAttackTarget.transform.position;

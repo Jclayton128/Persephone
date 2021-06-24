@@ -107,9 +107,9 @@ public abstract class Brain : NetworkBehaviour
 
     public void ResortListBasedOnImportance()
     {
+        Debug.Log("resorting targets");
         IFF iif = new IFF();
         targets.Sort(iif);
-        Debug.Log("New target list: " + targets.ToString());
     }
 
     #endregion

@@ -26,10 +26,8 @@ public class Detector : MonoBehaviour
         IFF collIFF;
         if (collision.gameObject.TryGetComponent<IFF>(out collIFF))
         {
-            if (collIFF.GetIFFAllegiance() == ownIFF)
-            {
-                return;
-            }
+            if (collIFF.GetIFFAllegiance() == ownIFF) { return; }
+            if (collIFF.GetCurrentImportance() <= 0) { return; }
             if (collIFF.GetIFFAllegiance() != ownIFF)
             {
                 brain.AddTargetToList(collIFF);

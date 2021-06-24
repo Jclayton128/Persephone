@@ -16,6 +16,7 @@ public class Health : NetworkBehaviour
     EnergySource es;
     PlayerInput pi;
     PersephoneBrain pb;
+    IFF iff;
 
     UIManager uim;
     Slider hullSlider;
@@ -89,6 +90,7 @@ public class Health : NetworkBehaviour
         hullCurrentLevel = hullMax;
         ionizationAmount = 0;
         pb = FindObjectOfType<PersephoneBrain>();
+        iff = GetComponent<IFF>();
 
         SetAudioClips();
         rb = GetComponent<Rigidbody2D>();
@@ -205,6 +207,7 @@ public class Health : NetworkBehaviour
         if (hullCurrentLevel >= hullMax)
         {
             SignalRepairIsComplete();
+            iff.SetEnabledDisabledImportance(false);
         }
         if (shouldPurifyToo)
         {
@@ -245,6 +248,7 @@ public class Health : NetworkBehaviour
             {
                 if (isServer)
                 {
+                    iff.SetEnabledDisabledImportance(true);
                     pb.AddDisabledPlayer(gameObject);
                 }
                 //AudioSource.PlayClipAtPoint(chosenDieSound, transform.position);  //TODO play a powerdown disabled sound     

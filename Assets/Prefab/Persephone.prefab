@@ -332,7 +332,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   iffAllegiance: 0
-  importance: 9
+  normalImportance: 9
 --- !u!114 &148215307
 MonoBehaviour:
   m_ObjectHideFlags: 0

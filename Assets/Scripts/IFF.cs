@@ -11,13 +11,21 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
     //param
     [SyncVar]
     [SerializeField] int iffAllegiance;
-
-    [SerializeField] public int importance;
+    [SerializeField] int normalImportance;
     public static readonly int PlayerIFF = 0;
+    int disabledImportance = 0;
+
+    //hood
+    int currentImportance;
+
 
     public Action<int> OnChangeIFF;
     public Action OnModifyImportance;
 
+    private void Start()
+    {
+        currentImportance = normalImportance;
+    }
 
     public void SetIFFAllegiance(int value)
     {
@@ -28,66 +36,56 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
     {
         return iffAllegiance;
     }
-    public int GetImportance()
+    public int GetCurrentImportance()
     {
-        return importance;
+        return currentImportance;
     }
 
-    public void ModifyImportance(int newImportance)
+    public void OverrideCurrentImportance(int newImportance)
     {
-        importance = newImportance;
+        currentImportance = newImportance;
         OnModifyImportance?.Invoke();
+    }
+
+    [Server]
+    public void SetEnabledDisabledImportance(bool isDisabled)
+    {
+        if (isDisabled)
+        {
+            currentImportance = disabledImportance;
+        }
+        if (!isDisabled)
+        {
+            currentImportance = normalImportance;
+        }
     }
 
     public static int CompareByImportance(IFF iff1, IFF iff2)
     {
-        return iff1.importance.CompareTo(iff2.importance);
+        return iff1.currentImportance.CompareTo(iff2.currentImportance);
     }
 
-    //public int CompareTo(IFF other)
-    //{
-    //    if (other == null)
-    //    {
-    //        Debug.Log("other is null");
-    //        return 1;
-    //    }
-    //    if (other.importance > this.importance)
-    //    {
-    //        Debug.Log("other is more important");
-    //        return -1;
-    //    }
-    //    if (other.importance < this.importance)
-    //    {
-    //        Debug.Log("other is less important");
-    //        return 1;
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("other is equally important");
-    //        return 0;
-    //    }
-    //}
 
     public int Compare(IFF x, IFF y)
     {
         if (x == null || y == null)
         {
-            Debug.Log("other is null");
+            //Debug.Log("other is null");
             return 0;
         }
-        if (x.importance > y.importance)
+        if (x.currentImportance > y.currentImportance)
         {
-            Debug.Log("other is more important");
+           //Debug.Log("other is more important");
             return -1;
         }
-        if (x.importance < y.importance)
+        if (x.currentImportance < y.currentImportance)
         {
-            Debug.Log("other is less important");
+            //Debug.Log("other is less important");
             return 1;
         }
         else
         {
-            Debug.Log("other is equally important");
+            //Debug.Log("other is equally important");
             return 0;
         }
     }

@@ -28,7 +28,7 @@ public class Ability_JammerMode : Ability
         isDeployed = false;
         retractedSprite = sr.sprite;
         iff = GetComponent<IFF>();
-        regularImportance = iff.GetImportance();
+        regularImportance = iff.GetCurrentImportance();
     }
 
     protected override void MouseClickDownEffect()
@@ -48,11 +48,11 @@ public class Ability_JammerMode : Ability
         UpdateSprite(false, false);
         if (isDeployed)
         {
-            iff.ModifyImportance(jammerImportance);
+            iff.OverrideCurrentImportance(jammerImportance);
         }
         if (!isDeployed)
         {
-            iff.ModifyImportance(regularImportance);
+            iff.OverrideCurrentImportance(regularImportance);
         }
     }
 

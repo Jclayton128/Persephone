@@ -30,7 +30,7 @@ public class PersephoneHealth : NetworkBehaviour
 
 
     [SyncVar(hook = nameof(UpdateUI))]
-    float currentHealth;
+    [SerializeField] float currentHealth;
 
     DamageDealer lastDamageDealerToBeHitBy;
     GameObject ownerOfLastDamageDealerToBeHitBy;

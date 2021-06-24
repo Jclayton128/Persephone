@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8718589304910423889}
   - component: {fileID: 9214899434392558914}
   - component: {fileID: 3435027887243644100}
-  m_Layer: 10
+  m_Layer: 16
   m_Name: PersWreckerDrone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,6 +191,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   iffAllegiance: 0
+  importance: 0
 --- !u!114 &9214899434392558914
 MonoBehaviour:
   m_ObjectHideFlags: 0

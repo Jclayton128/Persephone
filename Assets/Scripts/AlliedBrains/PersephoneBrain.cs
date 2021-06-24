@@ -20,7 +20,7 @@ public class PersephoneBrain : NetworkBehaviour
 
     //param
     float TimeRequiredToWarpIn;
-    [SerializeField] Vector3 startingSpot;
+    public static Vector3 startingSpot = new Vector3(-45, 0, 0);
     string persCountdownText = "Arrival in: ";
 
     float speed_WarpingIn = 30f;
@@ -40,12 +40,12 @@ public class PersephoneBrain : NetworkBehaviour
     bool isStarted = false;
 
     [SyncVar]
-    [SerializeField] bool isInArena = false;
+    bool isInArena = true;
 
     float speed_Current;
     Vector3 positionOfWarpPortal;
     float distToWarpPortal;
-    float timeLeftForWarpCharging = 99;
+    float timeLeftForWarpCharging = 5;
 
     bool isRepairingPlayers = false;
     [SerializeField] List<GameObject> wreckingDronesInUse = new List<GameObject>();

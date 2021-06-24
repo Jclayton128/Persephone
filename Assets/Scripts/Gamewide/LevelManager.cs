@@ -10,6 +10,7 @@ public class LevelManager : NetworkBehaviour
     MinionMaker mm;
     UnitTracker ut;
 
+    [SerializeField] GameObject persephonePrefab = null;
     [SerializeField] TextMeshProUGUI levelCounterTMP = null;
     [SerializeField] List<Level> levelList = null;
     static Level currentLevel;
@@ -22,6 +23,7 @@ public class LevelManager : NetworkBehaviour
 
     private void Awake()
     {
+        NetworkClient.RegisterPrefab(persephonePrefab);
         foreach (Level level in levelList)
         {
             level.RegisterLevelMinions();
@@ -42,19 +44,18 @@ public class LevelManager : NetworkBehaviour
         warpPortal.GetComponent<Rigidbody2D>().angularVelocity = 10f;
     }
 
-    private void Start()
-    {
-        pb = GameObject.FindGameObjectWithTag("Persephone").GetComponent<PersephoneBrain>();
-    }
-
     public int GetCurrentLevelCount()
     {
         return currentLevelCount;
     }
 
+    [Server]
     public void AdvanceToNextLevel()
     {
-        StartPersephone(); // Only really needed to start the first level
+        if (pb == null)
+        {
+            StartPersephone(); // Only really needed to start the first level
+        }
         ClearOutOldLevel();
         RemoveCurrentLevelFromList();
         ChooseNextLevel();
@@ -111,7 +112,15 @@ public class LevelManager : NetworkBehaviour
 
     private void StartPersephone()
     {
-        pb.StartPersephone();
+        if (isServer)
+        {
+            GameObject persephone = Instantiate(persephonePrefab, PersephoneBrain.startingSpot, Quaternion.identity) as GameObject;
+            pb = persephone.GetComponent<PersephoneBrain>();
+            pb.StartPersephone();
+            NetworkServer.Spawn(persephone);
+
+        }
+
     }
 
     private void SetTimeUntilPersephoneArrives()

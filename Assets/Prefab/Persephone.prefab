@@ -113,13 +113,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393480eb40364c5469cd09a76f98012f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   weaponSpeed: 20
   weaponLifetime: 0.5
   timeBetweenShots: 0.2
-  weaponDamage: 0.3
+  weaponDamage: 0
   weaponBonusShieldDamage: 0.3
   weaponIonDamage: 0
   weaponKnockback: 0
@@ -210,7 +208,6 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   wreckerDronePrefab: {fileID: 8718589304910423880, guid: 5ce537c319e1c1d4caef93901c3d5590, type: 3}
-  startingSpot: {x: -25, y: 0, z: 0}
   isInArena: 0
   wreckingDronesInUse: []
   disabledPlayers: []
@@ -552,16 +549,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393480eb40364c5469cd09a76f98012f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   weaponSpeed: 10
   weaponLifetime: 3
   timeBetweenShots: 1
-  weaponDamage: 3
+  weaponDamage: 0
   weaponBonusShieldDamage: 0
   weaponIonDamage: 0
-  weaponKnockback: 1
+  weaponKnockback: 0
   turretTurnRate: 90
   leadsForVelocity: 1
   randomSpread: 0
@@ -682,16 +677,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 393480eb40364c5469cd09a76f98012f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   weaponSpeed: 10
   weaponLifetime: 3
   timeBetweenShots: 1
-  weaponDamage: 3
+  weaponDamage: 0
   weaponBonusShieldDamage: 0
   weaponIonDamage: 0
-  weaponKnockback: 1
+  weaponKnockback: 0
   turretTurnRate: 90
   leadsForVelocity: 1
   randomSpread: 0

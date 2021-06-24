@@ -2,15 +2,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class Ability_JammerMode : Ability
 {
     Sprite retractedSprite;
     [SerializeField] Sprite deployedSprite = null;
     SpriteRenderer sr;
+    IFF iff;
+
+    //param
+    int jammerImportance = 11;
 
     //hood
-    bool isDeployed;
+    [SyncVar(hook = nameof(UpdateSprite))]
+    [SerializeField] bool isDeployed;
+
+    int regularImportance;
 
 
     protected override void Start()
@@ -19,13 +27,13 @@ public class Ability_JammerMode : Ability
         sr = GetComponent<SpriteRenderer>();
         isDeployed = false;
         retractedSprite = sr.sprite;
-
+        iff = GetComponent<IFF>();
+        regularImportance = iff.GetImportance();
     }
 
     protected override void MouseClickDownEffect()
     {
         ToggleJammingMode();
-        UpdateUI();
     }
 
     protected override void MouseClickUpEffect()
@@ -36,6 +44,31 @@ public class Ability_JammerMode : Ability
     private void ToggleJammingMode()
     {
         isDeployed = !isDeployed;
+        CmdUpdateJammingMode(isDeployed);
+        UpdateSprite(false, false);
+        if (isDeployed)
+        {
+            iff.ModifyImportance(jammerImportance);
+        }
+        if (!isDeployed)
+        {
+            iff.ModifyImportance(regularImportance);
+        }
+    }
+
+    [Command]
+    private void CmdUpdateJammingMode(bool deployedStatus)
+    {
+        isDeployed = deployedStatus;
+    }
+
+    private void UpdateUI()
+    {
+        //Hook into a light on this ability panel turning on or off based on Jamming status
+    }
+
+    private void UpdateSprite(bool v1, bool v2)
+    {
         if (isDeployed)
         {
             sr.sprite = deployedSprite;
@@ -44,12 +77,6 @@ public class Ability_JammerMode : Ability
         {
             sr.sprite = retractedSprite;
         }
-        //Execute actual Jamming business logic here.
-    }
-
-    private void UpdateUI()
-    {
-        //Hook into a light on this ability panel turning on or off based on Jamming status
     }
 
 }

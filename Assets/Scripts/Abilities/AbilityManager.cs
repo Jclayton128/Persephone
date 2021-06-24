@@ -7,18 +7,18 @@ using UnityEngine.UI;
 
 public class AbilityManager : NetworkBehaviour
 {
-    [SerializeField] Image[] secondaryAbilityIcons;
+    Image[] secondaryAbilityIcons;
     UpgradeManager um;
     [SerializeField] AudioClip invalidSelectionAudioClip = null;
     [SerializeField] Sprite lockedAbilitySprite = null;
     Ability_Dummy dummyAbility;
 
-    [SerializeField] List<Ability> secondaryAbilities = new List<Ability>();
+    List<Ability> secondaryAbilities = new List<Ability>();
     [SerializeField] List<Ability> unlockedSecondaryAbilities = new List<Ability>();
     public Ability SelectedSecondaryAbility { get; private set; }
     public Ability PrimaryAbility { get; private set; }
 
-    int secondaryIndex = 0;
+    int secondaryIndex = -1;
 
     private void Start()
     {
@@ -88,6 +88,7 @@ public class AbilityManager : NetworkBehaviour
         
     }
 
+    [Client]
     public void ScrollUpThruAbilities()
     {
         if (secondaryIndex == -1)
@@ -98,16 +99,19 @@ public class AbilityManager : NetworkBehaviour
         else
         {
             secondaryIndex++;
-            if (secondaryIndex >= unlockedSecondaryAbilities.Count -1)
+            if (secondaryIndex > unlockedSecondaryAbilities.Count -1)
             {
                 secondaryIndex = 0;
             }
         }
 
         SelectedSecondaryAbility = unlockedSecondaryAbilities[secondaryIndex];
+        CmdSetSecondaryAbility(secondaryIndex);
         UpdateSelectionUI();
     }
 
+
+    [Client]
     public void ScrollDownThroughAbilities()
     {
         if (secondaryIndex == -1)
@@ -124,8 +128,16 @@ public class AbilityManager : NetworkBehaviour
         }
 
         SelectedSecondaryAbility = unlockedSecondaryAbilities[secondaryIndex];
+        CmdSetSecondaryAbility(secondaryIndex);
         UpdateSelectionUI();
 
+    }
+
+    [Command]
+    private void CmdSetSecondaryAbility(int index)
+    {
+        secondaryIndex = index;
+        //SelectedSecondaryAbility = unlockedSecondaryAbilities[secondaryIndex];
     }
 
     private void UpdateSecondaryAbilitiesOnLevelUp(int newLevel)
@@ -144,7 +156,10 @@ public class AbilityManager : NetworkBehaviour
                 if (secondaryIndex == -1)
                 {
                     secondaryIndex = 0;
+                    SelectedSecondaryAbility = unlockedSecondaryAbilities[secondaryIndex];
+                    CmdSetSecondaryAbility(secondaryIndex);
                     UpdateSelectionUI();
+
                 }
             }
         }

@@ -7,6 +7,7 @@ using Mirror;
 public class IFF : NetworkBehaviour , IComparer<IFF>
 {
     //init
+    [SerializeField] CircleCollider2D hiderCollider = null;
 
     //param
     [SyncVar]
@@ -25,6 +26,7 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
     private void Start()
     {
         currentImportance = normalImportance;
+        hiderCollider.radius = currentImportance;
     }
 
     public void SetIFFAllegiance(int value)
@@ -45,6 +47,7 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
     {
         currentImportance = newImportance;
         OnModifyImportance?.Invoke();
+        hiderCollider.radius = currentImportance;
     }
 
     [Server]
@@ -58,6 +61,7 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
         {
             currentImportance = normalImportance;
         }
+        hiderCollider.radius = currentImportance;
     }
 
     public static int CompareByImportance(IFF iff1, IFF iff2)

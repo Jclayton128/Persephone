@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  AbilityIcon: {fileID: 0}
+  unlockLevel: 0
   abilityPrefabs:
   - {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   IsPrimaryAbility: 1
@@ -68,6 +70,10 @@ PrefabInstance:
       propertyPath: m_AssetId
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021377, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: hiderCollider
+      value: 
+      objectReference: {fileID: 2744239800054134855}
     - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -141,5 +147,10 @@ PrefabInstance:
 --- !u!1 &2887084537579551194 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8644570496936021407, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+  m_PrefabInstance: {fileID: 6910583446029087813}
+  m_PrefabAsset: {fileID: 0}
+--- !u!58 &2744239800054134855 stripped
+CircleCollider2D:
+  m_CorrespondingSourceObject: {fileID: 8787134790948424706, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
   m_PrefabInstance: {fileID: 6910583446029087813}
   m_PrefabAsset: {fileID: 0}

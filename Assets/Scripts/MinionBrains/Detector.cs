@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 [RequireComponent (typeof(IFF))]
 public class Detector : MonoBehaviour
 {
@@ -21,10 +22,11 @@ public class Detector : MonoBehaviour
         detColl.radius = radius;
     }
 
+    [Server]
     private void OnTriggerEnter2D(Collider2D collision)
     {
         IFF collIFF;
-        if (collision.gameObject.TryGetComponent<IFF>(out collIFF))
+        if (collision.transform.root.TryGetComponent<IFF>(out collIFF))
         {
             if (collIFF.GetIFFAllegiance() == ownIFF) { return; }
             if (collIFF.GetCurrentImportance() <= 0) { return; }
@@ -41,10 +43,11 @@ public class Detector : MonoBehaviour
 
     }
 
+    [Server]
     private void OnTriggerExit2D(Collider2D collision)
     {
         IFF collIFF;
-        if (collision.gameObject.TryGetComponent<IFF>(out collIFF))
+        if (collision.transform.root.TryGetComponent<IFF>(out collIFF))
         {
             brain.RemoveTargetFromList(collIFF);
             collIFF.OnModifyImportance -= brain.ResortListBasedOnImportance;

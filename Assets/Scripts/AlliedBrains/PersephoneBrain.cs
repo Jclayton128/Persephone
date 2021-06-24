@@ -221,7 +221,8 @@ public class PersephoneBrain : NetworkBehaviour
         disabledPlayers.Add(player);
         if (isInArena)
         {
-            FixUpDisabledPlayers();
+            FixUpSpecificPlayer(player);
+            //FixUpDisabledPlayers();
         }
     }
 

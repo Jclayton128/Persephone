@@ -29,7 +29,7 @@ public class DebugHelper : NetworkBehaviour
 
     private void HandlePlayerEnergyReset()
     {
-        if (isInDebugMode && Input.GetKeyDown(KeyCode.P))
+        if (isInDebugMode && Input.GetKeyDown(KeyCode.P) && hasAuthority)
         {
             EnergySource es = GetComponent<ClientInstance>().currentAvatar.GetComponent<EnergySource>();
             es.ResetPowerLevel();
@@ -39,18 +39,18 @@ public class DebugHelper : NetworkBehaviour
 
     private void HandlePlayerDisableUndisable()
     {
-        if (isInDebugMode && Input.GetKeyDown(KeyCode.H))
+        if (isInDebugMode && Input.GetKeyDown(KeyCode.H) && hasAuthority)
         {
             Health health = GetComponent<ClientInstance>().currentAvatar.GetComponent<Health>();
             if (health.GetCurrentHull() > 0)
             {
                 Debug.Log("debug disable");
-                health.ModifyHullLevel(-1 * health.GetMaxHull(), false);
+                health.CmdModifyHullLevelViaClientDebug(-1 * health.GetMaxHull(), false);
                 return;
             }
             if (health.GetCurrentHull() <= 0)
             {
-                health.ModifyHullLevel(health.GetMaxHull()*10f, true);
+                health.CmdModifyHullLevelViaClientDebug(health.GetMaxHull()*10f, true);
                 Debug.Log("debug repair");
                 return;
             }

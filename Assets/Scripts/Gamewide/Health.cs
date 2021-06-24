@@ -216,10 +216,15 @@ public class Health : NetworkBehaviour
         {
             UpdateUI(0, 0);
         }
-
         AssessDeathCondition();
-
     }    
+
+    [Command]
+    public void CmdModifyHullLevelViaClientDebug(float amount, bool shouldPurifyToo)
+    {
+        ModifyHullLevel(amount, shouldPurifyToo);
+    }
+
 
     private void AssessDeathCondition()
     {

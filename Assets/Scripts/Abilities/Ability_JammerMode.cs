@@ -46,6 +46,13 @@ public class Ability_JammerMode : Ability
         isDeployed = !isDeployed;
         CmdUpdateJammingMode(isDeployed);
         UpdateSprite(false, false);
+
+    }
+
+    [Command]
+    private void CmdUpdateJammingMode(bool deployedStatus)
+    {
+        isDeployed = deployedStatus;
         if (isDeployed)
         {
             iff.OverrideCurrentImportance(jammerImportance);
@@ -54,12 +61,6 @@ public class Ability_JammerMode : Ability
         {
             iff.OverrideCurrentImportance(regularImportance);
         }
-    }
-
-    [Command]
-    private void CmdUpdateJammingMode(bool deployedStatus)
-    {
-        isDeployed = deployedStatus;
     }
 
     private void UpdateUI()

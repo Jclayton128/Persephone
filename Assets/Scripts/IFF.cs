@@ -12,11 +12,14 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
     //param
     [SyncVar]
     [SerializeField] int iffAllegiance;
+
+
     [SerializeField] int normalImportance;
     public static readonly int PlayerIFF = 0;
     int disabledImportance = 0;
 
     //hood
+    [SyncVar(hook = nameof(UpdateHiderRadius))]
     int currentImportance;
 
 
@@ -25,8 +28,11 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
 
     private void Start()
     {
-        currentImportance = normalImportance;
-        hiderCollider.radius = currentImportance;
+        if (isServer)
+        {
+            currentImportance = normalImportance;
+        }
+
     }
 
     public void SetIFFAllegiance(int value)
@@ -43,11 +49,12 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
         return currentImportance;
     }
 
+    [Server]
     public void OverrideCurrentImportance(int newImportance)
     {
+        Debug.Log($"is Server{isServer} calling override importance to {newImportance}");
         currentImportance = newImportance;
         OnModifyImportance?.Invoke();
-        hiderCollider.radius = currentImportance;
     }
 
     [Server]
@@ -61,7 +68,7 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
         {
             currentImportance = normalImportance;
         }
-        hiderCollider.radius = currentImportance;
+
     }
 
     public static int CompareByImportance(IFF iff1, IFF iff2)
@@ -92,5 +99,10 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
             //Debug.Log("other is equally important");
             return 0;
         }
+    }
+
+    public void UpdateHiderRadius(int v1, int v2)
+    {
+        hiderCollider.radius = currentImportance;
     }
 }

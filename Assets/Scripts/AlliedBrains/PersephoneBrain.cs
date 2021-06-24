@@ -42,7 +42,9 @@ public class PersephoneBrain : NetworkBehaviour
     [SyncVar]
     bool isInArena = true;
 
-    float speed_Current;
+    [SyncVar]
+    [SerializeField] float speed_Current;
+
     Vector3 positionOfWarpPortal;
     float distToWarpPortal;
     float timeLeftForWarpCharging = 5;
@@ -51,6 +53,8 @@ public class PersephoneBrain : NetworkBehaviour
     [SerializeField] List<GameObject> wreckingDronesInUse = new List<GameObject>();
     [SerializeField] List<GameObject> disabledPlayers = new List<GameObject>();
 
+
+    int movementToggleForDebug = 1;
 
     private void Awake()
     {
@@ -159,7 +163,7 @@ public class PersephoneBrain : NetworkBehaviour
     {
         if (!isInArena) { return; }
         HandleInSystemActions();
-        rb.velocity = transform.up * speed_Current;
+        rb.velocity = transform.up * speed_Current * movementToggleForDebug;
     }
 
     private void HandleInSystemActions()
@@ -292,6 +296,21 @@ public class PersephoneBrain : NetworkBehaviour
     {
         TimeRequiredToWarpIn = timeUntilPersephoneArrival;
         isInArena = false;
+    }
+
+    [Server]
+    public void DebugToggleMovementOnOff()
+    {
+        if (movementToggleForDebug == 0)
+        {
+            movementToggleForDebug = 1;
+            return;
+        }
+        if (movementToggleForDebug == 1)
+        {
+            movementToggleForDebug = 0;
+            return;
+        }
     }
 
     #endregion

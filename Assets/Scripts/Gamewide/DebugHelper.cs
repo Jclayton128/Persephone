@@ -11,10 +11,12 @@ public class DebugHelper : NetworkBehaviour
     bool isInDebugMode = false;
     [SerializeField] TextMeshProUGUI debugModeTMP = null;
     [SerializeField] GameObject[] testMinion = null;
+    PersephoneBrain pb;
     public override void OnStartClient()
     {
+        debugModeTMP = GameObject.FindGameObjectWithTag("DebugText").GetComponent<TextMeshProUGUI>();
 
-            debugModeTMP = GameObject.FindGameObjectWithTag("DebugText").GetComponent<TextMeshProUGUI>();
+            
 
     }
 
@@ -25,6 +27,30 @@ public class DebugHelper : NetworkBehaviour
         HandleDebugMinionSpawn();
         HandlePlayerDisableUndisable();
         HandlePlayerEnergyReset();
+        HandlePersephoneHalt();
+    }
+
+    private void HandlePersephoneHalt()
+    {
+        if (!pb)
+        {
+            pb = GameObject.FindGameObjectWithTag("Persephone").GetComponent<PersephoneBrain>();
+        }
+        if (isInDebugMode && Input.GetKeyDown(KeyCode.M) && hasAuthority && pb)
+        {
+            Debug.Log("getting called here");
+            CmdTogglePersephoneHalt();
+        }
+    }
+
+    [Command]
+    private void CmdTogglePersephoneHalt()
+    {
+        if (!pb)
+        {
+            pb = GameObject.FindGameObjectWithTag("Persephone").GetComponent<PersephoneBrain>();
+        }
+        pb.DebugToggleMovementOnOff();
     }
 
     private void HandlePlayerEnergyReset()
@@ -74,7 +100,7 @@ public class DebugHelper : NetworkBehaviour
             isInDebugMode = !isInDebugMode;
             if (isInDebugMode)
             {
-                debugModeTMP.text = "DEBUG, H = heal toggle, P = reset energy";
+                debugModeTMP.text = "DEBUG, H = heal toggle, P = reset energy, M = Toggle Pers Movement";
             }
             else
             {

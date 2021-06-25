@@ -99,7 +99,7 @@ MonoBehaviour:
   weaponSpeed: 20
   weaponLifetime: 0.5
   timeBetweenShots: 0.2
-  weaponDamage: 0
+  weaponDamage: 0.3
   weaponBonusShieldDamage: 0.3
   weaponIonDamage: 0
   weaponKnockback: 0
@@ -567,10 +567,10 @@ MonoBehaviour:
   weaponSpeed: 10
   weaponLifetime: 3
   timeBetweenShots: 1
-  weaponDamage: 0
-  weaponBonusShieldDamage: 0
+  weaponDamage: 3
+  weaponBonusShieldDamage: 3
   weaponIonDamage: 0
-  weaponKnockback: 0
+  weaponKnockback: 3
   turretTurnRate: 90
   leadsForVelocity: 1
   randomSpread: 0
@@ -677,10 +677,10 @@ MonoBehaviour:
   weaponSpeed: 10
   weaponLifetime: 3
   timeBetweenShots: 1
-  weaponDamage: 0
-  weaponBonusShieldDamage: 0
+  weaponDamage: 3
+  weaponBonusShieldDamage: 3
   weaponIonDamage: 0
-  weaponKnockback: 0
+  weaponKnockback: 3
   turretTurnRate: 90
   leadsForVelocity: 1
   randomSpread: 0

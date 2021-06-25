@@ -52,7 +52,7 @@ public class Health : NetworkBehaviour
     [SyncVar]
     [SerializeField] float purificationRate = 0.3f;  // points per second. Ionization and Draining scales from 0 to max Energy/Shield level;
 
-    [SerializeField] int penetrationToSoakUp = 1;
+    [SerializeField] int penetrationToSoakUp;
 
     float dragAtDeath = 3f;
     float angularDragAtDeath = 0.4f;

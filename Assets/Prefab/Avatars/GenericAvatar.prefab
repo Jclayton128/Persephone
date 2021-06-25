@@ -377,6 +377,7 @@ MonoBehaviour:
   shieldMax_normal: 5
   shieldRate_normal: 0.5
   purificationRate: 0.5
+  penetrationToSoakUp: 1
   isDying: 0
   AssignedWreckerDrone: {fileID: 0}
 --- !u!114 &8322484285054519442
@@ -428,9 +429,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  scrapBar: {fileID: 0}
-  upgradePointsAvailableTMP: {fileID: 0}
-  CurrentLevel: 1
+  allUpgradeOptions: []
 --- !u!114 &-7943953684487488827
 MonoBehaviour:
   m_ObjectHideFlags: 0

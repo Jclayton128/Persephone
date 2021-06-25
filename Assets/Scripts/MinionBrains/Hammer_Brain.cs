@@ -11,7 +11,6 @@ public class Hammer_Brain : Brain
     [SerializeField] Transform weaponEmitterPoint = null;
     GameObject damageBall;
     SpriteRenderer dbsr;
-    GameObject targetPlayer;
 
     //ship param
     float thrustForward = 20.0f;
@@ -33,33 +32,48 @@ public class Hammer_Brain : Brain
     float timeSinceBeganSprinting = 0f;
     float chargeFractionRemaining = 0f;
 
-    void Start()
+    private void Awake()
     {
-        if (!isServer) { return; }
+        NetworkClient.RegisterPrefab(damageBallPrefab);
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
         TargetMostImportantAlly();
         timeSinceBeganCharging = 0 + UnityEngine.Random.Range(-1 * randomVarianceToChargeUpTime, randomVarianceToChargeUpTime);
     }
 
     private void TargetMostImportantAlly()
     {
-        currentAttackTarget = targets[0].gameObject;
+        if (targets.Count != 0)
+        {
+            currentAttackTarget = targets[0].gameObject;
+        }
+    }
+
+    protected override void Update()
+    {
+        if (isServer)
+        {
+            TrackPlayer();
+            CreateDamageBall();
+            if (!currentAttackTarget)
+            {
+                TargetMostImportantAlly();
+            }
+        }
+
     }
 
     protected override void FixedUpdate()
     {
-        if (!isServer) { return; }
-        SprintTowardsPlayer();
-        ChargeMotorsWhileFacingPlayer();
-    }
-    protected override void Update()
-    {
-        if (!isServer) { return; }
-        TrackPlayer();
-        CreateDamageBall();
-        if (!currentAttackTarget)
+        if (isServer)
         {
-            TargetMostImportantAlly();
+            SprintTowardsPlayer();
+            ChargeMotorsWhileFacingPlayer();
         }
+
     }
     private void CreateDamageBall()
     {
@@ -98,8 +112,8 @@ public class Hammer_Brain : Brain
 
     private void ChargeMotorsWhileFacingPlayer()
     {
-        if (!targetPlayer) { return; }
-        Vector2 targetDir = targetPlayer.transform.position - transform.position;
+        if (!currentAttackTarget) { return; }
+        Vector2 targetDir = currentAttackTarget.transform.position - transform.position;
         angleToPlayer = Vector3.SignedAngle(targetDir, transform.up, transform.forward);
         if (angleToPlayer > 5)
         {
@@ -142,8 +156,8 @@ public class Hammer_Brain : Brain
 
     private void TrackPlayer()
     {
-        if (!targetPlayer) { return; }
-        distanceToPlayer = (targetPlayer.transform.position - transform.position).sqrMagnitude;
+        if (!currentAttackTarget) { return; }
+        distanceToPlayer = (currentAttackTarget.transform.position - transform.position).sqrMagnitude;
     }
 
     protected override void OnDestroy()

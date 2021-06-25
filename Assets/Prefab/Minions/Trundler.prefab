@@ -36,6 +36,14 @@ PrefabInstance:
       propertyPath: penetrationToSoakUp
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: shieldMax_normal
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: shieldRate_normal
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Sprite
       value: 

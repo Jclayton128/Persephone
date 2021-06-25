@@ -60,6 +60,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: shieldMax_normal
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: hullMax
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Sprite
       value: 

@@ -23,11 +23,14 @@ public class DebugHelper : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleDebugModeToggle();
-        HandleDebugMinionSpawn();
-        HandlePlayerDisableUndisable();
-        HandlePlayerEnergyReset();
-        HandlePersephoneHalt();
+        if (isClient)
+        {
+            HandleDebugModeToggle();
+            HandleDebugMinionSpawn();
+            HandlePlayerDisableUndisable();
+            HandlePlayerEnergyReset();
+            HandlePersephoneHalt();
+        }
     }
 
     private void HandlePersephoneHalt()

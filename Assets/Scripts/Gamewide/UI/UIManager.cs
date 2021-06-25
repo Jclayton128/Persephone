@@ -32,6 +32,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] Image primaryAbilityPlaceholder = null;
     [SerializeField] Image[] secondaryAbilityPlaceholders = null;
 
+    [SerializeField] UpgradePanelUI upgradePanelUI = null;
+
 
     public void SetLocalPlayerForUI(ClientInstance ci)
     {
@@ -104,6 +106,18 @@ public class UIManager : MonoBehaviour
                 secondaryAbilityPlaceholders[i].enabled = false;
             }
             return iconsToSend;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public UpgradePanelUI GetUpgradePanelUI(ClientInstance askingCI)
+    {
+        if (askingCI == playerAtThisComputer)
+        {
+            return upgradePanelUI;
         }
         else
         {

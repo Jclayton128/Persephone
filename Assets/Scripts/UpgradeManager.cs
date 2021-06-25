@@ -10,6 +10,7 @@ public class UpgradeManager : NetworkBehaviour
 {
     [SerializeField] Image scrapBar;
     [SerializeField] TextMeshProUGUI upgradePointsAvailableTMP;
+    UpgradePanelUI upui;
 
     public int CurrentLevel = 1;
     //public int CurrentLevel { get; private set; } = 1;
@@ -42,6 +43,7 @@ public class UpgradeManager : NetworkBehaviour
         ClientInstance ci = ClientInstance.ReturnClientInstance();
         UIManager uim = FindObjectOfType<UIManager>();
         UIPack uipack = uim.GetUIPack(ci);
+        upui = uim.GetUpgradePanelUI(ci);
 
         upgradePointsAvailableTMP = uipack.UpgradePointsTMP;
         scrapBar = uipack.ScrapBar;
@@ -50,6 +52,42 @@ public class UpgradeManager : NetworkBehaviour
 
     }
 
+    private void Update()
+    {
+        if (hasAuthority)
+        {
+            HandleUpgradeMenuToggle();
+            HandleUpgradeSelection();
+        }
+    }
+
+    private void HandleUpgradeMenuToggle()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            upui.TogglePanelPosition();
+        }
+    }
+
+    private void HandleUpgradeSelection()
+    {
+        if (!upui.IsExtended) { return; }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            upui.SetSelectorKnob(1);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            upui.SetSelectorKnob(2);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            upui.SetSelectorKnob(3);
+            return;
+        }
+    }
 
     public void GainScrap(int amount)
     {

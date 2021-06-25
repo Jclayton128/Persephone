@@ -36,7 +36,7 @@ public class Detector : MonoBehaviour
                 collIFF.OnModifyImportance += brain.ResortListBasedOnImportance;
             }
         }
-        if (collision.gameObject.GetComponent<DamageDealer>())
+        if (!ignoreDamageDealers && collision.gameObject.GetComponent<DamageDealer>() )
         {
             brain.WarnOfIncomingDamageDealer(collision.gameObject);
         }

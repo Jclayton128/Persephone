@@ -29,7 +29,7 @@ public class Missile_AI : NetworkBehaviour
     float angleToTarget;
     float distanceToTarget = 10f;
     public bool hasReachedTarget = false;
-    GameObject acquiredTarget = null;
+    [SerializeField] GameObject acquiredTarget = null;
     float timeSinceLastScan = 0f;
     float timeSinceLaunched = 0;
 

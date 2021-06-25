@@ -14,13 +14,14 @@ public class Hammer_Brain : Brain
     SpriteRenderer dbsr;
 
     //ship param
+
     float angleOffForFullThrust = 10f;
     float timeRequiredToChargeMotors = 7f;
     float sprintingAngularDrag = 100f;
     float chargingAngularDrag = 0.01f;
     float sprintDuration = 5f;
     float randomVarianceToChargeUpTime = 2.0f;
-    float damageBallDamage = 10;
+    float damageBallMaxDamage = 10;
 
     //hood
     float distanceToPlayer = 10f;
@@ -28,7 +29,9 @@ public class Hammer_Brain : Brain
     float timeSinceBeganCharging = 0f;
     bool isSprinting = false;
     float timeSinceBeganSprinting = 0f;
-    float chargeFractionRemaining = 0f;
+
+    [SyncVar(hook = nameof(UpdateDamageBallImageOnClient))]
+    float damageBallChargeFactor = 0f;
 
     private void Awake()
     {
@@ -58,8 +61,17 @@ public class Hammer_Brain : Brain
             CreateDamageBall();
             TargetMostImportantAlly();
         }
-
     }
+
+    private void UpdateDamageBallImageOnClient(float v1, float v2)
+    {
+        if (damageBall && dbsr)
+        {
+            dbsr.color = new Color(1, 1, 1, damageBallChargeFactor);
+            damageBall.GetComponent<Rigidbody2D>().angularVelocity = damageBallChargeFactor * 720f;
+        }
+    }
+
 
     protected override void FixedUpdate()
     {
@@ -72,7 +84,7 @@ public class Hammer_Brain : Brain
     }
     private void CreateDamageBall()
     {
-        if (!damageBall && !isSprinting && timeSinceBeganCharging < 0.5f)
+        if (!damageBall && !isSprinting && timeSinceBeganCharging < randomVarianceToChargeUpTime)
         {
             Debug.Log("made a new damage ball");
             damageBall = Instantiate(damageBallPrefab, weaponEmitterPoint.position, weaponEmitterPoint.rotation) as GameObject; //weaponEmitterPoint.transform.position, weaponEmitterPoint.transform.rotation) as GameObject;
@@ -82,24 +94,15 @@ public class Hammer_Brain : Brain
             NetworkServer.Spawn(damageBall);
             //damageBall.transform.parent = gameObject.transform;  // I think having a child with a netidentity is bad.
             dbsr = damageBall.GetComponent<SpriteRenderer>();
-            dbsr.color = new Color(1, 1, 1, 0);
+            damageBallChargeFactor = 0;
+            dbsr.color = new Color(1, 1, 1, damageBallChargeFactor);
+            
         }
         if (damageBall)
         {
             damageBall.transform.position = weaponEmitterPoint.position;
-            chargeFractionRemaining = (timeSinceBeganCharging / timeRequiredToChargeMotors);
-            dbdd.SetRegularDamage(chargeFractionRemaining * damageBallDamage);
-
-            if (!isSprinting)
-            {
-                dbsr.color = new Color(1, 1, 1, chargeFractionRemaining);
-                damageBall.GetComponent<Rigidbody2D>().angularVelocity = chargeFractionRemaining * 720f;
-                if (chargeFractionRemaining >= 0.8)
-                {
-                    damageBall.GetComponent<DamageDealer>().SetRegularDamage(damageBallDamage);
-                    //damageBall.GetComponent<CircleCollider2D>().enabled = true;
-                }
-            }
+            damageBallChargeFactor = (timeSinceBeganCharging / timeRequiredToChargeMotors);
+            dbdd.SetRegularDamage(damageBallChargeFactor * damageBallMaxDamage);
 
         }
 

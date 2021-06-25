@@ -23,6 +23,17 @@ public abstract class Brain : NetworkBehaviour
     [SerializeField] protected float maxTurnSpeed_normal;
     [SerializeField] protected float turnAccelRate_normal;
 
+    [SerializeField] protected GameObject weaponPrefab = null;
+    [SerializeField] protected float weaponLifetime;
+    [SerializeField] protected float weaponSpeed;
+    [SerializeField] protected float weaponTurnRate;
+
+    [SerializeField] protected float weaponRegularDamage;
+    [SerializeField] protected float weaponShieldBonusDamage;
+    [SerializeField] protected float weaponKnockback;
+    [SerializeField] protected float weaponIonization;
+    [SerializeField] protected float weaponSpeedMod;
+
     protected float closeEnough = 0.2f;
     protected float angleThresholdForAccel = 10f;
     protected float timeBetweenScans = 0.1f;
@@ -31,7 +42,7 @@ public abstract class Brain : NetworkBehaviour
     float param2;
     float param3;
 
-    [SerializeField] protected GameObject weaponPrefab = null;
+
     [SerializeField] AudioClip[] firingSounds;
     AudioClip selectedFiringSound;
 
@@ -61,25 +72,30 @@ public abstract class Brain : NetworkBehaviour
     {
         if (isServer)
         {
-            Scan();
+            TimeBetweenScans();
         }        
     }
 
-    protected virtual void Scan()
+    protected void TimeBetweenScans()
     {
         timeSinceLastScan += Time.deltaTime;
         if (timeSinceLastScan >= timeBetweenScans)
         {
-            Vector2 dir = currentDest - transform.position;
-            distToDest = dir.magnitude;
-            angleToDest = Vector3.SignedAngle(dir, transform.up, transform.forward);
-            if (currentAttackTarget)
-            {
-                Vector2 dir2 = currentAttackTarget.transform.position - transform.position;
-                angleToAttackTarget = Vector3.SignedAngle(dir2, transform.up, transform.forward);
-                distToAttackTarget = dir2.magnitude;
-            }
+            Scan();
             timeSinceLastScan = 0;
+        }
+    }
+
+    protected virtual void Scan()
+    {
+        Vector2 dir = currentDest - transform.position;
+        distToDest = dir.magnitude;
+        angleToDest = Vector3.SignedAngle(dir, transform.up, transform.forward);
+        if (currentAttackTarget)
+        {
+            Vector2 dir2 = currentAttackTarget.transform.position - transform.position;
+            angleToAttackTarget = Vector3.SignedAngle(dir2, transform.up, transform.forward);
+            distToAttackTarget = dir2.magnitude;
         }
     }
 
@@ -100,7 +116,7 @@ public abstract class Brain : NetworkBehaviour
         targets.Remove(target);
     }
 
-    public void WarnOfIncomingDamageDealer(GameObject damager)
+    public virtual void WarnOfIncomingDamageDealer(GameObject damager)
     {
         incomingDamager = damager;
     }
@@ -174,31 +190,36 @@ public abstract class Brain : NetworkBehaviour
     #endregion
 
     #region Facing
-    protected virtual void TurnToFaceNavTarget() //Optimize to decrease velocity with small angles off;
+    protected virtual void TurnToFaceDestination(int mode) //Optimize to decrease velocity with small angles off;
     {
-        float factor = Mathf.Abs(angleToDest) / 5f;
-        factor = Mathf.Clamp01(factor);
-        Debug.Log("turn speed: " + maxTurnSpeed_normal * factor);
-        if (angleToDest > 0)
+        if (mode == 1)
         {
-            rb.angularVelocity = -1 * maxTurnSpeed_normal * factor;
+            float factor = Mathf.Abs(angleToDest) / 5f;
+            factor = Mathf.Clamp01(factor);
+            if (angleToDest > 0)
+            {
+                rb.angularVelocity = -1 * maxTurnSpeed_normal * factor;
+            }
+            if (angleToDest < 0)
+            {
+                rb.angularVelocity = maxTurnSpeed_normal * factor;
+            }
+            return;
         }
-        if (angleToDest < 0)
+    
+        if (mode == 2)
         {
-            rb.angularVelocity = maxTurnSpeed_normal * factor;
+            if (angleToDest > 5)
+            {
+                rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
+            }
+            if (angleToDest < -5)
+            {
+                rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
+            }
+            return;
         }
-    }
 
-    protected virtual void TurnToFaceDestination()
-    {
-        if (angleToDest > 5)
-        {
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
-        }
-        if (angleToDest < -5)
-        {
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
-        }
     }
     protected void TurnToFacePlayerWithLead(float weaponSpeed)
     {

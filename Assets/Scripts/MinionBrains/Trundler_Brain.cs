@@ -139,7 +139,7 @@ public class Trundler_Brain : Brain
     {
         if (isServer)
         {
-            TurnToFaceDestination();
+            TurnToFaceDestination(2);
             FlyTowardsDestination();
             Debug.DrawLine(transform.position, currentDest, Color.blue);
         }

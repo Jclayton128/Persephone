@@ -35,6 +35,19 @@ public class ArenaBounds : MonoBehaviour
         return randPos;
     }
 
+    public Vector2 CreateValidRandomPointWithinArena(Vector2 origin, float minDistanceFromOrigin)
+    {
+        Vector2 randPos;
+        do
+        {
+            float randDist = UnityEngine.Random.Range(0, ArenaRadius * 0.9f);
+            randPos = Random.insideUnitCircle * ArenaRadius * 0.9f;
+        }
+        while ((randPos - origin).magnitude < minDistanceFromOrigin);
+
+        return randPos;
+    }
+
     public Vector2 CreateValidRandomPointOutsideOfArena()
     {
         float randomAngle = Random.Range(0f, Mathf.PI * 2f);

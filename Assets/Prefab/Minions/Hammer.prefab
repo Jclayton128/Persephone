@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  targets: []
   currentAttackTarget: {fileID: 0}
   detectorRange: 30
-  accelRate_normal: 5
+  accelRate_normal: 50
   maxTurnSpeed_normal: 180
   turnAccelRate_normal: 7
   weaponPrefab: {fileID: 0}

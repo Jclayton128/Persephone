@@ -10,7 +10,7 @@ public abstract class Brain : NetworkBehaviour
     protected Rigidbody2D rb;
     protected SpriteRenderer sr;
     protected ArenaBounds ab;
-    protected List<IFF> targets = new List<IFF>();
+    [SerializeField] protected List<IFF> targets = new List<IFF>();
     protected GameObject incomingDamager;
     [SerializeField] protected GameObject currentAttackTarget;
     protected Vector3 currentDest = Vector3.zero;
@@ -18,10 +18,10 @@ public abstract class Brain : NetworkBehaviour
     protected UnitTracker ut;
 
     //param
-    [SerializeField] float detectorRange;
-    [SerializeField] float accelRate_normal;
-    [SerializeField] float maxTurnSpeed_normal;
-    [SerializeField] float turnAccelRate_normal;
+    [SerializeField] protected float detectorRange;
+    [SerializeField] protected float accelRate_normal;
+    [SerializeField] protected float maxTurnSpeed_normal;
+    [SerializeField] protected float turnAccelRate_normal;
 
     protected float closeEnough = 0.2f;
     protected float angleThresholdForAccel = 10f;

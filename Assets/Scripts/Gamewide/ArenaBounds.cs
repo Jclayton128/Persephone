@@ -39,7 +39,7 @@ public class ArenaBounds : MonoBehaviour
     {
         float randomAngle = Random.Range(0f, Mathf.PI * 2f);
         Vector2 randPos = new Vector2(Mathf.Sin(randomAngle), Mathf.Cos(randomAngle)).normalized;
-        return randPos * (ArenaRadius * 1.5f);
+        return randPos * (ArenaRadius * 3f);
     }
 
 }

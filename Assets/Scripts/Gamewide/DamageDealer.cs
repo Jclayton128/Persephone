@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DamageDealer : MonoBehaviour
 {
-    float regularDamage = 0;
+    [SerializeField] float regularDamage = 0;
     float shieldBonusDamage = 0;
     float ionization = 0;
     float draining = 0;
@@ -87,8 +87,10 @@ public class DamageDealer : MonoBehaviour
     public void ModifyPenetration(int amount)
     {
         penetration += amount;
+        Debug.Log("modified penetration. new penetration is: " + penetration);
         if (penetration <= 0)
         {
+            Debug.Log("removed a damage dealer");
             Destroy(gameObject);
         }
     }

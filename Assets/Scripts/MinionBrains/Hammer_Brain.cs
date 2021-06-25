@@ -10,17 +10,15 @@ public class Hammer_Brain : Brain
     [SerializeField] GameObject damageBallPrefab = null;
     [SerializeField] Transform weaponEmitterPoint = null;
     GameObject damageBall;
+    DamageDealer dbdd;
     SpriteRenderer dbsr;
 
     //ship param
-    float thrustForward = 20.0f;
-    float thrustTurning = 10f;
-    float maxTurnRate = 180f;
     float angleOffForFullThrust = 10f;
     float timeRequiredToChargeMotors = 7f;
     float sprintingAngularDrag = 100f;
     float chargingAngularDrag = 0.01f;
-    float sprintDuration = 1.5f;
+    float sprintDuration = 5f;
     float randomVarianceToChargeUpTime = 2.0f;
     float damageBallDamage = 10;
 
@@ -58,10 +56,7 @@ public class Hammer_Brain : Brain
         {
             TrackPlayer();
             CreateDamageBall();
-            if (!currentAttackTarget)
-            {
-                TargetMostImportantAlly();
-            }
+            TargetMostImportantAlly();
         }
 
     }
@@ -77,13 +72,15 @@ public class Hammer_Brain : Brain
     }
     private void CreateDamageBall()
     {
-        if (!damageBall)
+        if (!damageBall && !isSprinting && timeSinceBeganCharging < 0.5f)
         {
+            Debug.Log("made a new damage ball");
             damageBall = Instantiate(damageBallPrefab, weaponEmitterPoint.position, weaponEmitterPoint.rotation) as GameObject; //weaponEmitterPoint.transform.position, weaponEmitterPoint.transform.rotation) as GameObject;
             damageBall.layer = 11;  //11 means that the hammer won't hurt other enemy units
+            dbdd = damageBall.GetComponent<DamageDealer>();
+            dbdd.SetRegularDamage(0);
             NetworkServer.Spawn(damageBall);
             //damageBall.transform.parent = gameObject.transform;  // I think having a child with a netidentity is bad.
-            damageBall.GetComponent<DamageDealer>().SetRegularDamage(damageBallDamage);  
             dbsr = damageBall.GetComponent<SpriteRenderer>();
             dbsr.color = new Color(1, 1, 1, 0);
         }
@@ -91,7 +88,8 @@ public class Hammer_Brain : Brain
         {
             damageBall.transform.position = weaponEmitterPoint.position;
             chargeFractionRemaining = (timeSinceBeganCharging / timeRequiredToChargeMotors);
-            //damageBall.transform.position = weaponEmitterPoint.transform.position;
+            dbdd.SetRegularDamage(chargeFractionRemaining * damageBallDamage);
+
             if (!isSprinting)
             {
                 dbsr.color = new Color(1, 1, 1, chargeFractionRemaining);
@@ -102,10 +100,7 @@ public class Hammer_Brain : Brain
                     //damageBall.GetComponent<CircleCollider2D>().enabled = true;
                 }
             }
-            if (isSprinting)
-            {
-                damageBall.GetComponent<Rigidbody2D>().angularVelocity = 0f;
-            }
+
         }
 
     }
@@ -117,11 +112,11 @@ public class Hammer_Brain : Brain
         angleToPlayer = Vector3.SignedAngle(targetDir, transform.up, transform.forward);
         if (angleToPlayer > 5)
         {
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -maxTurnRate, thrustTurning * Time.deltaTime);
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
         }
         if (angleToPlayer < -5)
         {
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnRate, thrustTurning * Time.deltaTime);
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
         }
 
         if (timeSinceBeganCharging < timeRequiredToChargeMotors)
@@ -142,7 +137,7 @@ public class Hammer_Brain : Brain
         if (isSprinting)
         {
             timeSinceBeganSprinting += Time.deltaTime;
-            rb.AddForce(thrustForward * transform.up * Time.timeScale);
+            rb.AddForce(accelRate_normal * transform.up * Time.timeScale);
             if (timeSinceBeganSprinting >= sprintDuration) //Once sprinting duration is done: decolor, decrease angular drag,
             {
                 //sr.color = Color.white;

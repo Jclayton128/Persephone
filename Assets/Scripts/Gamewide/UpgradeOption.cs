@@ -15,12 +15,14 @@ public class UpgradeOption : ScriptableObject
 
     public virtual void ExecuteUpgrade()
     {
-        PurchaseCount++;
-        // implement upgrade logic here
+        // implement upgrade logic here      
 
         
-        Debug.Log($"purchased {NameForUI}");
-        
+    }
+
+    public void IncrementPurchaseCountForClient()
+    {
+        PurchaseCount++;
     }
 
 

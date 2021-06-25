@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -2425707947871905258}
   m_Layer: 14
   m_Name: ProtoScrap
-  m_TagString: Untagged
+  m_TagString: Scrap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

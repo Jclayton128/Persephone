@@ -95,7 +95,7 @@ public class Trundler_Brain : Brain
             newBlasterProjectile.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-randomSpread, randomSpread)));
             newBlasterProjectile.GetComponent<Rigidbody2D>().velocity = (shotSpeed) * newBlasterProjectile.transform.up;
             DamageDealer damageDealer = newBlasterProjectile.GetComponent<DamageDealer>();
-            damageDealer.IsReal = true;
+            //damageDealer.IsReal = true;
             damageDealer.SetRegularDamage(blasterDamage);
             damageDealer.SetIonization(1f);
             damageDealer.SetDraining(1f);

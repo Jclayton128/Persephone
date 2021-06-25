@@ -14,9 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  targets: []
   currentAttackTarget: {fileID: 0}
-  currentDest: {x: 0, y: 0, z: 0}
   detectorRange: 4
   accelRate_normal: 5
   maxTurnSpeed_normal: 180
@@ -33,6 +31,10 @@ PrefabInstance:
     - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: hullMax
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: penetrationToSoakUp
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Sprite

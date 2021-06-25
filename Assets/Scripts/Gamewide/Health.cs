@@ -52,6 +52,7 @@ public class Health : NetworkBehaviour
     [SyncVar]
     [SerializeField] float purificationRate = 0.3f;  // points per second. Ionization and Draining scales from 0 to max Energy/Shield level;
 
+    [SerializeField] int penetrationToSoakUp = 1;
 
     float dragAtDeath = 3f;
     float angularDragAtDeath = 0.4f;
@@ -279,59 +280,74 @@ public class Health : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+
         DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
-
-        //Begin check for validity of received damage - "should this weapon actually affect me?"
-        if (!damageDealer) { return; }
-        if (damageDealer.IsReal == false) { return; }
-        if (gameObject == damageDealer.GetOwningEntity()) { return; }
-
-        // Its a valid hit; begin responding
-        lastDamageDealerToBeHitBy = damageDealer;
-        if (damageDealer.GetOwningEntity())
+        if (isClient)
         {
-            ownerOfLastDamageDealerToBeHitBy = damageDealer.GetOwningEntity();
+            //Begin check for validity of received damage - "should this weapon actually affect me?"
+            if (!damageDealer) { return; }
+
+
+            if (damageDealer.particleExplosionAtImpact)
+            {
+                GameObject damageParticleEffect = Instantiate(damageDealer.particleExplosionAtImpact, transform.position, transform.rotation) as GameObject;
+                Destroy(damageParticleEffect, 10);
+            }
+
+            if (chosenHurtSound)
+            {
+                AudioSource.PlayClipAtPoint(chosenHurtSound, transform.position);
+            }
+
+
+            damageDealer.ModifyPenetration(-1 * penetrationToSoakUp);
         }
 
-        if (damageDealer.particleExplosionAtImpact)
+        if (isServer)
         {
-            GameObject damageParticleEffect = Instantiate(damageDealer.particleExplosionAtImpact, transform.position, transform.rotation) as GameObject;
-            Destroy(damageParticleEffect, 10);
+
+            //Begin check for validity of received damage - "should this weapon actually affect me?"
+            if (!damageDealer) { return; }
+            //if (damageDealer.IsReal == false) { return; }
+            if (gameObject == damageDealer.GetOwningEntity()) { return; }
+
+            // Its a valid hit; begin responding
+            lastDamageDealerToBeHitBy = damageDealer;
+            if (damageDealer.GetOwningEntity())
+            {
+                ownerOfLastDamageDealerToBeHitBy = damageDealer.GetOwningEntity();
+            }    
+
+            Damage damage = damageDealer.GetDamage();
+
+            if (damage.KnockbackAmount != 0)
+            {
+                Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
+                Rigidbody2D collRB = other.transform.GetComponent<Rigidbody2D>();
+                rb2d.AddForce(damage.KnockbackAmount * collRB.velocity, ForceMode2D.Impulse);
+            }
+
+            if (Mathf.Abs(damage.SpeedModifier) > 0)
+            {
+                rb.velocity = (rb.velocity.magnitude * damageDealer.GetSpeedModifier()) * rb.velocity.normalized;
+            }
+
+            if (damage.Ionization > 0)
+            {
+                es.ReceiveIonizationDamage(damage.Ionization);
+            }
+
+            if (damage.Draining > 0)
+            {
+                ionizationAmount += damage.Draining;
+            }
+
+            ModifyShieldLevel(damage.ShieldBonusDamage * -1, false);
+            ModifyShieldLevel(damage.RegularDamage * -1, true);
+
+
+            damageDealer.ModifyPenetration(-1 * penetrationToSoakUp);
         }
-
-        Damage damage = damageDealer.GetDamage();
-
-        if (damage.KnockbackAmount != 0)
-        {
-            Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
-            Rigidbody2D collRB = other.transform.GetComponent<Rigidbody2D>();
-            rb2d.AddForce(damage.KnockbackAmount * collRB.velocity, ForceMode2D.Impulse);
-        }
-
-        if (Mathf.Abs(damage.SpeedModifier) > 0)
-        {
-            rb.velocity = (rb.velocity.magnitude * damageDealer.GetSpeedModifier()) * rb.velocity.normalized;
-        }
-
-        if (damage.Ionization > 0)
-        {
-            es.ReceiveIonizationDamage(damage.Ionization);
-        }
-
-        if (damage.Draining > 0)
-        {
-            ionizationAmount += damage.Draining;
-        }
-
-        ModifyShieldLevel(damage.ShieldBonusDamage * -1, false);
-        ModifyShieldLevel(damage.RegularDamage * -1, true);
-
-        if (chosenHurtSound)
-        {
-            AudioSource.PlayClipAtPoint(chosenHurtSound, transform.position);
-        }
-
-        damageDealer.ModifyPenetration(-1);
 
     }
 

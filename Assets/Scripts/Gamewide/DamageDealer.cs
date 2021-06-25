@@ -16,7 +16,7 @@ public class DamageDealer : MonoBehaviour
 
     public GameObject particleExplosionAtImpact = null;
 
-    public bool IsReal = false;
+    //public bool IsReal = false;
 
     #region Regular Damage Traits
 

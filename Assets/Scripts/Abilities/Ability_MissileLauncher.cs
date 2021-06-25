@@ -50,7 +50,7 @@ public class Ability_MissileLauncher : Ability
         DamageDealer dd = missile.GetComponent<DamageDealer>();
         dd.SetRegularDamage(hullDamage);
         dd.SetSafeObject(gameObject);
-        dd.IsReal = true;
+        //dd.IsReal = true;
         missileAI.normalSpeed = weaponSpeed;
         missileAI.SetMissileOwner(gameObject);
         missileAI.SetLifetime(weaponLifetime);

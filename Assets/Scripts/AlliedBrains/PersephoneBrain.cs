@@ -104,7 +104,7 @@ public class PersephoneBrain : NetworkBehaviour
         if (isClient)
         {
             HandleVisibility();
-            OrientCompass();
+            //OrientCompass();
         }
 
         if (isServer && isStarted)

@@ -36,15 +36,13 @@ public class Hammer_Brain : Brain
     void Start()
     {
         if (!isServer) { return; }
-        AcquirePlayerTarget();
+        TargetMostImportantAlly();
         timeSinceBeganCharging = 0 + UnityEngine.Random.Range(-1 * randomVarianceToChargeUpTime, randomVarianceToChargeUpTime);
     }
 
-    private void AcquirePlayerTarget()
+    private void TargetMostImportantAlly()
     {
-        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-        int rand = UnityEngine.Random.Range(0, players.Length);
-        targetPlayer = players[rand];
+        currentAttackTarget = targets[0].gameObject;
     }
 
     protected override void FixedUpdate()
@@ -58,9 +56,9 @@ public class Hammer_Brain : Brain
         if (!isServer) { return; }
         TrackPlayer();
         CreateDamageBall();
-        if (!targetPlayer)
+        if (!currentAttackTarget)
         {
-            AcquirePlayerTarget();
+            TargetMostImportantAlly();
         }
     }
     private void CreateDamageBall()
@@ -71,7 +69,7 @@ public class Hammer_Brain : Brain
             damageBall.layer = 11;  //11 means that the hammer won't hurt other enemy units
             NetworkServer.Spawn(damageBall);
             //damageBall.transform.parent = gameObject.transform;  // I think having a child with a netidentity is bad.
-            damageBall.GetComponent<DamageDealer>().SetRegularDamage(0.0f);  
+            damageBall.GetComponent<DamageDealer>().SetRegularDamage(damageBallDamage);  
             dbsr = damageBall.GetComponent<SpriteRenderer>();
             dbsr.color = new Color(1, 1, 1, 0);
         }

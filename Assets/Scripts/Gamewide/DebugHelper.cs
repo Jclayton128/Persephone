@@ -12,6 +12,8 @@ public class DebugHelper : NetworkBehaviour
     [SerializeField] TextMeshProUGUI debugModeTMP = null;
     [SerializeField] GameObject[] testMinion = null;
     PersephoneBrain pb;
+    LevelManager lm;
+
     public override void OnStartClient()
     {
         debugModeTMP = GameObject.FindGameObjectWithTag("DebugText").GetComponent<TextMeshProUGUI>();
@@ -23,6 +25,7 @@ public class DebugHelper : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        lm = FindObjectOfType<LevelManager>();
         if (isClient)
         {
             HandleDebugModeToggle();
@@ -35,10 +38,9 @@ public class DebugHelper : NetworkBehaviour
 
     private void HandlePersephoneHalt()
     {
-        if (!pb)
+        if (!pb && lm.GetCurrentLevelCount() >=1 )
         {
             pb = GameObject.FindGameObjectWithTag("Persephone").GetComponent<PersephoneBrain>();
-            return;
         }
         if (isInDebugMode && Input.GetKeyDown(KeyCode.M) && hasAuthority && pb)
         {

@@ -10,10 +10,10 @@ public abstract class Brain : NetworkBehaviour
     protected Rigidbody2D rb;
     protected SpriteRenderer sr;
     protected ArenaBounds ab;
-    [SerializeField] protected List<IFF> targets = new List<IFF>();
+    protected List<IFF> targets = new List<IFF>();
     protected GameObject incomingDamager;
     [SerializeField] protected GameObject currentAttackTarget;
-    [SerializeField] protected Vector3 currentDest = Vector3.zero;
+    protected Vector3 currentDest = Vector3.zero;
     protected Detector det;
     protected UnitTracker ut;
 

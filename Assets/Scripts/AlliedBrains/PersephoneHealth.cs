@@ -32,6 +32,8 @@ public class PersephoneHealth : NetworkBehaviour
     [SyncVar(hook = nameof(UpdateUI))]
     [SerializeField] float currentHealth;
 
+    int penetrationToSoakUp = 10;
+
     DamageDealer lastDamageDealerToBeHitBy;
     GameObject ownerOfLastDamageDealerToBeHitBy;
 
@@ -120,35 +122,56 @@ public class PersephoneHealth : NetworkBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
-
-        //Begin check for validity of received damage - "should this weapon actually affect me?"
-        if (!damageDealer) { return; }
-        if (damageDealer.IsReal == false) { return; }
-        if (gameObject == damageDealer.GetOwningEntity()) { return; }
-
-        // Its a valid hit; begin responding
-        lastDamageDealerToBeHitBy = damageDealer;
-        if (damageDealer.GetOwningEntity())
+        if (isClient)
         {
-            ownerOfLastDamageDealerToBeHitBy = damageDealer.GetOwningEntity();
+            //Begin check for validity of received damage - "should this weapon actually affect me?"
+            if (!damageDealer) { return; }
+
+            if (damageDealer.particleExplosionAtImpact)
+            {
+                GameObject damageParticleEffect = Instantiate(damageDealer.particleExplosionAtImpact, transform.position, transform.rotation) as GameObject;
+                Destroy(damageParticleEffect, 10);
+            }
+
+            if (chosenHurtSound)
+            {
+                AudioSource.PlayClipAtPoint(chosenHurtSound, transform.position);
+            }
+
+            damageDealer.ModifyPenetration(-1 * penetrationToSoakUp);
         }
 
-        if (damageDealer.particleExplosionAtImpact)
+        if (isServer)
         {
-            GameObject damageParticleEffect = Instantiate(damageDealer.particleExplosionAtImpact, transform.position, transform.rotation) as GameObject;
-            Destroy(damageParticleEffect, 10);
+            //Begin check for validity of received damage - "should this weapon actually affect me?"
+            if (!damageDealer) { return; }
+            //if (damageDealer.IsReal == false) { return; }
+            if (gameObject == damageDealer.GetOwningEntity()) { return; }
+
+            // Its a valid hit; begin responding
+            lastDamageDealerToBeHitBy = damageDealer;
+            if (damageDealer.GetOwningEntity())
+            {
+                ownerOfLastDamageDealerToBeHitBy = damageDealer.GetOwningEntity();
+            }
+
+            if (damageDealer.particleExplosionAtImpact)
+            {
+                GameObject damageParticleEffect = Instantiate(damageDealer.particleExplosionAtImpact, transform.position, transform.rotation) as GameObject;
+                Destroy(damageParticleEffect, 10);
+            }
+
+            Damage damage = damageDealer.GetDamage();
+
+            ModifyHullLevel(damage.RegularDamage * -1);
+
+            if (chosenHurtSound)
+            {
+                AudioSource.PlayClipAtPoint(chosenHurtSound, transform.position);
+            }
+
+            damageDealer.ModifyPenetration(-1 * penetrationToSoakUp);  //Nothing should be able to penetrate through Pers
         }
-
-        Damage damage = damageDealer.GetDamage();
-
-        ModifyHullLevel(damage.RegularDamage * -1);
-
-        if (chosenHurtSound)
-        {
-            AudioSource.PlayClipAtPoint(chosenHurtSound, transform.position);
-        }
-
-        damageDealer.ModifyPenetration(-10);  //Nothing should be able to penetrate through Pers
     }
 
 

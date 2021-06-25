@@ -15,8 +15,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   currentAttackTarget: {fileID: 0}
-  currentDest: {x: 0, y: 0, z: 0}
-  detectorRange: 4
+  detectorRange: 30
   accelRate_normal: 5
   maxTurnSpeed_normal: 180
   turnAccelRate_normal: 7

@@ -187,6 +187,7 @@ MonoBehaviour:
   shieldMax_normal: 1
   shieldRate_normal: 0
   purificationRate: 0
+  penetrationToSoakUp: 1
   isDying: 0
   AssignedWreckerDrone: {fileID: 0}
 --- !u!114 &5688006805919652889
@@ -203,7 +204,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  hiderCollider: {fileID: 0}
   iffAllegiance: 1
+  normalImportance: 0
 --- !u!114 &8591628276914722625
 MonoBehaviour:
   m_ObjectHideFlags: 0

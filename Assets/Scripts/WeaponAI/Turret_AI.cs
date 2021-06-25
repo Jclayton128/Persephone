@@ -118,7 +118,7 @@ public class Turret_AI : MonoBehaviour
             bullet.transform.rotation = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z + randomSpread);
 
             DamageDealer dd = bullet.GetComponent<DamageDealer>();
-            dd.IsReal = true;
+            //dd.IsReal = true;
             dd.SetKnockback(weaponKnockback);
             dd.SetRegularDamage(weaponDamage);
             dd.SetShieldBonusDamage(weaponBonusShieldDamage);

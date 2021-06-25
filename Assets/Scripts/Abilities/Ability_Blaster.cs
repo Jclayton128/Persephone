@@ -28,7 +28,7 @@ public class Ability_Blaster : Ability
             dd.SetRegularDamage(hullDamage);
             dd.SetShieldBonusDamage(shieldDamage);
             dd.SetIonization(ionDamage);
-            dd.IsReal = true;
+            //dd.IsReal = true;
             Destroy(bullet, weaponLifetime);
         }
         else

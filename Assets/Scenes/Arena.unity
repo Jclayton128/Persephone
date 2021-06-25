@@ -1891,11 +1891,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662ab86fc7cb2b142b12bec588cdae59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bounds:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -2124,11 +2119,7 @@ MonoBehaviour:
   syncInterval: 0.1
   persephonePrefab: {fileID: 1647500759589659975, guid: 22bde83cf5a51264e9db4eab4bd3145b, type: 3}
   levelCounterTMP: {fileID: 1502423975}
-  levelList:
-  - {fileID: 11400000, guid: 3c7979046c354714cb63025e05836154, type: 2}
-  - {fileID: 11400000, guid: 3c7979046c354714cb63025e05836154, type: 2}
-  - {fileID: 11400000, guid: 3c7979046c354714cb63025e05836154, type: 2}
-  - {fileID: 11400000, guid: 3c7979046c354714cb63025e05836154, type: 2}
+  unencounteredLevels:
   - {fileID: 11400000, guid: 3c7979046c354714cb63025e05836154, type: 2}
 --- !u!1 &554500651
 GameObject:

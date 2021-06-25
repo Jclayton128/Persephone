@@ -12,21 +12,24 @@ public class PersephoneBrain : NetworkBehaviour
     [SerializeField] GameObject wreckerDronePrefab = null;
     Slider healthSlider;
     TextMeshProUGUI statusTMP;
+    Image compass;
     SpriteRenderer[] srs;
     Rigidbody2D rb;
     LevelManager lm;
     PersephoneHealth ph;
     Turret_AI[] turrets;
+    ArenaBounds ab;
+    GameObject localPlayerAvatar;
 
     //param
     float TimeRequiredToWarpIn;
-    public static Vector3 startingSpot = new Vector3(-45, 0, 0);
+    Vector3 startingSpot;
     string persCountdownText = "Arrival in: ";
 
     float speed_WarpingIn = 30f;
     float speed_InSystem = 1f;
     float turnRate = 45f;
-    float minTravelDist = 16f;
+    float minTravelDist;
     float closeEnoughDist = 3f;
     float timeRequiredForWarpChargeUp = 10f;
 
@@ -40,7 +43,7 @@ public class PersephoneBrain : NetworkBehaviour
     bool isStarted = false;
 
     [SyncVar]
-    bool isInArena = true;
+    bool isInArena = false;
 
     [SyncVar]
     [SerializeField] float speed_Current;
@@ -67,19 +70,31 @@ public class PersephoneBrain : NetworkBehaviour
         lm = FindObjectOfType<LevelManager>();
         ph = GetComponent<PersephoneHealth>();
         turrets = GetComponentsInChildren<Turret_AI>();
+        ab = FindObjectOfType<ArenaBounds>();
+
+        if (isServer)
+        {
+            startingSpot = ab.CreateValidRandomPointOutsideOfArena();
+            transform.position = startingSpot;
+            minTravelDist = ab.ArenaRadius * 0.75f;
+        }
+
 
         if (isClient)
         {
             UIManager uim = FindObjectOfType<UIManager>();
             healthSlider = uim.GetPersephoneHealthSlider();
             statusTMP = uim.GetPersephoneStatusTMP();
+            compass = uim.GetPersephoneCompass();
             srs = GetComponentsInChildren<SpriteRenderer>();
+            localPlayerAvatar = ClientInstance.ReturnClientInstance().CurrentAvatar;
+
         }
     }
 
     private void RegisterPrefabs()
     {
-        NetworkClient.RegisterPrefab(wreckerDronePrefab);
+        NetworkClient.RegisterPrefab(wreckerDronePrefab);       
 
     }
 
@@ -89,6 +104,7 @@ public class PersephoneBrain : NetworkBehaviour
         if (isClient)
         {
             HandleVisibility();
+            OrientCompass();
         }
 
         if (isServer && isStarted)
@@ -101,11 +117,21 @@ public class PersephoneBrain : NetworkBehaviour
         }
 
     }
+
+    private void OrientCompass()
+    {
+        Vector3 compassDir = (transform.position - localPlayerAvatar.transform.position);
+        float ang = Vector3.SignedAngle(Vector3.up, compassDir, Vector3.forward);
+        Quaternion rot = Quaternion.Euler(0, 0, ang);
+        compass.transform.rotation = rot;
+    }
+
     private void HandleVisibility()
     {
         if (!isInArena)
         {
             healthSlider.gameObject.SetActive(false);
+            compass.gameObject.SetActive(false);
             foreach(SpriteRenderer sr in srs)
             {
                 sr.enabled = false;
@@ -115,6 +141,7 @@ public class PersephoneBrain : NetworkBehaviour
         else
         {
             healthSlider.gameObject.SetActive(true);
+            compass.gameObject.SetActive(true);
             foreach (SpriteRenderer sr in srs)
             {
                 sr.enabled = true;
@@ -146,6 +173,7 @@ public class PersephoneBrain : NetworkBehaviour
         // Update StatusText
         // Locate Position of WarpPortal;
         timeLeftForWarpCharging = timeRequiredForWarpChargeUp;
+        startingSpot = ab.CreateValidRandomPointOutsideOfArena();
         gameObject.layer = 0;
         speed_Current = speed_WarpingIn;
         statusText = "In Transit";

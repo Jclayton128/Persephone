@@ -191,6 +191,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   wreckerDronePrefab: {fileID: 8718589304910423880, guid: 5ce537c319e1c1d4caef93901c3d5590, type: 3}
+  speed_Current: 0
   wreckingDronesInUse: []
   disabledPlayers: []
 --- !u!212 &5156996213916725621
@@ -334,7 +335,7 @@ MonoBehaviour:
   syncInterval: 0.1
   hiderCollider: {fileID: 7115333233574527192}
   iffAllegiance: 0
-  normalImportance: 9
+  normalImportance: 30
 --- !u!114 &148215307
 MonoBehaviour:
   m_ObjectHideFlags: 0

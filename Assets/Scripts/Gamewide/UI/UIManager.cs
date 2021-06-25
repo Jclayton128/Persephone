@@ -29,6 +29,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Slider persephoneHealth = null;
     [SerializeField] TextMeshProUGUI persephoneStatusTMP = null;
+    [SerializeField] Image persephoneCompass = null;
 
     [SerializeField] Image primaryAbilityPlaceholder = null;
     [SerializeField] Image[] secondaryAbilityPlaceholders = null;
@@ -80,6 +81,11 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI GetPersephoneStatusTMP()
     {
         return persephoneStatusTMP;
+    }
+
+    public Image GetPersephoneCompass()
+    {
+        return persephoneCompass;
     }
 
     public Image GetPrimaryAbilityIcon(ClientInstance askingCI)

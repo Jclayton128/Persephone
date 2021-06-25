@@ -12,7 +12,9 @@ public class LevelManager : NetworkBehaviour
 
     [SerializeField] GameObject persephonePrefab = null;
     [SerializeField] TextMeshProUGUI levelCounterTMP = null;
-    [SerializeField] List<Level> levelList = null;
+    [SerializeField] List<Level> unencounteredLevels = null;
+    List<Level> encounteredLevels = new List<Level>();
+
     static Level currentLevel;
     PersephoneBrain pb;
 
@@ -24,7 +26,7 @@ public class LevelManager : NetworkBehaviour
     private void Awake()
     {
         NetworkClient.RegisterPrefab(persephonePrefab);
-        foreach (Level level in levelList)
+        foreach (Level level in unencounteredLevels)
         {
             level.RegisterLevelMinions();
         }
@@ -72,19 +74,37 @@ public class LevelManager : NetworkBehaviour
         {
             Destroy(weapon.transform.gameObject);
         }
+
+        var scraps = GameObject.FindGameObjectsWithTag("Scrap");
+        foreach (GameObject scrap in scraps)
+        {
+            Destroy(scrap);
+        }
+
         ut.DestroyAllMinions();
         
     }
 
     private void RemoveCurrentLevelFromList()
     {
-        levelList.Remove(currentLevel);
+        unencounteredLevels.Remove(currentLevel);
+        encounteredLevels.Add(currentLevel);
     }
 
     private void ChooseNextLevel()
     {
-        int rand = UnityEngine.Random.Range(0, levelList.Count);
-        currentLevel = levelList[rand];
+        if (unencounteredLevels.Count == 0)
+        {
+            foreach (Level level in encounteredLevels)
+            {
+                unencounteredLevels.Add(level);
+            }
+            encounteredLevels.Clear();
+        }
+
+        int rand = UnityEngine.Random.Range(0, unencounteredLevels.Count);
+        currentLevel = unencounteredLevels[rand];
+        
     }
 
     private void ResetPlayerPositions()
@@ -114,7 +134,7 @@ public class LevelManager : NetworkBehaviour
     {
         if (isServer)
         {
-            GameObject persephone = Instantiate(persephonePrefab, PersephoneBrain.startingSpot, Quaternion.identity) as GameObject;
+            GameObject persephone = Instantiate(persephonePrefab, Vector2.zero, Quaternion.identity) as GameObject;
             pb = persephone.GetComponent<PersephoneBrain>();
             pb.StartPersephone();
             NetworkServer.Spawn(persephone);

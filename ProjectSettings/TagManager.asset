@@ -9,6 +9,7 @@ TagManager:
   - SSPD
   - Persephone
   - WarpPortal
+  - Scrap
   layers:
   - Default
   - TransparentFX

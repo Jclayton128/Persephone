@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4d870c194836c4743a0e57d1d26acc16, type: 3}
-  m_Name: L1
+  m_Name: AllMinionTest
   m_EditorClassIdentifier: 
   minionPrefabs:
   - {fileID: 3937818766114237639, guid: 7b6c9240013d41040b4caa5dd5501955, type: 3}
+  - {fileID: 2860327530500213790, guid: 250d82fe14542e24eb1ef5384c00ed14, type: 3}
   spawnPoints: []
   portalLocation: {x: 0, y: 1}
   asteroids: []

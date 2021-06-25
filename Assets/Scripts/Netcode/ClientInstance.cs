@@ -13,7 +13,7 @@ public class ClientInstance : NetworkBehaviour
     //[SerializeField] GameObject desiredAvatar;
     ShipSelectPanelDriver sspd;
     int desiredAvatar;
-    public GameObject currentAvatar;
+    public GameObject CurrentAvatar;
     LevelManager lm;
 
     public static Action<GameObject> OnAvatarSpawned; //Anytime an observer to this event hears it, they get passed a reference Game Object
@@ -27,7 +27,7 @@ public class ClientInstance : NetworkBehaviour
     //This fires or dispatches the OnAvatarSpawned event, along with the GameObject reference of the thing that just spawned
     {
         OnAvatarSpawned?.Invoke(go);
-        currentAvatar = go;
+        CurrentAvatar = go;
 
     }
 

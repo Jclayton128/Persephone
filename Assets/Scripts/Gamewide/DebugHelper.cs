@@ -38,10 +38,10 @@ public class DebugHelper : NetworkBehaviour
         if (!pb)
         {
             pb = GameObject.FindGameObjectWithTag("Persephone").GetComponent<PersephoneBrain>();
+            return;
         }
         if (isInDebugMode && Input.GetKeyDown(KeyCode.M) && hasAuthority && pb)
         {
-            Debug.Log("getting called here");
             CmdTogglePersephoneHalt();
         }
     }
@@ -60,7 +60,7 @@ public class DebugHelper : NetworkBehaviour
     {
         if (isInDebugMode && Input.GetKeyDown(KeyCode.P) && hasAuthority)
         {
-            EnergySource es = GetComponent<ClientInstance>().currentAvatar.GetComponent<EnergySource>();
+            EnergySource es = GetComponent<ClientInstance>().CurrentAvatar.GetComponent<EnergySource>();
             es.ResetPowerLevel();
             Debug.Log("debug reset energy");
         }
@@ -70,7 +70,7 @@ public class DebugHelper : NetworkBehaviour
     {
         if (isInDebugMode && Input.GetKeyDown(KeyCode.H) && hasAuthority)
         {
-            Health health = GetComponent<ClientInstance>().currentAvatar.GetComponent<Health>();
+            Health health = GetComponent<ClientInstance>().CurrentAvatar.GetComponent<Health>();
             if (health.GetCurrentHull() > 0)
             {
                 Debug.Log("debug disable");

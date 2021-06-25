@@ -10,20 +10,23 @@ public class UpgradeManager : NetworkBehaviour
 {
     Image scrapBar;
     TextMeshProUGUI upgradePointsAvailableTMP;
+    TextMeshProUGUI shipLevelCounterTMP;
     UpgradePanelUI upui;
     [SerializeField] UpgradeOption[] allUpgradeOptions = null;
 
-    public int CurrentLevel = 1;
+    [SyncVar(hook = nameof(UpdateUIForLevel))]
+    int currentLevel = 1;
+
     //public int CurrentLevel { get; private set; } = 1;
     int baseUpgradeCost = 10; //This is the scrap required for the first upgrade.
     int currentUpgradeCost; //This is calculated by multiplying the current upgrade level by base cost. Each upgrade costs more than last.
 
     int currentScrap = 0;
 
-    [SyncVar(hook = nameof(UpdateUI))]
+    [SyncVar(hook = nameof(UpdateUIForScrap))]
     float currentUpgradePoints;
 
-    [SyncVar(hook = nameof(UpdateUI))]
+    [SyncVar(hook = nameof(UpdateUIForScrap))]
     float scrapBarFactor;
 
     float scrapBarZeroPoint = 0.1f;
@@ -32,7 +35,7 @@ public class UpgradeManager : NetworkBehaviour
     public Action<int> OnLevelUp;
 
     UpgradeOption[] currentUpgradeOptions = new UpgradeOption[3];
-    int currentUpgradeSelectionIndex = 0;
+    int currentUpgradeSelectionIndex = -1;
     void Start()
     {
         if (hasAuthority)
@@ -63,9 +66,10 @@ public class UpgradeManager : NetworkBehaviour
 
         upgradePointsAvailableTMP = uipack.UpgradePointsTMP;
         scrapBar = uipack.ScrapBar;
+        shipLevelCounterTMP = uipack.ShipLevelCounterTMP;
 
-        UpdateUI(0, 0);
-        CreateNewUpgradeOptions();
+        UpdateUIForScrap(0, 0);
+        CreateNewUpgradeOptionsForLocalClient();
 
     }
 
@@ -87,6 +91,10 @@ public class UpgradeManager : NetworkBehaviour
             {
                 int indexWithinAllOptions = currentUpgradeOptions[currentUpgradeSelectionIndex].LocalUpgradeOptionID;
                 CmdPurchaseSelectedUpgrade(indexWithinAllOptions);
+
+                allUpgradeOptions[indexWithinAllOptions].IncrementPurchaseCountForClient();
+                currentUpgradeSelectionIndex = -1;
+                CreateNewUpgradeOptionsForLocalClient();
                 //TODO Cha-Ching audio for purchasing an upgrade.
 
             }
@@ -101,8 +109,6 @@ public class UpgradeManager : NetworkBehaviour
         {
             currentUpgradePoints--;
             allUpgradeOptions[index].ExecuteUpgrade();
-
-            CreateNewUpgradeOptions();
         }
 
     }
@@ -143,7 +149,7 @@ public class UpgradeManager : NetworkBehaviour
     public void GainScrap(int amount)
     {
         if (!isServer) { return; }
-        currentUpgradeCost = baseUpgradeCost * CurrentLevel;
+        currentUpgradeCost = baseUpgradeCost * currentLevel;
         currentScrap += amount;
 
         if (currentScrap >= currentUpgradeCost)
@@ -155,22 +161,22 @@ public class UpgradeManager : NetworkBehaviour
         {
             //TODO Scrap bloop pickup sound
             scrapBarFactor = (float)currentScrap / (float)currentUpgradeCost;
-            UpdateUI(0, 0);
+            UpdateUIForScrap(0, 0);
         }
     }
 
     private void LevelUp()
     {
-        CurrentLevel++;
+        currentLevel++;
         currentUpgradePoints++;
         currentScrap = 0;
         scrapBarFactor = 0;
-        OnLevelUp?.Invoke(CurrentLevel);
-        UpdateUI(0, 0);
+        OnLevelUp?.Invoke(currentLevel);
+        //UpdateUI(0, 0);
 
     }
 
-    private void CreateNewUpgradeOptions()
+    private void CreateNewUpgradeOptionsForLocalClient()
     {
         int rand1 = UnityEngine.Random.Range(0, allUpgradeOptions.Length);
         int rand2 = 0;
@@ -195,7 +201,7 @@ public class UpgradeManager : NetworkBehaviour
         //Put the UI stuff from the different chosen upgrade options into their correct cubbies on the panel
     }
 
-    private void UpdateUI(float v1, float v2)
+    private void UpdateUIForScrap(float v1, float v2)
     {
         if (upgradePointsAvailableTMP)
         {
@@ -204,8 +210,15 @@ public class UpgradeManager : NetworkBehaviour
         if (scrapBar)
         {
             float factor = ConvertFactorIntoFillAmount();
-            Debug.Log("UI update, factor should be: " + factor);
             scrapBar.fillAmount = factor;
+        }
+    }
+
+    private void UpdateUIForLevel(int v1, int v2)
+    {
+        if (shipLevelCounterTMP)
+        {
+            shipLevelCounterTMP.text = "Lvl\r\n" + currentLevel.ToString();
         }
     }
 
@@ -213,6 +226,11 @@ public class UpgradeManager : NetworkBehaviour
     {
         float fac = Mathf.Lerp(scrapBarZeroPoint, scrapBarOnePoint, scrapBarFactor);
         return fac;
+    }
+
+    public int GetCurrentLevel()
+    {
+        return currentLevel;
     }
 
 }

@@ -75,7 +75,7 @@ public class AbilityManager : NetworkBehaviour
         secondaryAbilityIcons = uim.GetSecondaryAbilityIcons(ci, numberOfAbilitiesToPull);
         for (int i = 0; i < numberOfAbilitiesToPull; i++)
         {
-            if (secondaryAbilities[i].GetUnlockLevel() <= um.CurrentLevel)
+            if (secondaryAbilities[i].GetUnlockLevel() <= um.GetCurrentLevel())
             {
                 secondaryAbilityIcons[i].sprite = secondaryAbilities[i].AbilityIcon;
             }

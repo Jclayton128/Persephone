@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Image scrapBar = null;
     [SerializeField] TextMeshProUGUI upgradePointsTMP = null;
+    [SerializeField] TextMeshProUGUI shipLevelCounterTMP = null;
 
     [SerializeField] Slider persephoneHealth = null;
     [SerializeField] TextMeshProUGUI persephoneStatusTMP = null;
@@ -54,9 +55,11 @@ public class UIManager : MonoBehaviour
                 ShieldRateTMP = shieldRateTMP,
                 EnergyRateTMP = energyRateTMP,
                 ShieldIonizationSlider = shieldIonizationSlider,
-                EnergyIonizationSlider = energyIonizationSlider,           
+                EnergyIonizationSlider = energyIonizationSlider,
                 ScrapBar = scrapBar,
-                UpgradePointsTMP = upgradePointsTMP
+                UpgradePointsTMP = upgradePointsTMP,
+                ShipLevelCounterTMP = shipLevelCounterTMP
+                
                 //Throttle = throttle;  
 
             };

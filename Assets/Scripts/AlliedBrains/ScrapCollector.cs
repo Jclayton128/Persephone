@@ -25,7 +25,6 @@ public class ScrapCollector : NetworkBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (isClient) { return; }
         if (collision.transform.gameObject.GetComponent<ProtoScrap>())
         {
             float dist = (collision.transform.position - transform.position).magnitude;

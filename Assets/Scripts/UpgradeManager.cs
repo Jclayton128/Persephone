@@ -8,9 +8,10 @@ using UnityEngine.UI;
 
 public class UpgradeManager : NetworkBehaviour
 {
-    [SerializeField] Image scrapBar;
-    [SerializeField] TextMeshProUGUI upgradePointsAvailableTMP;
+    Image scrapBar;
+    TextMeshProUGUI upgradePointsAvailableTMP;
     UpgradePanelUI upui;
+    [SerializeField] UpgradeOption[] allUpgradeOptions = null;
 
     public int CurrentLevel = 1;
     //public int CurrentLevel { get; private set; } = 1;
@@ -29,11 +30,26 @@ public class UpgradeManager : NetworkBehaviour
     float scrapBarOnePoint = 0.9f;
 
     public Action<int> OnLevelUp;
+
+    UpgradeOption[] currentUpgradeOptions = new UpgradeOption[3];
+    int currentUpgradeSelectionIndex = 0;
     void Start()
-    {        
+    {
         if (hasAuthority)
         {
             HookIntoLocalUI();
+        }
+        PrepareUpgradeOptions();
+    }
+
+    private void PrepareUpgradeOptions()
+    {
+        int i = 0;
+        foreach (UpgradeOption upgradeOption in allUpgradeOptions)
+        {
+            upgradeOption.PurchaseCount = 0;
+            upgradeOption.LocalUpgradeOptionID = i;
+            i++;
         }
     }
 
@@ -49,6 +65,7 @@ public class UpgradeManager : NetworkBehaviour
         scrapBar = uipack.ScrapBar;
 
         UpdateUI(0, 0);
+        CreateNewUpgradeOptions();
 
     }
 
@@ -63,28 +80,53 @@ public class UpgradeManager : NetworkBehaviour
 
     private void HandleUpgradeMenuToggle()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        if (hasAuthority && Input.GetKeyDown(KeyCode.Tab))
         {
             upui.TogglePanelPosition();
+            if (!upui.IsExtended && currentUpgradeSelectionIndex >= 0 && currentUpgradePoints > 0)
+            {
+                int indexWithinAllOptions = currentUpgradeOptions[currentUpgradeSelectionIndex].LocalUpgradeOptionID;
+                CmdPurchaseSelectedUpgrade(indexWithinAllOptions);
+
+            }
         }
+
+    }
+
+    [Command]
+    private void CmdPurchaseSelectedUpgrade(int index)
+    {
+        currentUpgradePoints--;
+        allUpgradeOptions[index].ExecuteUpgrade();
+
+        CreateNewUpgradeOptions();
     }
 
     private void HandleUpgradeSelection()
     {
         if (!upui.IsExtended) { return; }
+        if (Input.GetKeyDown(KeyCode.BackQuote))
+        {
+            currentUpgradeSelectionIndex = -1;
+            upui.SetSelectorKnob(currentUpgradeSelectionIndex);
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            upui.SetSelectorKnob(1);
+            currentUpgradeSelectionIndex = 0;
+            upui.SetSelectorKnob(currentUpgradeSelectionIndex+1);
             return;
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            upui.SetSelectorKnob(2);
+            currentUpgradeSelectionIndex = 1;
+            upui.SetSelectorKnob(currentUpgradeSelectionIndex+1);
             return;
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            upui.SetSelectorKnob(3);
+            currentUpgradeSelectionIndex = 2;
+            upui.SetSelectorKnob(currentUpgradeSelectionIndex+1);
             return;
         }
     }
@@ -97,12 +139,7 @@ public class UpgradeManager : NetworkBehaviour
 
         if (currentScrap >= currentUpgradeCost)
         {
-            CurrentLevel++;
-            currentUpgradePoints++;
-            currentScrap = 0;
-            scrapBarFactor = 0;
-            OnLevelUp?.Invoke(CurrentLevel);
-            UpdateUI(0, 0);
+            LevelUp();
         }
         if (currentScrap < currentUpgradeCost)
         {
@@ -111,6 +148,41 @@ public class UpgradeManager : NetworkBehaviour
         }
     }
 
+    private void LevelUp()
+    {
+        CurrentLevel++;
+        currentUpgradePoints++;
+        currentScrap = 0;
+        scrapBarFactor = 0;
+        OnLevelUp?.Invoke(CurrentLevel);
+        UpdateUI(0, 0);
+
+    }
+
+    private void CreateNewUpgradeOptions()
+    {
+        int rand1 = UnityEngine.Random.Range(0, allUpgradeOptions.Length);
+        int rand2 = 0;
+        int rand3 = 0;
+        do
+        {
+            rand2 = UnityEngine.Random.Range(0, allUpgradeOptions.Length);
+        }
+        while (rand2 == rand1);
+        do
+        {
+            rand3 = UnityEngine.Random.Range(0, allUpgradeOptions.Length);
+        }
+        while (rand3 == rand1 || rand3 == rand2);
+
+        currentUpgradeOptions[0] = allUpgradeOptions[rand1];
+        currentUpgradeOptions[1] = allUpgradeOptions[rand2];
+        currentUpgradeOptions[2] = allUpgradeOptions[rand3];
+        upui.UpdateOptions(currentUpgradeOptions[0], currentUpgradeOptions[1], currentUpgradeOptions[2]);
+        //Create 3 random ints from 0 to 5
+        //Pull the upgrade options at those indices and put them in the chosenUpgradeOptions array
+        //Put the UI stuff from the different chosen upgrade options into their correct cubbies on the panel
+    }
 
     private void UpdateUI(float v1, float v2)
     {

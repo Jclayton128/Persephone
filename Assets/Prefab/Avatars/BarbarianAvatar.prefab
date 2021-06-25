@@ -110,6 +110,26 @@ PrefabInstance:
       propertyPath: purificationRate
       value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 609499a160419d64bbad132bac658467, type: 2}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: bf61c90286ba47e4c804f5509b075e56, type: 2}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 680cb96bb9b22614aa43072979a3336b, type: 2}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: ad7b020597860a746b6aa8c6cf470af3, type: 2}
     - target: {fileID: 6441007859182316285, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 1

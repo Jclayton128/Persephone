@@ -22,7 +22,6 @@ public class UpgradePanelUI : MonoBehaviour
 
     float lerpSpeed = 400f;
     public bool IsExtended { get; private set; } = false;
-    int selectionIndex;
 
     private void Start()
     {
@@ -38,24 +37,36 @@ public class UpgradePanelUI : MonoBehaviour
         }
         if (!IsExtended)
         {
+
             float x = Mathf.MoveTowards(thisRect.position.x, retractedPosition.position.x, lerpSpeed * Time.deltaTime);
             thisRect.position = new Vector2(x, thisRect.position.y);
         }
     }
 
-    public void SetSelectorKnob(int position1thru3)
+    public void SetSelectorKnob(int position0thru3)
     {
-        //if (position1thru3 != 1 || position1thru3 != 2 || position1thru3 != 3)
-        //{
-        //    Debug.Log("UI only has places for 1, 2, or 3 for the selection");
-        //    return;
-        //}
-        upgradeSelector.value = position1thru3;
+        upgradeSelector.value = position0thru3;
     }
 
     public void TogglePanelPosition()
     {
         IsExtended = !IsExtended;
+        if (!IsExtended)
+        {
+            upgradeSelector.value = 0;
+        }
+    }
+
+    public void UpdateOptions(UpgradeOption option1, UpgradeOption option2, UpgradeOption option3 )
+    {
+        option1Image.sprite = option1.UpgradeIcon;
+        optionCountTMP1.text = option1.PurchaseCount.ToString();
+
+        option2Image.sprite = option2.UpgradeIcon;
+        optionCountTMP2.text = option2.PurchaseCount.ToString();
+
+        option3Image.sprite = option3.UpgradeIcon;
+        optionCountTMP3.text = option3.PurchaseCount.ToString();
     }
 
 

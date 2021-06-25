@@ -19,6 +19,7 @@ public class UpgradePanelUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI explainerTMP = null;
     [SerializeField] RectTransform extendedPosition = null;
     [SerializeField] RectTransform retractedPosition = null;
+    [SerializeField] string nullOptionExplanation;
 
     float lerpSpeed = 400f;
     public bool IsExtended { get; private set; } = false;
@@ -43,9 +44,16 @@ public class UpgradePanelUI : MonoBehaviour
         }
     }
 
+    public void SetSelectorKnob(int position0thru3, UpgradeOption selectedOption)
+    {
+        upgradeSelector.value = position0thru3;
+        explainerTMP.text = selectedOption.Explanation;
+    }
+
     public void SetSelectorKnob(int position0thru3)
     {
         upgradeSelector.value = position0thru3;
+        explainerTMP.text = nullOptionExplanation;
     }
 
     public void TogglePanelPosition()
@@ -68,6 +76,7 @@ public class UpgradePanelUI : MonoBehaviour
         option3Image.sprite = option3.UpgradeIcon;
         optionCountTMP3.text = option3.PurchaseCount.ToString();
     }
+
 
 
 }

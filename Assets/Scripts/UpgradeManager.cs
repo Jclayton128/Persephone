@@ -87,6 +87,7 @@ public class UpgradeManager : NetworkBehaviour
             {
                 int indexWithinAllOptions = currentUpgradeOptions[currentUpgradeSelectionIndex].LocalUpgradeOptionID;
                 CmdPurchaseSelectedUpgrade(indexWithinAllOptions);
+                //TODO Cha-Ching audio for purchasing an upgrade.
 
             }
         }
@@ -96,10 +97,14 @@ public class UpgradeManager : NetworkBehaviour
     [Command]
     private void CmdPurchaseSelectedUpgrade(int index)
     {
-        currentUpgradePoints--;
-        allUpgradeOptions[index].ExecuteUpgrade();
+        if (currentUpgradePoints > 0)
+        {
+            currentUpgradePoints--;
+            allUpgradeOptions[index].ExecuteUpgrade();
 
-        CreateNewUpgradeOptions();
+            CreateNewUpgradeOptions();
+        }
+
     }
 
     private void HandleUpgradeSelection()
@@ -107,26 +112,30 @@ public class UpgradeManager : NetworkBehaviour
         if (!upui.IsExtended) { return; }
         if (Input.GetKeyDown(KeyCode.BackQuote))
         {
+            //TODO insert selector click audio
             currentUpgradeSelectionIndex = -1;
             upui.SetSelectorKnob(currentUpgradeSelectionIndex);
             return;
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            //TODO insert selector click audio
             currentUpgradeSelectionIndex = 0;
-            upui.SetSelectorKnob(currentUpgradeSelectionIndex+1);
+            upui.SetSelectorKnob(currentUpgradeSelectionIndex+1, currentUpgradeOptions[currentUpgradeSelectionIndex]);
             return;
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+            //TODO insert selector click audio
             currentUpgradeSelectionIndex = 1;
-            upui.SetSelectorKnob(currentUpgradeSelectionIndex+1);
+            upui.SetSelectorKnob(currentUpgradeSelectionIndex+1, currentUpgradeOptions[currentUpgradeSelectionIndex]);
             return;
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
+            //TODO insert selector click audio
             currentUpgradeSelectionIndex = 2;
-            upui.SetSelectorKnob(currentUpgradeSelectionIndex+1);
+            upui.SetSelectorKnob(currentUpgradeSelectionIndex+1, currentUpgradeOptions[currentUpgradeSelectionIndex]);
             return;
         }
     }
@@ -139,10 +148,12 @@ public class UpgradeManager : NetworkBehaviour
 
         if (currentScrap >= currentUpgradeCost)
         {
+            //TODO fanfare on level up sound
             LevelUp();
         }
         if (currentScrap < currentUpgradeCost)
         {
+            //TODO Scrap bloop pickup sound
             scrapBarFactor = (float)currentScrap / (float)currentUpgradeCost;
             UpdateUI(0, 0);
         }

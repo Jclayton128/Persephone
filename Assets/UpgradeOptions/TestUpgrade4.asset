@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PurchaseCount: 0
   UpgradeIcon: {fileID: 21300000, guid: db1fdd748ebf6114ab1dfc5b0b5bea62, type: 3}
-  nameForUI: upg 4
+  NameForUI: 
+  Explanation: Placeholder4 Upgrade. Increases Placeholder4 value.
   LocalUpgradeOptionID: 0

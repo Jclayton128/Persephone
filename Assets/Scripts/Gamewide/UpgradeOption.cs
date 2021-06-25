@@ -7,7 +7,8 @@ public class UpgradeOption : ScriptableObject
 {
     [SerializeField] public int PurchaseCount = 0;
     [SerializeField] public Sprite UpgradeIcon = null;
-    [SerializeField] public string nameForUI;
+    [SerializeField] public string NameForUI;
+    [SerializeField] public string Explanation;
 
     public int LocalUpgradeOptionID;
 
@@ -16,7 +17,9 @@ public class UpgradeOption : ScriptableObject
     {
         PurchaseCount++;
         // implement upgrade logic here
-        Debug.Log($"purchased {nameForUI}");
+
+        
+        Debug.Log($"purchased {NameForUI}");
         
     }
 

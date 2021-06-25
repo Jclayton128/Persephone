@@ -2125,6 +2125,8 @@ MonoBehaviour:
   explainerTMP: {fileID: 799855198}
   extendedPosition: {fileID: 839177655}
   retractedPosition: {fileID: 112740680}
+  nullOptionExplanation: No Option Selected. Press 1, 2, or 3 to select an upgrade.
+    TAB will then purchase the upgrade.
 --- !u!1 &690865446
 GameObject:
   m_ObjectHideFlags: 3
@@ -2585,9 +2587,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Blaster Upgrade.
-
-    Increases Normal Damage Dealt. '
+  m_text: No Option Selected. Press 1, 2, or 3 to select an upgrade. TAB will then
+    purchase the upgrade.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2617,8 +2618,8 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2661,12 +2662,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 799855198}
-    characterCount: 48
+    characterCount: 94
     spriteCount: 0
-    spaceCount: 6
-    wordCount: 6
+    spaceCount: 17
+    wordCount: 18
     linkCount: 0
-    lineCount: 3
+    lineCount: 4
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0

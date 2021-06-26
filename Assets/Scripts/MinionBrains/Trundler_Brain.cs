@@ -96,7 +96,7 @@ public class Trundler_Brain : Brain
             newBlasterProjectile.GetComponent<Rigidbody2D>().velocity = (shotSpeed) * newBlasterProjectile.transform.up;
             DamageDealer damageDealer = newBlasterProjectile.GetComponent<DamageDealer>();
             //damageDealer.IsReal = true;
-            damageDealer.SetRegularDamage(blasterDamage);
+            damageDealer.SetNormalDamage(blasterDamage);
             damageDealer.SetIonization(1f);
             damageDealer.SetDraining(1f);
             //SelectRandomFiringSound();

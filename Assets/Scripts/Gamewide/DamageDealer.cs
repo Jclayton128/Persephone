@@ -11,7 +11,7 @@ public class DamageDealer : MonoBehaviour
     float knockBack = 0;
     float speedModifier = 0; //this is a speed multiplier. 0 creates a sudden halt, 2 creates a doubling of speed.
 
-    GameObject safeObject = null;
+    GameObject owner = null;
     int penetration = 1;
 
     public GameObject particleExplosionAtImpact = null;
@@ -25,7 +25,7 @@ public class DamageDealer : MonoBehaviour
         shieldBonusDamage = value;
     }
 
-    public void SetRegularDamage(float value)
+    public void SetNormalDamage(float value)
     {
         regularDamage = value;
     }
@@ -98,14 +98,14 @@ public class DamageDealer : MonoBehaviour
 
     #endregion
 
-    public void SetSafeObject(GameObject obj)
+    public void SetOwnership(GameObject obj)
     {
-        safeObject = obj;
+        owner = obj;
     }
 
-    public GameObject GetOwningEntity()
+    public GameObject GetOwner()
     {
-        return safeObject;
+        return owner;
     }
 
 }

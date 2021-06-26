@@ -18,14 +18,14 @@ public class Ability_Blaster : Ability
     [Command]
     private void CmdRequestFireWeapon()
     {
-        if (es.CheckSpendEnergy(costPerShot))
+        if (es.CheckSpendEnergy(costToActivate))
         {
             GameObject bullet = Instantiate(abilityPrefabs[0], transform.position, transform.rotation) as GameObject;
             NetworkServer.Spawn(bullet);
             bullet.layer = 9;
             bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * weaponSpeed;
             DamageDealer dd = bullet.GetComponent<DamageDealer>();
-            dd.SetRegularDamage(normalDamage);
+            dd.SetNormalDamage(normalDamage);
             dd.SetShieldBonusDamage(shieldBonusDamage);
             //dd.IsReal = true;
             Destroy(bullet, weaponLifetime);

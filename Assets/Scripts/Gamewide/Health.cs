@@ -309,13 +309,13 @@ public class Health : NetworkBehaviour
             //Begin check for validity of received damage - "should this weapon actually affect me?"
             if (!damageDealer) { return; }
             //if (damageDealer.IsReal == false) { return; }
-            if (gameObject == damageDealer.GetOwningEntity()) { return; }
+            if (gameObject == damageDealer.GetOwner()) { return; }
 
             // Its a valid hit; begin responding
             lastDamageDealerToBeHitBy = damageDealer;
-            if (damageDealer.GetOwningEntity())
+            if (damageDealer.GetOwner())
             {
-                ownerOfLastDamageDealerToBeHitBy = damageDealer.GetOwningEntity();
+                ownerOfLastDamageDealerToBeHitBy = damageDealer.GetOwner();
             }    
 
             Damage damage = damageDealer.GetDamage();

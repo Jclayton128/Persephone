@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &3507541487428363896
+--- !u!114 &1341184730593936299
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,24 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 831018614288581221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28b7b9b679a333e438d4b7382447c9f5, type: 3}
+  m_Script: {fileID: 11500000, guid: 25e0fea633badf14f99a638d13413843, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  AbilityIcon: {fileID: 21300000, guid: 753adf59a1f66b34684ca181a6d3747e, type: 3}
+  AbilityIcon: {fileID: 21300000, guid: 1f4dd0a9b423f9444898d3d240c44ea8, type: 3}
   unlockLevel: 1
   abilityPrefabs:
-  - {fileID: 1230300639563859961, guid: e45cb8edce83bb849870fc8563cdb076, type: 3}
+  - {fileID: 8293666064622219889, guid: cb6d47efeabba7b469237c6ba444e568, type: 3}
   IsPrimaryAbility: 0
-  timeBetweenShots: 0
-  weaponLifetime: 1
+  timeBetweenShots: -1
+  weaponLifetime: -1
   weaponSpeed: 10
-  normalDamage: 0
+  normalDamage: 3
   shieldBonusDamage: 0
-  costPerShot: 5
+  costToActivate: 4
   insufficientEnergySound: {fileID: 0}
-  missileFiringSound: {fileID: 0}
 --- !u!114 &7227535150547839073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -51,7 +50,7 @@ MonoBehaviour:
   weaponSpeed: 10
   normalDamage: 1
   shieldBonusDamage: 0.5
-  costPerShot: 2
+  costToActivate: 2
   insufficientEnergySound: {fileID: 0}
 --- !u!114 &7235979305216916552
 MonoBehaviour:
@@ -76,7 +75,7 @@ MonoBehaviour:
   weaponSpeed: 0
   normalDamage: 0
   shieldBonusDamage: 0
-  costPerShot: 0
+  costToActivate: 0
   insufficientEnergySound: {fileID: 0}
   deployedSprite: {fileID: 21300000, guid: 06e85c583abb6424d86aa78feb873349, type: 3}
   isDeployed: 0

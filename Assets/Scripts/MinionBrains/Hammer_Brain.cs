@@ -90,7 +90,7 @@ public class Hammer_Brain : Brain
             damageBall = Instantiate(damageBallPrefab, weaponEmitterPoint.position, weaponEmitterPoint.rotation) as GameObject; //weaponEmitterPoint.transform.position, weaponEmitterPoint.transform.rotation) as GameObject;
             damageBall.layer = 11;  //11 means that the hammer won't hurt other enemy units
             dbdd = damageBall.GetComponent<DamageDealer>();
-            dbdd.SetRegularDamage(0);
+            dbdd.SetNormalDamage(0);
             NetworkServer.Spawn(damageBall);
             //damageBall.transform.parent = gameObject.transform;  // I think having a child with a netidentity is bad.
             dbsr = damageBall.GetComponent<SpriteRenderer>();
@@ -102,7 +102,7 @@ public class Hammer_Brain : Brain
         {
             damageBall.transform.position = weaponEmitterPoint.position;
             damageBallChargeFactor = (timeSinceBeganCharging / timeRequiredToChargeMotors);
-            dbdd.SetRegularDamage(damageBallChargeFactor * damageBallMaxDamage);
+            dbdd.SetNormalDamage(damageBallChargeFactor * damageBallMaxDamage);
 
         }
 

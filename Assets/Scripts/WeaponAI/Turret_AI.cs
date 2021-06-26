@@ -120,7 +120,7 @@ public class Turret_AI : MonoBehaviour
             DamageDealer dd = bullet.GetComponent<DamageDealer>();
             //dd.IsReal = true;
             dd.SetKnockback(weaponKnockback);
-            dd.SetRegularDamage(weaponDamage);
+            dd.SetNormalDamage(weaponDamage);
             dd.SetShieldBonusDamage(weaponBonusShieldDamage);
             dd.SetIonization(weaponIonDamage);
 

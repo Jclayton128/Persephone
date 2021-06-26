@@ -33,7 +33,7 @@ public class Ability_MissileLauncher : Ability
     [Command]
     private void CmdRequestFireMissile()
     {
-        if (es.CheckSpendEnergy(costPerShot))
+        if (es.CheckSpendEnergy(costToActivate))
         {
             FireMissile();
         }
@@ -48,8 +48,8 @@ public class Ability_MissileLauncher : Ability
         Missile_AI missileAI = missile.GetComponent<Missile_AI>();
         missileAI.SetNavTarget(GetMouseCursorLocation());
         DamageDealer dd = missile.GetComponent<DamageDealer>();
-        dd.SetRegularDamage(normalDamage);
-        dd.SetSafeObject(gameObject);
+        dd.SetNormalDamage(normalDamage);
+        dd.SetOwnership(gameObject);
         //dd.IsReal = true;
         missileAI.normalSpeed = weaponSpeed;
         missileAI.SetMissileOwner(gameObject);

@@ -18,7 +18,7 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
     [SerializeField] protected float weaponSpeed;
     [SerializeField] protected float normalDamage;
     [SerializeField] protected float shieldBonusDamage;
-    [SerializeField] protected float costPerShot;
+    [SerializeField] protected float costToActivate;
     [SerializeField] AudioClip insufficientEnergySound = null;
 
 
@@ -42,7 +42,7 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
 
     public virtual void MouseClickDownValidate()
     {
-        if (es.CheckEnergy(costPerShot))
+        if (es.CheckEnergy(costToActivate))
         {
             MouseClickDownEffect();
         }

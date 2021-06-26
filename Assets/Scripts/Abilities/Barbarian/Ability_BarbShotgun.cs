@@ -18,7 +18,7 @@ public class Ability_BarbShotgun : Ability
     protected override void MouseClickDownEffect()
     {
 
-        if (es.CheckSpendEnergy(costPerShot))
+        if (es.CheckSpendEnergy(costToActivate))
         {
             //TODO "Pa-CHOW" shotgun blast sound.
             float spreadSubdivided = degreesToCover / bulletsPerShot;
@@ -29,7 +29,7 @@ public class Ability_BarbShotgun : Ability
                 pellet.GetComponent<Rigidbody2D>().velocity = pellet.transform.up * weaponSpeed;
                 pellet.layer = 9;
                 DamageDealer damageDealer = pellet.GetComponent<DamageDealer>();
-                damageDealer.SetRegularDamage(normalDamage);
+                damageDealer.SetNormalDamage(normalDamage);
                 damageDealer.SetShieldBonusDamage(shieldBonusDamage);
 
                 damageDealer.SetPenetration(2);

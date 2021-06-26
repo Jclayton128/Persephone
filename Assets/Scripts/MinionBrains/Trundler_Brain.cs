@@ -41,7 +41,7 @@ public class Trundler_Brain : Brain
         if (isServer)
         {
             base.Update();
-            EvaluateTarget();
+            SelectBestTarget(TargetingMode.mostImportant);
             AdjustColorIfPursuingTarget();
             AttackTarget();
             UpdateRandomDestination();
@@ -87,7 +87,7 @@ public class Trundler_Brain : Brain
         if (timeSinceLastShot < timeBetweenShots) { return; }
         if (currentAttackTarget && distToAttackTarget < attackRange && angleToAttackTarget < boresight)
         {
-            GameObject newBlasterProjectile = Instantiate(weaponPrefab, transform.position, transform.rotation) as GameObject;
+            GameObject newBlasterProjectile = Instantiate(weaponPrefab, muz.PrimaryMuzzle.position, muz.PrimaryMuzzle.rotation) as GameObject;
             newBlasterProjectile.layer = 11;
             NetworkServer.Spawn(newBlasterProjectile);
             uint idToSim = newBlasterProjectile.GetComponent<NetworkIdentity>().netId;
@@ -139,8 +139,8 @@ public class Trundler_Brain : Brain
     {
         if (isServer)
         {
-            TurnToFaceDestination(2);
-            FlyTowardsDestination();
+            TurnToFaceDestination(FaceMode.simple);
+            MoveTowardsNavTarget();
             Debug.DrawLine(transform.position, currentDest, Color.blue);
         }
     }

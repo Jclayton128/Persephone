@@ -35,18 +35,39 @@ public class ArenaBounds : MonoBehaviour
         return randPos;
     }
 
-    public Vector2 CreateValidRandomPointWithinArena(Vector2 origin, float minDistanceFromOrigin)
+    public enum DestinationMode { noCloserThan, noFartherThan};
+
+    public Vector2 CreateRandomPointWithinArena(Vector2 origin, float distanceFromOrigin, DestinationMode mode)
     {
         Vector2 randPos;
-        do
-        {
-            float randDist = UnityEngine.Random.Range(0, ArenaRadius * 0.9f);
-            randPos = Random.insideUnitCircle * ArenaRadius * 0.9f;
-        }
-        while ((randPos - origin).magnitude < minDistanceFromOrigin);
 
-        return randPos;
+        if (mode == DestinationMode.noCloserThan)
+        {
+            do
+            {
+                float randDist = UnityEngine.Random.Range(0, ArenaRadius * 0.9f);
+                randPos = Random.insideUnitCircle * ArenaRadius * 0.9f;
+            }
+            while ((randPos - origin).magnitude < distanceFromOrigin);
+            return randPos;
+        }
+
+        if (mode == DestinationMode.noFartherThan)
+        {
+            do
+            {
+                float randDist = UnityEngine.Random.Range(0, ArenaRadius * 0.9f);
+                randPos = Random.insideUnitCircle * ArenaRadius * 0.9f;
+            }
+            while ((randPos - origin).magnitude > distanceFromOrigin);
+            return randPos;
+        }
+        else
+        {
+            return Vector2.zero;
+        }
     }
+
 
     public Vector2 CreateValidRandomPointOutsideOfArena()
     {

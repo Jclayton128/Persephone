@@ -21,6 +21,14 @@ MonoBehaviour:
   maxTurnSpeed_normal: 180
   turnAccelRate_normal: 7
   weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
+  weaponLifetime: 0
+  weaponSpeed: 0
+  weaponTurnRate: 0
+  weaponRegularDamage: 0
+  weaponShieldBonusDamage: 0
+  weaponKnockback: 0
+  weaponIonization: 0
+  weaponSpeedMod: 0
   firingSounds: []
 --- !u!1001 &2123319864885529494
 PrefabInstance:
@@ -112,6 +120,22 @@ PrefabInstance:
     - target: {fileID: 3157724171066369875, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Radius
       value: 0.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 5624013662604118736, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.226
+      objectReference: {fileID: 0}
+    - target: {fileID: 5624013662604118736, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.423
+      objectReference: {fileID: 0}
+    - target: {fileID: 6469742619674677656, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.423
+      objectReference: {fileID: 0}
+    - target: {fileID: 6469742619674677656, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.226
       objectReference: {fileID: 0}
     - target: {fileID: 7004619822151118274, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: scrapPrefab

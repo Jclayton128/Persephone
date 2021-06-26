@@ -7,8 +7,6 @@ using Mirror;
 public class Hammer_Brain : Brain
 {
     //init
-    [SerializeField] GameObject damageBallPrefab = null;
-    [SerializeField] Transform weaponEmitterPoint = null;
     GameObject damageBall;
     DamageDealer dbdd;
     SpriteRenderer dbsr;
@@ -33,25 +31,12 @@ public class Hammer_Brain : Brain
     [SyncVar(hook = nameof(UpdateDamageBallImageOnClient))]
     float damageBallChargeFactor = 0f;
 
-    private void Awake()
-    {
-        NetworkClient.RegisterPrefab(damageBallPrefab);
-    }
-
     public override void OnStartServer()
     {
         base.OnStartServer();
-        TargetMostImportantAlly();
         timeSinceBeganCharging = 0 + UnityEngine.Random.Range(-1 * randomVarianceToChargeUpTime, randomVarianceToChargeUpTime);
     }
 
-    private void TargetMostImportantAlly()
-    {
-        if (targets.Count != 0)
-        {
-            currentAttackTarget = targets[0].gameObject;
-        }
-    }
 
     protected override void Update()
     {
@@ -59,7 +44,7 @@ public class Hammer_Brain : Brain
         {
             TrackPlayer();
             CreateDamageBall();
-            TargetMostImportantAlly();
+            SelectBestTarget(TargetingMode.mostImportant);
         }
     }
 
@@ -87,7 +72,7 @@ public class Hammer_Brain : Brain
         if (!damageBall && !isSprinting && timeSinceBeganCharging < randomVarianceToChargeUpTime)
         {
             Debug.Log("made a new damage ball");
-            damageBall = Instantiate(damageBallPrefab, weaponEmitterPoint.position, weaponEmitterPoint.rotation) as GameObject; //weaponEmitterPoint.transform.position, weaponEmitterPoint.transform.rotation) as GameObject;
+            damageBall = Instantiate(weaponPrefab, muz.PrimaryMuzzle.position, muz.PrimaryMuzzle.rotation) as GameObject; //weaponEmitterPoint.transform.position, weaponEmitterPoint.transform.rotation) as GameObject;
             damageBall.layer = 11;  //11 means that the hammer won't hurt other enemy units
             dbdd = damageBall.GetComponent<DamageDealer>();
             dbdd.SetNormalDamage(0);
@@ -100,7 +85,7 @@ public class Hammer_Brain : Brain
         }
         if (damageBall)
         {
-            damageBall.transform.position = weaponEmitterPoint.position;
+            damageBall.transform.position = muz.PrimaryMuzzle.position;
             damageBallChargeFactor = (timeSinceBeganCharging / timeRequiredToChargeMotors);
             dbdd.SetNormalDamage(damageBallChargeFactor * damageBallMaxDamage);
 

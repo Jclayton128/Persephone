@@ -187,9 +187,8 @@ public static class CUR : object
         float randomAngle = Random.Range(0f, Mathf.PI * 2f);
         return new Vector2(Mathf.Sin(randomAngle), Mathf.Cos(randomAngle)).normalized;
     }
-    static public GameObject GetNearestGameObjectOnLayer(Transform posToSearchFrom, int layerIndex, float maxSearchDistance)
+    static public GameObject GetNearestGameObjectOnLayer(Transform posToSearchFrom, int layerMask, float maxSearchDistance)
     {
-        int layerMask = 1 << layerIndex;
         //Debug.Log(LayerMask.LayerToName(layerIndex));
         float distance = maxSearchDistance;
         GameObject closestTarget = null;

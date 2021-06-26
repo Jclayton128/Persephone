@@ -24,7 +24,8 @@ public class Turret_AI : MonoBehaviour
     [SerializeField] float boresightTolerance;
 
     [SerializeField] int weaponPhysicsLayer;
-    [SerializeField] int enemyLayerToTarget;
+    [SerializeField] int primaryLayerToTarget;
+    [SerializeField] int secondaryLayerToTarget;
 
 
     //hood
@@ -74,7 +75,8 @@ public class Turret_AI : MonoBehaviour
                 return;
             }
         }
-        target = CUR.GetNearestGameObjectOnLayer(transform, enemyLayerToTarget, range);
+        int layerMask = (1 << primaryLayerToTarget) | (1 << secondaryLayerToTarget);
+        target = CUR.GetNearestGameObjectOnLayer(transform, layerMask, range);
         targetRB = target?.GetComponent<Rigidbody2D>();
         
     }

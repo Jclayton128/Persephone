@@ -108,7 +108,8 @@ MonoBehaviour:
   randomSpread: 5
   boresightTolerance: 3
   weaponPhysicsLayer: 9
-  enemyLayerToTarget: 10
+  primaryLayerToTarget: 10
+  secondaryLayerToTarget: 18
   target: {fileID: 0}
 --- !u!1 &1647500759589659975
 GameObject:
@@ -576,7 +577,8 @@ MonoBehaviour:
   randomSpread: 0
   boresightTolerance: 1
   weaponPhysicsLayer: 9
-  enemyLayerToTarget: 10
+  primaryLayerToTarget: 10
+  secondaryLayerToTarget: 18
   target: {fileID: 0}
 --- !u!1 &8846137857058579488
 GameObject:
@@ -686,5 +688,6 @@ MonoBehaviour:
   randomSpread: 0
   boresightTolerance: 1
   weaponPhysicsLayer: 9
-  enemyLayerToTarget: 10
+  primaryLayerToTarget: 10
+  secondaryLayerToTarget: 18
   target: {fileID: 0}

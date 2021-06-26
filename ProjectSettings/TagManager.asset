@@ -21,15 +21,15 @@ TagManager:
   - 
   - PlayerShip
   - PlayerWeapon
-  - NonplayerShip
-  - NonplayerWeapon
+  - EnemyShip
+  - EnemyWeapon
   - ArenaBoundary
   - Detector
   - Scrap
   - ScrapVacuum
   - AlliedShip
   - Hider
-  - 
+  - SmallEnemyShip
   - 
   - 
   - 

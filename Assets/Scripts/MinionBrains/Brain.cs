@@ -16,6 +16,8 @@ public abstract class Brain : NetworkBehaviour
     protected Vector3 currentDest = Vector3.zero;
     protected Detector det;
     protected UnitTracker ut;
+    protected Muzzle muz;
+    protected Health health;
 
     //param
     [SerializeField] protected float detectorRange;
@@ -27,6 +29,7 @@ public abstract class Brain : NetworkBehaviour
     [SerializeField] protected float weaponLifetime;
     [SerializeField] protected float weaponSpeed;
     [SerializeField] protected float weaponTurnRate;
+    [SerializeField] protected float timeBetweenShots;
 
     [SerializeField] protected float weaponRegularDamage;
     [SerializeField] protected float weaponShieldBonusDamage;
@@ -37,6 +40,9 @@ public abstract class Brain : NetworkBehaviour
     protected float closeEnough = 0.2f;
     protected float angleThresholdForAccel = 10f;
     protected float timeBetweenScans = 0.1f;
+    protected float boresightThreshold = 2f;
+
+    public enum FaceMode { complex, simple};
 
     float param1;
     float param2;
@@ -55,8 +61,14 @@ public abstract class Brain : NetworkBehaviour
 
     protected float timeSinceLastScan = 0;
 
+    protected virtual void Awake()
+    {
+        NetworkClient.RegisterPrefab(weaponPrefab);
+    }
+
     public override void OnStartServer()
     {
+        base.OnStartServer();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         ab = FindObjectOfType<ArenaBounds>();
@@ -65,6 +77,13 @@ public abstract class Brain : NetworkBehaviour
         timeSinceLastScan = UnityEngine.Random.Range(0, timeBetweenScans);
         ut = FindObjectOfType<UnitTracker>();
         ut.AddMinion(gameObject);
+        muz = GetComponent<Muzzle>();
+        health = GetComponent<Health>();
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
     }
 
     // Update is called once per frame
@@ -104,6 +123,35 @@ public abstract class Brain : NetworkBehaviour
 
     }
 
+    #region TargetPrioritization
+
+    public enum TargetingMode { closest, mostImportant, lowestHealth, mostIonized }
+    public void SelectBestTarget(TargetingMode mode)
+    {
+        if (targets.Count == 0) { return; }
+        switch (mode)
+        {
+            case TargetingMode.closest:
+                //TODO implement this sorting
+                currentAttackTarget = targets[0].gameObject;
+                return;
+
+            case TargetingMode.mostImportant:
+                currentAttackTarget = targets[0].gameObject;
+                return;
+
+            case TargetingMode.lowestHealth:
+                currentAttackTarget = targets[0].gameObject;
+                return;
+
+            case TargetingMode.mostIonized:
+                currentAttackTarget = targets[0].gameObject;
+                return;
+        }
+    }
+
+    #endregion
+
     #region Targeting
     public void AddTargetToList(IFF target)
     {
@@ -131,7 +179,7 @@ public abstract class Brain : NetworkBehaviour
 
     #region Movement
 
-    protected virtual void FlyTowardsDestination()
+    protected virtual void MoveTowardsNavTarget()
     {
         if (Mathf.Abs(angleToDest) <= angleThresholdForAccel)
         {
@@ -143,7 +191,7 @@ public abstract class Brain : NetworkBehaviour
             rb.AddForce(accelRate_normal / 2 * transform.up);
         }
     }
-    protected virtual void FlyTowardsNavTarget(bool adjustForDistanceToTarget)
+    protected virtual void MoveTowardsNavTarget(bool adjustForDistanceToTarget)
     {
         if (Mathf.Abs(angleToDest) <= angleThresholdForAccel && adjustForDistanceToTarget == true)
         {
@@ -157,7 +205,7 @@ public abstract class Brain : NetworkBehaviour
         }
     }
 
-    protected virtual void FlyTowardsNavTarget(bool adjustForDistanceToTarget, float distanceToStopAt)
+    protected virtual void MoveTowardsNavTarget(bool adjustForDistanceToTarget, float distanceToStopAt)
     {
         if (Mathf.Abs(angleToDest) <= angleThresholdForAccel && adjustForDistanceToTarget == true)
         {
@@ -172,7 +220,7 @@ public abstract class Brain : NetworkBehaviour
         }
     }
 
-    protected virtual void FlyTowardsNavTargetOmnidirectionally(bool adjustForDistanceToTarget)
+    protected virtual void MoveTowardsNavTargetOmnidirectionally(bool adjustForDistanceToTarget)
     {
         if (adjustForDistanceToTarget)
         {
@@ -190,9 +238,9 @@ public abstract class Brain : NetworkBehaviour
     #endregion
 
     #region Facing
-    protected virtual void TurnToFaceDestination(int mode) //Optimize to decrease velocity with small angles off;
+    protected virtual void TurnToFaceDestination(FaceMode mode) //Optimize to decrease velocity with small angles off;
     {
-        if (mode == 1)
+        if (mode == FaceMode.simple)
         {
             float factor = Mathf.Abs(angleToDest) / 5f;
             factor = Mathf.Clamp01(factor);
@@ -207,7 +255,7 @@ public abstract class Brain : NetworkBehaviour
             return;
         }
     
-        if (mode == 2)
+        if (mode == FaceMode.complex)
         {
             if (angleToDest > 5)
             {
@@ -221,7 +269,7 @@ public abstract class Brain : NetworkBehaviour
         }
 
     }
-    protected void TurnToFacePlayerWithLead(float weaponSpeed)
+    protected void TurnToFaceDestinationWithLead(float weaponSpeed)
     {
         throw new NotImplementedException();
         //Vector3 vel = rb.velocity;

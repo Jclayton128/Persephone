@@ -22,10 +22,9 @@ MonoBehaviour:
   timeBetweenShots: 0.5
   weaponLifetime: 1
   weaponSpeed: 10
-  hullDamage: 1
-  shieldDamage: 1
-  ionDamage: 1
-  costPerShot: 2
+  normalDamage: 0
+  shieldBonusDamage: 0
+  costToActivate: 0
   insufficientEnergySound: {fileID: 0}
 --- !u!1001 &6910583446029087813
 PrefabInstance:
@@ -120,11 +119,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8644570496936021379, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_Sprite

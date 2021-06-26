@@ -20,40 +20,16 @@ MonoBehaviour:
   accelRate_normal: 50
   maxTurnSpeed_normal: 180
   turnAccelRate_normal: 7
-  weaponPrefab: {fileID: 0}
+  weaponPrefab: {fileID: 958226158259032579, guid: eba1bd7a46a628b4aa94342bfbb6e3b9, type: 3}
+  weaponLifetime: 0
+  weaponSpeed: 0
+  weaponTurnRate: 0
+  weaponRegularDamage: 0
+  weaponShieldBonusDamage: 0
+  weaponKnockback: 0
+  weaponIonization: 0
+  weaponSpeedMod: 0
   firingSounds: []
-  damageBallPrefab: {fileID: 958226158259032579, guid: eba1bd7a46a628b4aa94342bfbb6e3b9, type: 3}
-  weaponEmitterPoint: {fileID: 340981430344494309}
---- !u!1 &7421027037785022063
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 340981430344494309}
-  m_Layer: 0
-  m_Name: WeaponEmitterPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &340981430344494309
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7421027037785022063}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.89, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 2860327530500213760}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &892717528578468687
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -141,6 +117,14 @@ PrefabInstance:
       propertyPath: m_AssetId
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6469742619674677656, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6469742619674677656, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.89
+      objectReference: {fileID: 0}
     - target: {fileID: 7004619822151118274, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: numberOfScraps
       value: 7
@@ -150,10 +134,5 @@ PrefabInstance:
 --- !u!1 &2860327530500213790 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3157724171066369873, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
-  m_PrefabInstance: {fileID: 892717528578468687}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &2860327530500213760 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3157724171066369871, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
   m_PrefabInstance: {fileID: 892717528578468687}
   m_PrefabAsset: {fileID: 0}

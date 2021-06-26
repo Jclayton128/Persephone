@@ -80,7 +80,7 @@ public class Health : NetworkBehaviour
 
     #endregion
 
-    public Action EntityWasDamaged;
+    public Action<GameObject> EntityWasDamaged;  // GameObject reference is the attacker who caused the damage
     public Action EntityIsDying;
     public Action EntityIsRepaired;
 

@@ -21,14 +21,10 @@ public class Warper_Brain : Brain
     float timeUntilCanWarp;
     float timeUntilNextAttack;
 
-    private void Awake()
-    {
-        NetworkClient.RegisterPrefab(weaponPrefab);
-    }
     public override void OnStartServer()
     {
         base.OnStartServer();
-        currentDest = ab.CreateValidRandomPointWithinArena(transform.position, minDistanceToTeleport);
+        currentDest = ab.CreateRandomPointWithinArena(transform.position, minDistanceToTeleport, ArenaBounds.DestinationMode.noCloserThan);
 
     }
 
@@ -40,9 +36,9 @@ public class Warper_Brain : Brain
         {
             if (distToDest <= closeEnough)
             {
-                currentDest = ab.CreateValidRandomPointWithinArena(transform.position, minDistanceToTeleport);
+                currentDest = ab.CreateRandomPointWithinArena(transform.position, minDistanceToTeleport, ArenaBounds.DestinationMode.noCloserThan);
             }
-            TargetMostImportantTarget();
+            SelectBestTarget(TargetingMode.mostImportant);
             AttackPlayerWithMissiles();
             HandleWarping();
         }
@@ -122,8 +118,8 @@ public class Warper_Brain : Brain
         base.FixedUpdate();
         if (isServer)
         {
-            TurnToFaceDestination(1);
-            FlyTowardsNavTarget(true);
+            TurnToFaceDestination(FaceMode.simple);
+            MoveTowardsNavTarget(true);
         }
     }
 
@@ -135,7 +131,7 @@ public class Warper_Brain : Brain
 
     private void WarpNow()
     {
-        Vector3 teleportationSite = ab.CreateValidRandomPointWithinArena(transform.position, minDistanceToTeleport);
+        Vector3 teleportationSite = ab.CreateRandomPointWithinArena(transform.position, minDistanceToTeleport, ArenaBounds.DestinationMode.noCloserThan);
         transform.position = teleportationSite;
         needToWarp = false;
         readyToWarp = false;

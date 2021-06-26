@@ -1,57 +1,83 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &4436521870336940920
+--- !u!114 &-1397169993421677571
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8798660456887285136}
+  m_GameObject: {fileID: 5129634792365371851}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 693ac9e9100268641bf296a2889e2543, type: 3}
+  m_Script: {fileID: 11500000, guid: 39b379869eed02a428de8b4ec7f65d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
   targets: []
   currentAttackTarget: {fileID: 0}
-  detectorRange: 10
+  detectorRange: 20
   accelRate_normal: 5
-  maxTurnSpeed_normal: 180
-  turnAccelRate_normal: 7
-  weaponPrefab: {fileID: 1230300639563859961, guid: e45cb8edce83bb849870fc8563cdb076, type: 3}
-  weaponLifetime: 10
-  weaponSpeed: 7
-  weaponTurnRate: 90
-  weaponRegularDamage: 1
-  weaponShieldBonusDamage: 1
+  maxTurnSpeed_normal: 90
+  turnAccelRate_normal: 3
+  weaponPrefab: {fileID: 211914637558519759, guid: 03bb80dffccc7dc4ea84f31de335b709, type: 3}
+  weaponLifetime: 0
+  weaponSpeed: 0
+  weaponTurnRate: 0
+  timeBetweenShots: 0
+  weaponRegularDamage: 0
+  weaponShieldBonusDamage: 0
   weaponKnockback: 0
   weaponIonization: 0
   weaponSpeedMod: 0
   firingSounds: []
---- !u!1001 &5893349847462417089
+  mitePrefab: {fileID: 0}
+--- !u!1001 &7845942134807942810
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: hullMax
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: shieldMax_normal
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: shieldRate_normal
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: purificationRate
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: penetrationToSoakUp
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 909edade415e4964bac9bbaacafdf71c, type: 3}
+      objectReference: {fileID: 21300000, guid: e8a30364ee2af1c49af61961ad77877a, type: 3}
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Size.x
-      value: 1.36
+      value: 1.17
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Size.y
-      value: 0.84
+      value: 1.29
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157724171066369869, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_Mass
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369869, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LinearDrag
@@ -101,38 +127,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3157724171066369871, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157724171066369871, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369873, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Name
-      value: Warper
+      value: Maker
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369874, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_AssetId
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 5624013662604118736, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.522
-      objectReference: {fileID: 0}
-    - target: {fileID: 5624013662604118736, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.275
-      objectReference: {fileID: 0}
-    - target: {fileID: 6469742619674677656, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.522
-      objectReference: {fileID: 0}
     - target: {fileID: 6469742619674677656, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.275
-      objectReference: {fileID: 0}
-    - target: {fileID: 8591628276914722625, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
-      propertyPath: ignoreDamageDealers
-      value: 0
+      value: 0.266
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
---- !u!1 &8798660456887285136 stripped
+--- !u!1 &5129634792365371851 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3157724171066369873, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
-  m_PrefabInstance: {fileID: 5893349847462417089}
+  m_PrefabInstance: {fileID: 7845942134807942810}
   m_PrefabAsset: {fileID: 0}

@@ -22,13 +22,12 @@ MonoBehaviour:
   timeBetweenShots: 0
   weaponLifetime: 1
   weaponSpeed: 10
-  hullDamage: 1
-  shieldDamage: 1
-  ionDamage: 0
+  normalDamage: 0
+  shieldBonusDamage: 0
   costPerShot: 5
   insufficientEnergySound: {fileID: 0}
   missileFiringSound: {fileID: 0}
---- !u!114 &4958164154846462901
+--- !u!114 &7227535150547839073
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -37,7 +36,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 831018614288581221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16eb98a7a8f272845b8783636422b6df, type: 3}
+  m_Script: {fileID: 11500000, guid: aeff9bd6477b4dc4ea633ec834d0fcb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
@@ -45,14 +44,13 @@ MonoBehaviour:
   AbilityIcon: {fileID: 21300000, guid: 53c2bc68ba0abbd439507663a38f6cc6, type: 3}
   unlockLevel: 1
   abilityPrefabs:
-  - {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
+  - {fileID: 7555527035714178122, guid: 876ce0088e60b4744b7ffe81772bd2b4, type: 3}
   IsPrimaryAbility: 1
   timeBetweenShots: 0
-  weaponLifetime: 1
+  weaponLifetime: 0.5
   weaponSpeed: 10
-  hullDamage: 1
-  shieldDamage: 1
-  ionDamage: 0
+  normalDamage: 1
+  shieldBonusDamage: 0.5
   costPerShot: 2
   insufficientEnergySound: {fileID: 0}
 --- !u!114 &7235979305216916552
@@ -76,9 +74,8 @@ MonoBehaviour:
   timeBetweenShots: 0
   weaponLifetime: 0
   weaponSpeed: 0
-  hullDamage: 0
-  shieldDamage: 0
-  ionDamage: 0
+  normalDamage: 0
+  shieldBonusDamage: 0
   costPerShot: 0
   insufficientEnergySound: {fileID: 0}
   deployedSprite: {fileID: 21300000, guid: 06e85c583abb6424d86aa78feb873349, type: 3}
@@ -90,9 +87,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 151164276916241096, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.174
+      objectReference: {fileID: 0}
+    - target: {fileID: 151164276916241096, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.581
+      objectReference: {fileID: 0}
     - target: {fileID: 3113807716389728238, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_Layer
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 3384279497005846558, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3384279497005846558, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.497
       objectReference: {fileID: 0}
     - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: shieldMax_normal

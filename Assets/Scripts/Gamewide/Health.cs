@@ -300,7 +300,7 @@ public class Health : NetworkBehaviour
             }
 
 
-            damageDealer.ModifyPenetration(-1 * penetrationToSoakUp);
+            //damageDealer.ModifyPenetration(-1 * penetrationToSoakUp);
         }
 
         if (isServer)

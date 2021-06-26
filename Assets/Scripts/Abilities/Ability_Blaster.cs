@@ -25,9 +25,8 @@ public class Ability_Blaster : Ability
             bullet.layer = 9;
             bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * weaponSpeed;
             DamageDealer dd = bullet.GetComponent<DamageDealer>();
-            dd.SetRegularDamage(hullDamage);
-            dd.SetShieldBonusDamage(shieldDamage);
-            dd.SetIonization(ionDamage);
+            dd.SetRegularDamage(normalDamage);
+            dd.SetShieldBonusDamage(shieldBonusDamage);
             //dd.IsReal = true;
             Destroy(bullet, weaponLifetime);
         }

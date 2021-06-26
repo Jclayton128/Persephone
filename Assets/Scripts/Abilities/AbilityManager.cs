@@ -9,6 +9,8 @@ public class AbilityManager : NetworkBehaviour
 {
     Image[] secondaryAbilityIcons;
     UpgradeManager um;
+    [SerializeField] public Transform PrimaryMuzzle = null;
+    [SerializeField] public Transform SecondaryMuzzle = null;
     [SerializeField] AudioClip invalidSelectionAudioClip = null;
     [SerializeField] Sprite lockedAbilitySprite = null;
     Ability_Dummy dummyAbility;

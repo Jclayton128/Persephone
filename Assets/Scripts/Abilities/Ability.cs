@@ -16,15 +16,15 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
     //[SerializeField] protected float damagePerShot;
     [SerializeField] protected float weaponLifetime;
     [SerializeField] protected float weaponSpeed;
-    [SerializeField] protected float hullDamage;
-    [SerializeField] protected float shieldDamage;
-    [SerializeField] protected float ionDamage;  // Should be something between 0 and 1;
+    [SerializeField] protected float normalDamage;
+    [SerializeField] protected float shieldBonusDamage;
     [SerializeField] protected float costPerShot;
     [SerializeField] AudioClip insufficientEnergySound = null;
 
 
     protected EnergySource es;
-    public bool IsLocked { get; protected set; } = true;
+    protected AbilityManager am;
+
 
     protected virtual void Awake()
     {
@@ -37,10 +37,7 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
     protected virtual void Start()
     {
         es = GetComponent<EnergySource>();
-        if (unlockLevel >= 2 || IsPrimaryAbility)
-        {
-            IsLocked = false;
-        }
+        am = GetComponent<AbilityManager>();
     }
 
     public virtual void MouseClickDownValidate()
@@ -67,10 +64,6 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
         return unlockLevel;
     }
 
-    public void UnlockAbility()
-    {
-        IsLocked = false;
-    }
 
     public virtual int Compare(Ability x, Ability y)
     {

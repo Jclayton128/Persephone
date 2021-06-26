@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minionPrefabs:
   - {fileID: 8798660456887285136, guid: 615194c490e9eb84dae12922705ee8d9, type: 3}
+  - {fileID: 2860327530500213790, guid: 250d82fe14542e24eb1ef5384c00ed14, type: 3}
+  - {fileID: 3937818766114237639, guid: 7b6c9240013d41040b4caa5dd5501955, type: 3}
   spawnPoints: []
   portalLocation: {x: 0, y: 1}
   asteroids: []

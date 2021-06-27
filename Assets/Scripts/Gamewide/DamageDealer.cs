@@ -89,7 +89,6 @@ public class DamageDealer : MonoBehaviour
     {
 
         penetration += amount;
-        Debug.Log("penetration modified, now " + penetration);
         if (penetration <= 0)
         {
             Destroy(gameObject);

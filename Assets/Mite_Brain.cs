@@ -23,6 +23,7 @@ public class Mite_Brain : Brain
     float timeToResetAngryStatus = 4.0f;
     float maxSurvivalTimeWithoutMothership = 2.0f;
 
+
     //hood
     bool isAngry = false;
     float timeSpentAngry = 0;
@@ -95,7 +96,7 @@ public class Mite_Brain : Brain
             bullet.GetComponent<Rigidbody2D>().velocity = weaponSpeed * bullet.transform.up;
             bullet.layer = 11;
             DamageDealer dd = bullet.GetComponent<DamageDealer>();
-            dd.SetNormalDamage(weaponRegularDamage);
+            dd.SetNormalDamage(weaponNormalDamage);
             dd.SetSpeedModifier(weaponSpeedMod);
             NetworkServer.Spawn(bullet);
             Destroy(bullet, weaponLifetime);
@@ -126,7 +127,7 @@ public class Mite_Brain : Brain
             if (distanceToAttackTarget > orbitRange * 2)
             {
                 currentDest = currentAttackTarget.transform.position;
-                TurnToFaceDestination(FaceMode.simple);
+                TurnToFaceDestination(faceMode);
                 MoveTowardsNavTarget();
             }
             else
@@ -138,7 +139,7 @@ public class Mite_Brain : Brain
                 else
                 {
                     currentDest = currentAttackTarget.transform.position;
-                    TurnToFaceDestination(FaceMode.simple);
+                    TurnToFaceDestination(faceMode);
                     MoveTowardsNavTarget();
                 }
             }
@@ -155,7 +156,7 @@ public class Mite_Brain : Brain
         }
         else
         {
-            TurnToFaceDestination(FaceMode.simple);
+            TurnToFaceDestination(faceMode);
             MoveTowardsNavTarget();
         }
 

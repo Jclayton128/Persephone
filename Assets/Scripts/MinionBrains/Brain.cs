@@ -24,6 +24,7 @@ public abstract class Brain : NetworkBehaviour
     [SerializeField] protected float accelRate_normal;
     [SerializeField] protected float maxTurnSpeed_normal;
     [SerializeField] protected float turnAccelRate_normal;
+    [SerializeField] protected FaceMode faceMode;
 
     [SerializeField] protected GameObject weaponPrefab = null;
     [SerializeField] protected float weaponLifetime;
@@ -31,7 +32,7 @@ public abstract class Brain : NetworkBehaviour
     [SerializeField] protected float weaponTurnRate;
     [SerializeField] protected float timeBetweenShots;
 
-    [SerializeField] protected float weaponRegularDamage;
+    [SerializeField] protected float weaponNormalDamage;
     [SerializeField] protected float weaponShieldBonusDamage;
     [SerializeField] protected float weaponKnockback;
     [SerializeField] protected float weaponIonization;
@@ -92,8 +93,10 @@ public abstract class Brain : NetworkBehaviour
         if (isServer)
         {
             TimeBetweenScans();
+            UpdateNavData();
         }        
     }
+
 
     protected void TimeBetweenScans()
     {
@@ -106,6 +109,10 @@ public abstract class Brain : NetworkBehaviour
     }
 
     protected virtual void Scan()
+    {
+        
+    }
+    private void UpdateNavData()
     {
         Vector2 dir = currentDest - transform.position;
         distToDest = dir.magnitude;
@@ -242,7 +249,7 @@ public abstract class Brain : NetworkBehaviour
     {
         if (mode == FaceMode.simple)
         {
-            float factor = Mathf.Abs(angleToDest) / 5f;
+            float factor = Mathf.Abs(angleToDest) / boresightThreshold;
             factor = Mathf.Clamp01(factor);
             if (angleToDest > 0)
             {
@@ -257,14 +264,15 @@ public abstract class Brain : NetworkBehaviour
     
         if (mode == FaceMode.complex)
         {
-            if (angleToDest > 5)
+            if (angleToDest > 0)
             {
                 rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
             }
-            if (angleToDest < -5)
+            if (angleToDest <= 0)
             {
                 rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
             }
+            Debug.Log("angVel: " + rb.angularVelocity);
             return;
         }
 

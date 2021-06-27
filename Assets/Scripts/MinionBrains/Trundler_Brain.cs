@@ -16,12 +16,8 @@ public class Trundler_Brain : Brain
 
     //blaster param
     float randomSpread = 10f;
-    float boresight = 30f;
-    float shotSpeed = 10f;
-    float shotLifetime = 0.3f;
-    float timeBetweenShots = 0.6f;
     bool isFiring = false;
-    float blasterDamage = 0.3f;
+
 
     //hood
     float timeSinceLastShot = 0f;
@@ -33,7 +29,7 @@ public class Trundler_Brain : Brain
     {
         base.OnStartServer();
         currentDest = ab.CreateValidRandomPointWithinArena();
-        attackRange = shotLifetime * shotSpeed;
+        attackRange = weaponLifetime * weaponSpeed;
     }
 
     protected override void Update()
@@ -85,7 +81,7 @@ public class Trundler_Brain : Brain
     {
         timeSinceLastShot += Time.deltaTime;
         if (timeSinceLastShot < timeBetweenShots) { return; }
-        if (currentAttackTarget && distToAttackTarget < attackRange && angleToAttackTarget < boresight)
+        if (currentAttackTarget && distToAttackTarget < attackRange && angleToAttackTarget < boresightThreshold)
         {
             GameObject newBlasterProjectile = Instantiate(weaponPrefab, muz.PrimaryMuzzle.position, muz.PrimaryMuzzle.rotation) as GameObject;
             newBlasterProjectile.layer = 11;
@@ -93,15 +89,15 @@ public class Trundler_Brain : Brain
             uint idToSim = newBlasterProjectile.GetComponent<NetworkIdentity>().netId;
             RpcMakeBulletSimulatedOnClientSide(idToSim);
             newBlasterProjectile.transform.Rotate(new Vector3(0, 0, UnityEngine.Random.Range(-randomSpread, randomSpread)));
-            newBlasterProjectile.GetComponent<Rigidbody2D>().velocity = (shotSpeed) * newBlasterProjectile.transform.up;
+            newBlasterProjectile.GetComponent<Rigidbody2D>().velocity = (weaponSpeed) * newBlasterProjectile.transform.up;
             DamageDealer damageDealer = newBlasterProjectile.GetComponent<DamageDealer>();
             //damageDealer.IsReal = true;
-            damageDealer.SetNormalDamage(blasterDamage);
+            damageDealer.SetNormalDamage(weaponNormalDamage);
             damageDealer.SetIonization(1f);
             damageDealer.SetDraining(1f);
             //SelectRandomFiringSound();
             //AudioSource.PlayClipAtPoint(selectedBlasterSound, gameObject.transform.position);
-            Destroy(newBlasterProjectile, shotLifetime);
+            Destroy(newBlasterProjectile, weaponLifetime);
             timeSinceLastShot = 0;
         }
     }

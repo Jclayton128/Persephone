@@ -96,7 +96,7 @@ public class Warper_Brain : Brain
             GameObject missile = Instantiate(weaponPrefab, transform.position, transform.rotation) as GameObject;
             missile.layer = 11;
             DamageDealer dd = missile.GetComponent<DamageDealer>();
-            dd.SetNormalDamage(weaponRegularDamage);
+            dd.SetNormalDamage(weaponNormalDamage);
             dd.SetShieldBonusDamage(weaponShieldBonusDamage);
             dd.SetIonization(weaponIonization);
             dd.SetKnockback(weaponKnockback);

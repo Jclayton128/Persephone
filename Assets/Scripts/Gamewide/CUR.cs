@@ -12,7 +12,7 @@ public static class CUR : object
         pos.x = center.x + random * Mathf.Sin(ang * Mathf.Deg2Rad);
         pos.y = center.y + random * Mathf.Cos(ang * Mathf.Deg2Rad);
         pos.z = center.z;
-        Debug.DrawLine(center, pos, Color.red, 1.0f);
+        //Debug.DrawLine(center, pos, Color.red, 1.0f);
         return pos;
     }
 

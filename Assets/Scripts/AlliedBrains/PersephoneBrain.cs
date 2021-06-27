@@ -57,7 +57,7 @@ public class PersephoneBrain : NetworkBehaviour
     [SerializeField] List<GameObject> disabledPlayers = new List<GameObject>();
 
 
-    int movementToggleForDebug = 1;
+    bool debugHalt = false;
 
     private void Awake()
     {
@@ -151,7 +151,7 @@ public class PersephoneBrain : NetworkBehaviour
 
     private void HandleArrivalTimer()
     {
-        if (!isInArena)
+        if (!isInArena && !debugHalt)
         {
             TimeRequiredToWarpIn -= Time.deltaTime;
             int roundedCountdown = Mathf.RoundToInt(TimeRequiredToWarpIn);
@@ -191,7 +191,8 @@ public class PersephoneBrain : NetworkBehaviour
     {
         if (!isInArena) { return; }
         HandleInSystemActions();
-        rb.velocity = transform.up * speed_Current * movementToggleForDebug;
+
+        rb.velocity = transform.up * speed_Current * Convert.ToInt32(!debugHalt) ;
     }
 
     private void HandleInSystemActions()
@@ -213,7 +214,7 @@ public class PersephoneBrain : NetworkBehaviour
     }
     private void ChargeWarpEngineIfClosedEnough()
     {
-        if (distToWarpPortal < closeEnoughDist  && timeLeftForWarpCharging > 0)
+        if (distToWarpPortal < closeEnoughDist  && timeLeftForWarpCharging > 0 && !debugHalt)
         {
             timeLeftForWarpCharging -= Time.deltaTime;
             int round = Mathf.RoundToInt(timeLeftForWarpCharging);
@@ -329,16 +330,7 @@ public class PersephoneBrain : NetworkBehaviour
     [Server]
     public void DebugToggleMovementOnOff()
     {
-        if (movementToggleForDebug == 0)
-        {
-            movementToggleForDebug = 1;
-            return;
-        }
-        if (movementToggleForDebug == 1)
-        {
-            movementToggleForDebug = 0;
-            return;
-        }
+        debugHalt = !debugHalt;
     }
 
     #endregion

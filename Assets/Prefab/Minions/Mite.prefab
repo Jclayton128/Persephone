@@ -17,7 +17,7 @@ MonoBehaviour:
   targets: []
   currentAttackTarget: {fileID: 0}
   detectorRange: 5
-  accelRate_normal: 14
+  accelRate_normal: 10
   maxTurnSpeed_normal: 360
   turnAccelRate_normal: 360
   faceMode: 1
@@ -26,10 +26,10 @@ MonoBehaviour:
   weaponSpeed: 20
   weaponTurnRate: 0
   timeBetweenShots: 0.5
-  weaponNormalDamage: 0
+  weaponNormalDamage: 0.3
   weaponShieldBonusDamage: 0
   weaponKnockback: 0
-  weaponIonization: 0.1
+  weaponIonization: 0
   weaponSpeedMod: 0.7
   firingSounds: []
 --- !u!1001 &2964110013493342366
@@ -53,6 +53,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 719045139
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157724171066369869, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157724171066369869, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_LinearDrag
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369871, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}

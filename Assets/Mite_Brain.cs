@@ -49,7 +49,7 @@ public class Mite_Brain : Brain
         SelectBestTarget(TargetingMode.closest);
         AttackTarget();
         UpdateAnger();
-        Debug.DrawLine(transform.position, currentDest, Color.green);
+
     }
 
     protected override void FixedUpdate()

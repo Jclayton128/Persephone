@@ -64,6 +64,7 @@ public abstract class Brain : NetworkBehaviour
 
     protected virtual void Awake()
     {
+
         NetworkClient.RegisterPrefab(weaponPrefab);
     }
 

@@ -25,8 +25,10 @@ public class AbilityManager : NetworkBehaviour
     private void Start()
     {
         um = GetComponent<UpgradeManager>();
-        um.OnLevelUp += UpdateSecondaryAbilitiesOnLevelUp;
-        
+        //um.OnLevelUp += UpdateSecondaryAbilitiesOnLevelUp;
+        um.OnLevelUp += TargetRequestClientUpdateSecondaryAbilitiesOnLevelUp;
+
+
         IdentifyAllAbilities();
 
         if (hasAuthority)
@@ -142,6 +144,13 @@ public class AbilityManager : NetworkBehaviour
         //SelectedSecondaryAbility = unlockedSecondaryAbilities[secondaryIndex];
     }
 
+    [TargetRpc]
+    public void TargetRequestClientUpdateSecondaryAbilitiesOnLevelUp(int newLevel)
+    {
+        UpdateSecondaryAbilitiesOnLevelUp(newLevel);
+    }
+
+
     private void UpdateSecondaryAbilitiesOnLevelUp(int newLevel)
     {
         foreach (Ability ability in secondaryAbilities)
@@ -149,6 +158,7 @@ public class AbilityManager : NetworkBehaviour
             if (newLevel >= ability.GetUnlockLevel())
             {
                 int secondaryToUnlock = secondaryAbilities.IndexOf(ability);
+                if (unlockedSecondaryAbilities.Contains(ability)) { continue; }
                 unlockedSecondaryAbilities.Add(ability);
                 if (isClient)
                 {

@@ -23,8 +23,8 @@ public class UpgradeManager : NetworkBehaviour
 
     int currentScrap = 0;
 
-    [SyncVar(hook = nameof(UpdateUIForScrap))]
-    float currentUpgradePoints;
+    [SyncVar(hook = nameof(UpdateUIForUpgradePoints))]
+    int currentUpgradePoints;
 
     [SyncVar(hook = nameof(UpdateUIForScrap))]
     float scrapBarFactor;
@@ -154,14 +154,14 @@ public class UpgradeManager : NetworkBehaviour
 
         if (currentScrap >= currentUpgradeCost)
         {
-            //TODO fanfare on level up sound
+            //TODO fanfare on level up sound via TargetRPC
             LevelUp();
         }
         if (currentScrap < currentUpgradeCost)
         {
-            //TODO Scrap bloop pickup sound
+            //TODO Scrap bloop pickup sound via TargetRPC
             scrapBarFactor = (float)currentScrap / (float)currentUpgradeCost;
-            UpdateUIForScrap(0, 0);
+            //UpdateUIForScrap(0, 0);
         }
     }
 
@@ -203,14 +203,18 @@ public class UpgradeManager : NetworkBehaviour
 
     private void UpdateUIForScrap(float v1, float v2)
     {
-        if (upgradePointsAvailableTMP)
-        {
-            upgradePointsAvailableTMP.text = currentUpgradePoints.ToString();
-        }
         if (scrapBar)
         {
             float factor = ConvertFactorIntoFillAmount();
             scrapBar.fillAmount = factor;
+        }
+    }
+
+    private void UpdateUIForUpgradePoints(int v1, int v2)
+    {
+        if (upgradePointsAvailableTMP)
+        {
+            upgradePointsAvailableTMP.text = currentUpgradePoints.ToString();
         }
     }
 

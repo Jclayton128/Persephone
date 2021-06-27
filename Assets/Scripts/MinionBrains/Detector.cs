@@ -33,7 +33,7 @@ public class Detector : MonoBehaviour
             if (collIFF.GetIFFAllegiance() != ownIFF)
             {
                 brain.AddTargetToList(collIFF);
-                collIFF.OnModifyImportance += brain.ResortListBasedOnImportance;
+                collIFF.OnModifyImportance += brain.ResortList;
             }
         }
         if (!ignoreDamageDealers && collision.gameObject.GetComponent<DamageDealer>() )
@@ -50,7 +50,7 @@ public class Detector : MonoBehaviour
         if (collision.transform.root.TryGetComponent<IFF>(out collIFF))
         {
             brain.RemoveTargetFromList(collIFF);
-            collIFF.OnModifyImportance -= brain.ResortListBasedOnImportance;
+            collIFF.OnModifyImportance -= brain.ResortList;
         }
 
 

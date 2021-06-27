@@ -20,6 +20,10 @@ public abstract class Brain : NetworkBehaviour
     protected Health health;
 
     //param
+    private enum TargetSortMode {ClosestFirst, MostImportantFirst, MostIonizedFirst, MostHealthyFirst, InOrderOfDetection }
+    [SerializeField] TargetSortMode targetSortMode;
+    private enum TargetingPriority {FirstInList, LastInList};
+    [SerializeField] TargetingPriority targetingPriority;
     [SerializeField] protected float detectorRange;
     [SerializeField] protected float accelRate_normal;
     [SerializeField] protected float maxTurnSpeed_normal;
@@ -131,40 +135,29 @@ public abstract class Brain : NetworkBehaviour
 
     }
 
-    #region TargetPrioritization
 
-    public enum TargetingMode { closest, mostImportant, lowestHealth, mostIonized }
-    public void SelectBestTarget(TargetingMode mode)
+    #region Targeting
+    protected void SelectBestTarget()
     {
         if (targets.Count == 0) { return; }
-        switch (mode)
+        switch (targetingPriority)
         {
-            case TargetingMode.closest:
+            case TargetingPriority.FirstInList:
                 //TODO implement this sorting
                 currentAttackTarget = targets[0].gameObject;
                 return;
 
-            case TargetingMode.mostImportant:
-                currentAttackTarget = targets[0].gameObject;
-                return;
-
-            case TargetingMode.lowestHealth:
-                currentAttackTarget = targets[0].gameObject;
-                return;
-
-            case TargetingMode.mostIonized:
-                currentAttackTarget = targets[0].gameObject;
+            case TargetingPriority.LastInList:
+                int last = targets.Count - 1;
+                currentAttackTarget = targets[last].gameObject;
                 return;
         }
     }
 
-    #endregion
-
-    #region Targeting
     public void AddTargetToList(IFF target)
     {
         targets.Add(target);
-        ResortListBasedOnImportance();
+        ResortList();
     }
 
     public void RemoveTargetFromList(IFF target)
@@ -177,9 +170,33 @@ public abstract class Brain : NetworkBehaviour
         incomingDamager = damager;
     }
 
-    public void ResortListBasedOnImportance()
+    public void ResortList()
     {
         IFF iif = new IFF();
+        switch (targetSortMode)
+        {
+            case TargetSortMode.MostImportantFirst:
+                targets.Sort(IFF.CompareByImportance);
+                return;
+
+            case TargetSortMode.ClosestFirst:
+                //TODO figure out how to sort by distance well.
+                return;
+
+            case TargetSortMode.MostHealthyFirst:
+                targets.Sort(IFF.CompareByHealthLevel);
+                return;
+
+            case TargetSortMode.MostIonizedFirst:
+                targets.Sort(IFF.CompareByIonization);
+                return;
+
+            case TargetSortMode.InOrderOfDetection:
+                // Do nothing; the list should already be in order of detection by default
+                return;
+
+
+        }
         targets.Sort(iif);
     }
 

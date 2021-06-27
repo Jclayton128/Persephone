@@ -16,15 +16,19 @@ MonoBehaviour:
   syncInterval: 0.1
   targets: []
   currentAttackTarget: {fileID: 0}
+  targetSortMode: 1
+  targetingPriority: 0
   detectorRange: 4
   accelRate_normal: 5
   maxTurnSpeed_normal: 180
   turnAccelRate_normal: 7
+  faceMode: 0
   weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   weaponLifetime: 0
   weaponSpeed: 0
   weaponTurnRate: 0
-  weaponRegularDamage: 0
+  timeBetweenShots: 0
+  weaponNormalDamage: 0
   weaponShieldBonusDamage: 0
   weaponKnockback: 0
   weaponIonization: 0

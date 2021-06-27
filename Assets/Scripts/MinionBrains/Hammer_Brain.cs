@@ -44,7 +44,7 @@ public class Hammer_Brain : Brain
         {
             TrackPlayer();
             CreateDamageBall();
-            SelectBestTarget(TargetingMode.mostImportant);
+            SelectBestTarget();
         }
     }
 

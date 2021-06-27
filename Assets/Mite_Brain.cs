@@ -46,7 +46,7 @@ public class Mite_Brain : Brain
     protected override void Update()
     {
         base.Update();
-        SelectBestTarget(TargetingMode.closest);
+        SelectBestTarget();
         AttackTarget();
         UpdateAnger();
 

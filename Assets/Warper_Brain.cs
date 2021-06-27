@@ -38,7 +38,7 @@ public class Warper_Brain : Brain
             {
                 currentDest = ab.CreateRandomPointWithinArena(transform.position, minDistanceToTeleport, ArenaBounds.DestinationMode.noCloserThan);
             }
-            SelectBestTarget(TargetingMode.mostImportant);
+            SelectBestTarget();
             AttackPlayerWithMissiles();
             HandleWarping();
         }

@@ -37,7 +37,7 @@ public class Trundler_Brain : Brain
         if (isServer)
         {
             base.Update();
-            SelectBestTarget(TargetingMode.mostImportant);
+            SelectBestTarget();
             AdjustColorIfPursuingTarget();
             AttackTarget();
             UpdateRandomDestination();

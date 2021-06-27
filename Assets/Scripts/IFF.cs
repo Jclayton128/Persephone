@@ -8,6 +8,7 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
 {
     //init
     [SerializeField] CircleCollider2D hiderCollider = null;
+    Health health;
 
     //param
     [SyncVar]
@@ -31,6 +32,8 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
         if (isServer)
         {
             currentImportance = normalImportance;
+            health = GetComponent<Health>();
+           
         }
 
     }
@@ -71,9 +74,58 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
 
     }
 
+    #region Comparisons for Sorting
     public static int CompareByImportance(IFF iff1, IFF iff2)
     {
         return iff1.currentImportance.CompareTo(iff2.currentImportance);
+    }
+
+    public static int CompareByHealthLevel(IFF iff1, IFF iff2)
+    {
+        if (iff1 == null || iff2 == null)
+        {
+            return 0;
+
+        }
+        Health health1;
+        Health health2;
+        if (iff1.TryGetComponent<Health>(out health1) == false || iff2.TryGetComponent<Health>(out health2) == false)
+        {
+            return 0;
+        }
+        if (health1.GetCurrentHull() > health2.GetCurrentHull())
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }   
+
+    }
+
+    public static int CompareByIonization(IFF iff1, IFF iff2)
+    {
+        if (iff1 == null || iff2 == null)
+        {
+            return 0;
+
+        }
+        Health health1;
+        Health health2;
+        if (iff1.TryGetComponent<Health>(out health1) == false || iff2.TryGetComponent<Health>(out health2) == false)
+        {
+            return 0;
+        }
+        if (health1.GetCurrentIonization() > health2.GetCurrentIonization())
+        {
+            return 1;
+        }
+        else
+        {
+            return -1;
+        }
+
     }
 
 
@@ -100,6 +152,8 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
             return 0;
         }
     }
+
+    #endregion
 
     public void UpdateHiderRadius(int v1, int v2)
     {

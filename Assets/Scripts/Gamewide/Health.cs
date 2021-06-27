@@ -382,6 +382,11 @@ public class Health : NetworkBehaviour
         return hullMax;
     }
 
+    public float GetCurrentIonization()
+    {
+        return ionizationAmount;
+    }
+
     public float GetCurrentHull()
     {
         return hullCurrentLevel;

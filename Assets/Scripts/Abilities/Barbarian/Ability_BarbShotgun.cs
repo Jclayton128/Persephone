@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using System;
 
 public class Ability_BarbShotgun : Ability
 {
@@ -17,10 +18,19 @@ public class Ability_BarbShotgun : Ability
 
     protected override void MouseClickDownEffect()
     {
-
         if (es.CheckSpendEnergy(costToActivate))
         {
             //TODO "Pa-CHOW" shotgun blast sound.
+            CmdRequestFireWeapon();
+        }
+        
+    }
+
+    [Command]
+    private void CmdRequestFireWeapon()
+    {
+        if (es.CheckSpendEnergy(costToActivate))
+        {
             float spreadSubdivided = degreesToCover / bulletsPerShot;
             for (int i = 0; i < bulletsPerShot; i++)
             {
@@ -33,7 +43,9 @@ public class Ability_BarbShotgun : Ability
                 damageDealer.SetShieldBonusDamage(shieldBonusDamage);
 
                 damageDealer.SetPenetration(2);
-                float randomLifetime = weaponLifetime + Random.Range(-lifetimeRandomFactor, lifetimeRandomFactor);
+
+                NetworkServer.Spawn(pellet);
+                float randomLifetime = weaponLifetime + UnityEngine.Random.Range(-lifetimeRandomFactor, lifetimeRandomFactor);
                 Destroy(pellet, randomLifetime);
             }
 

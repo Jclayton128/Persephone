@@ -27,12 +27,18 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
     public Action<int> OnChangeIFF;
     public Action OnModifyImportance;
 
+    public bool IsPersephone { get; private set; } = false;
+
     private void Start()
     {
         if (isServer)
         {
             currentImportance = normalImportance;
             health = GetComponent<Health>();
+            if (gameObject.tag == "Persephone")
+            {
+                IsPersephone = true;
+            }
            
         }
 
@@ -71,6 +77,7 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
         {
             currentImportance = normalImportance;
         }
+        OnModifyImportance?.Invoke();
 
     }
 
@@ -85,22 +92,21 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
         if (iff1 == null || iff2 == null)
         {
             return 0;
-
         }
-        Health health1;
+        Health health1 = iff1.GetComponent<Health>();
         Health health2;
-        if (iff1.TryGetComponent<Health>(out health1) == false || iff2.TryGetComponent<Health>(out health2) == false)
+        if (iff2.TryGetComponent<Health>(out health2) == false ||  health1?.GetHealthFactor() > health2.GetHealthFactor())
+        {
+            return -1;
+        }
+        if (health1 == null || health1?.GetHealthFactor() < health2.GetHealthFactor())
+        {
+            return 1;
+        }   
+        else
         {
             return 0;
         }
-        if (health1.GetCurrentHull() > health2.GetCurrentHull())
-        {
-            return 1;
-        }
-        else
-        {
-            return -1;
-        }   
 
     }
 

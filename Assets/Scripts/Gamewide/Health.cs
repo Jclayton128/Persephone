@@ -176,12 +176,12 @@ public class Health : NetworkBehaviour
         //BroadcastMessage("ReceivedDamage", ownerOfLastDamageDealerToBeHitBy, SendMessageOptions.DontRequireReceiver);
         //TODO convert whatever listens for this^ to rely on a EntityWasDamaged event.
 
-        if (shieldCurrentLevel < 0 && affectHullToo)
+        if (shieldCurrentLevel <= 0 && affectHullToo)
         {
             ModifyHullLevel(amount, false); //Go direct to hull and do no shield damage
         }
 
-        if (shieldCurrentLevel >= 0)
+        if (shieldCurrentLevel > 0)
         {
             shieldCurrentLevel += amount;
             if (shieldCurrentLevel < 0 && affectHullToo)  //If shield was positive, takes damage, and becomes negative, pass the negative amount on to the hull;
@@ -280,76 +280,88 @@ public class Health : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-
-        DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
         if (isClient)
         {
-            //Begin check for validity of received damage - "should this weapon actually affect me?"
-            if (!damageDealer) { return; }
-
-
-            if (damageDealer.particleExplosionAtImpact)
-            {
-                GameObject damageParticleEffect = Instantiate(damageDealer.particleExplosionAtImpact, transform.position, transform.rotation) as GameObject;
-                Destroy(damageParticleEffect, 10);
-            }
-
-            if (chosenHurtSound)
-            {
-                AudioSource.PlayClipAtPoint(chosenHurtSound, transform.position);
-            }
-
-
-            //damageDealer.ModifyPenetration(-1 * penetrationToSoakUp);
+            HandlePossibleDamageOnClientSide(other);
         }
 
         if (isServer)
         {
-
-            //Begin check for validity of received damage - "should this weapon actually affect me?"
-            if (!damageDealer) { return; }
-            //if (damageDealer.IsReal == false) { return; }
-            if (gameObject == damageDealer.GetOwner()) { return; }
-
-            // Its a valid hit; begin responding
-            lastDamageDealerToBeHitBy = damageDealer;
-            if (damageDealer.GetOwner())
-            {
-                ownerOfLastDamageDealerToBeHitBy = damageDealer.GetOwner();
-            }    
-
-            Damage damage = damageDealer.GetDamage();
-
-            if (damage.KnockbackAmount != 0)
-            {
-                Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
-                Rigidbody2D collRB = other.transform.GetComponent<Rigidbody2D>();
-                rb2d.AddForce(damage.KnockbackAmount * collRB.velocity, ForceMode2D.Impulse);
-            }
-
-            if (Mathf.Abs(damage.SpeedModifier) > 0)
-            {
-                rb.velocity = (rb.velocity.magnitude * damageDealer.GetSpeedModifier()) * rb.velocity.normalized;
-            }
-
-            if (damage.Ionization > 0)
-            {
-                es.ReceiveIonizationDamage(damage.Ionization);
-            }
-
-            if (damage.Draining > 0)
-            {
-                ionizationAmount += damage.Draining;
-            }
-
-            ModifyShieldLevel(damage.ShieldBonusDamage * -1, false);
-            ModifyShieldLevel(damage.RegularDamage * -1, true);
-
-
-            damageDealer.ModifyPenetration(-1 * penetrationToSoakUp);
+            HandlePossibleDamageOnServerSide(other);
         }
 
     }
+    private void HandlePossibleDamageOnClientSide(Collider2D other)
+    {
+        DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
+        //Begin check for validity of received damage - "should this weapon actually affect me?"
+        if (!damageDealer) { return; }
+
+
+        if (damageDealer.particleExplosionAtImpact)
+        {
+            GameObject damageParticleEffect = Instantiate(damageDealer.particleExplosionAtImpact, transform.position, transform.rotation) as GameObject;
+            Destroy(damageParticleEffect, 10);
+        }
+
+        if (chosenHurtSound)
+        {
+            AudioSource.PlayClipAtPoint(chosenHurtSound, transform.position);
+        }
+
+
+        //damageDealer.ModifyPenetration(-1 * penetrationToSoakUp);
+    }
+
+    private void HandlePossibleDamageOnServerSide(Collider2D other)
+    {
+        DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
+
+        //Begin check for validity of received damage - "should this weapon actually affect me?"
+        if (!damageDealer) { return; }
+        //if (damageDealer.IsReal == false) { return; }
+        if (gameObject == damageDealer.GetOwner()) { return; }
+
+        // Its a valid hit; begin responding
+        lastDamageDealerToBeHitBy = damageDealer;
+        if (damageDealer.GetOwner())
+        {
+            ownerOfLastDamageDealerToBeHitBy = damageDealer.GetOwner();
+        }
+
+        Damage damage = damageDealer.GetDamage();
+
+        if (damage.KnockbackAmount != 0)
+        {
+            Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
+            Rigidbody2D collRB = other.transform.GetComponent<Rigidbody2D>();
+            rb2d.AddForce(damage.KnockbackAmount * collRB.velocity, ForceMode2D.Impulse);
+        }
+
+        if (Mathf.Abs(damage.SpeedModifier) > 0)
+        {
+            rb.velocity = (rb.velocity.magnitude * damageDealer.GetSpeedModifier()) * rb.velocity.normalized;
+        }
+
+        if (damage.Ionization > 0)
+        {
+            es.ReceiveIonizationDamage(damage.Ionization);
+        }
+
+        if (damage.Draining > 0)
+        {
+            ionizationAmount += damage.Draining;
+        }
+
+        ModifyShieldLevel(damage.ShieldBonusDamage * -1, false);
+        ModifyShieldLevel(damage.RegularDamage * -1, true);
+
+
+        damageDealer.ModifyPenetration(-1 * penetrationToSoakUp);
+    }
+
+
+
 
     public void ResetShields()
     {
@@ -390,6 +402,13 @@ public class Health : NetworkBehaviour
     public float GetCurrentHull()
     {
         return hullCurrentLevel;
+    }
+
+    public float GetHealthFactor()
+    {
+
+        float healthFactor = hullCurrentLevel / hullMax;
+        return healthFactor;
     }
 
     private void UpdateUI(float oldValue, float newValue)

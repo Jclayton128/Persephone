@@ -10,7 +10,6 @@ public class Detector : MonoBehaviour
     Brain brain;
     int ownIFF;
     int enemyIFF;
-
     private void Start()
     {
         brain = GetComponent<Brain>();
@@ -20,6 +19,7 @@ public class Detector : MonoBehaviour
     public void SetDetectorRange(float radius)
     {
         detColl.radius = radius;
+        HiderSpotCheck(radius);
     }
 
     [Server]
@@ -32,7 +32,7 @@ public class Detector : MonoBehaviour
             if (collIFF.GetCurrentImportance() <= 0) { return; }
             if (collIFF.GetIFFAllegiance() != ownIFF)
             {
-                brain.AddTargetToList(collIFF);
+                brain.CheckAddTargetToList(collIFF);
                 collIFF.OnModifyImportance += brain.ResortList;
             }
         }
@@ -52,8 +52,29 @@ public class Detector : MonoBehaviour
             brain.RemoveTargetFromList(collIFF);
             collIFF.OnModifyImportance -= brain.ResortList;
         }
+    }
 
-
+    public void HiderSpotCheck(float detectionRadius)
+    {
+        Collider2D[] colls = Physics2D.OverlapCircleAll(transform.position, detectionRadius, 1 << 17);
+        foreach (Collider2D coll in colls)
+        {
+            IFF collIFF;
+            if (coll.transform.root.TryGetComponent<IFF>(out collIFF))
+            {
+                if (collIFF.GetIFFAllegiance() == ownIFF) { return; }
+                if (collIFF.GetCurrentImportance() <= 0) { return; }
+                if (collIFF.GetIFFAllegiance() != ownIFF)
+                {
+                    brain.CheckAddTargetToList(collIFF);
+                    collIFF.OnModifyImportance += brain.ResortList;
+                }
+            }
+            if (!ignoreDamageDealers && coll.gameObject.GetComponent<DamageDealer>())
+            {
+                brain.WarnOfIncomingDamageDealer(coll.gameObject);
+            }
+        }
     }
 
 

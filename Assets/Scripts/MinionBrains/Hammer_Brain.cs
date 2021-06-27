@@ -71,7 +71,6 @@ public class Hammer_Brain : Brain
     {
         if (!damageBall && !isSprinting && timeSinceBeganCharging < randomVarianceToChargeUpTime)
         {
-            Debug.Log("made a new damage ball");
             damageBall = Instantiate(weaponPrefab, muz.PrimaryMuzzle.position, muz.PrimaryMuzzle.rotation) as GameObject; //weaponEmitterPoint.transform.position, weaponEmitterPoint.transform.rotation) as GameObject;
             damageBall.layer = 11;  //11 means that the hammer won't hurt other enemy units
             dbdd = damageBall.GetComponent<DamageDealer>();

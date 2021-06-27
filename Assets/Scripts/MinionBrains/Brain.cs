@@ -20,10 +20,14 @@ public abstract class Brain : NetworkBehaviour
     protected Health health;
 
     //param
-    private enum TargetSortMode {ClosestFirst, MostImportantFirst, MostIonizedFirst, MostHealthyFirst, InOrderOfDetection }
+    private enum TargetSortMode {ClosestAllyFirst, MostImportantAllyFirst, MostIonizedPlayerFirst, MostHealthyPlayerFirst, InOrderOfDetection }
     [SerializeField] TargetSortMode targetSortMode;
     private enum TargetingPriority {FirstInList, LastInList};
     [SerializeField] TargetingPriority targetingPriority;
+    private enum IdleNavBehaviour { WanderAroundThenAttackTarget, WanderAroundAndIgnoreTargets, EightDirFencing}
+    [SerializeField] IdleNavBehaviour idleNavBehaviour;
+
+
     [SerializeField] protected float detectorRange;
     [SerializeField] protected float accelRate_normal;
     [SerializeField] protected float maxTurnSpeed_normal;
@@ -63,12 +67,11 @@ public abstract class Brain : NetworkBehaviour
     protected float distToDest;
     protected float angleToAttackTarget;
     protected float distToAttackTarget;
-
+    protected float attackRange;
     protected float timeSinceLastScan = 0;
 
     protected virtual void Awake()
     {
-
         NetworkClient.RegisterPrefab(weaponPrefab);
     }
 
@@ -85,6 +88,8 @@ public abstract class Brain : NetworkBehaviour
         ut.AddMinion(gameObject);
         muz = GetComponent<Muzzle>();
         health = GetComponent<Health>();
+        currentDest = transform.position;
+        attackRange = weaponLifetime * weaponSpeed;
     }
 
     public override void OnStartClient()
@@ -97,13 +102,15 @@ public abstract class Brain : NetworkBehaviour
     {
         if (isServer)
         {
-            TimeBetweenScans();
+            TrackTimeBetweenScans();
+            SelectBestTarget();
             UpdateNavData();
+            ExecuteIdleNavigationBehavior();
         }        
     }
 
 
-    protected void TimeBetweenScans()
+    protected void TrackTimeBetweenScans()
     {
         timeSinceLastScan += Time.deltaTime;
         if (timeSinceLastScan >= timeBetweenScans)
@@ -154,15 +161,30 @@ public abstract class Brain : NetworkBehaviour
         }
     }
 
-    public void AddTargetToList(IFF target)
+    public void CheckAddTargetToList(IFF target)
     {
-        targets.Add(target);
-        ResortList();
+        if (targetSortMode == TargetSortMode.MostHealthyPlayerFirst || targetSortMode == TargetSortMode.MostIonizedPlayerFirst)
+        {
+            if (target.IsPersephone)
+            {
+                return;
+            }
+        }
+
+        if (!targets.Contains(target))
+        {
+            targets.Add(target);
+            ResortList();
+        }
     }
 
     public void RemoveTargetFromList(IFF target)
     {
         targets.Remove(target);
+        if (targets.Count == 0)
+        {
+            currentAttackTarget = null;
+        }
     }
 
     public virtual void WarnOfIncomingDamageDealer(GameObject damager)
@@ -175,19 +197,19 @@ public abstract class Brain : NetworkBehaviour
         IFF iif = new IFF();
         switch (targetSortMode)
         {
-            case TargetSortMode.MostImportantFirst:
+            case TargetSortMode.MostImportantAllyFirst:
                 targets.Sort(IFF.CompareByImportance);
                 return;
 
-            case TargetSortMode.ClosestFirst:
+            case TargetSortMode.ClosestAllyFirst:
                 //TODO figure out how to sort by distance well.
                 return;
 
-            case TargetSortMode.MostHealthyFirst:
+            case TargetSortMode.MostHealthyPlayerFirst:
                 targets.Sort(IFF.CompareByHealthLevel);
                 return;
 
-            case TargetSortMode.MostIonizedFirst:
+            case TargetSortMode.MostIonizedPlayerFirst:
                 targets.Sort(IFF.CompareByIonization);
                 return;
 
@@ -199,6 +221,50 @@ public abstract class Brain : NetworkBehaviour
         }
         targets.Sort(iif);
     }
+
+    #endregion
+
+    #region Navigation Behaviour
+
+    private void ExecuteIdleNavigationBehavior()
+    {
+        switch (idleNavBehaviour)
+        {
+            case IdleNavBehaviour.WanderAroundThenAttackTarget:
+                NavBehaviour_WanderAroundThenAttackTarget();
+                return;
+
+            case IdleNavBehaviour.WanderAroundAndIgnoreTargets:
+                NavBehaviour_WanderAroundAndIgnoreTarget();
+                return;
+
+        }
+    }
+
+    private void NavBehaviour_WanderAroundThenAttackTarget()
+    {
+        if (currentAttackTarget)
+        {
+            currentDest = currentAttackTarget.transform.position;
+            return;
+        }
+        if (!currentAttackTarget)
+        {
+            if (distToDest < closeEnough)
+            {
+                currentDest = ab.CreateValidRandomPointWithinArena();
+            }
+        }
+    }
+
+    private void NavBehaviour_WanderAroundAndIgnoreTarget()
+    {
+        if (distToDest < closeEnough)
+        {
+            currentDest = ab.CreateValidRandomPointWithinArena();
+        }
+    }
+
 
     #endregion
 

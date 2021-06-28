@@ -68,12 +68,40 @@ public class ArenaBounds : MonoBehaviour
         }
     }
 
-
     public Vector2 CreateValidRandomPointOutsideOfArena()
     {
         float randomAngle = Random.Range(0f, Mathf.PI * 2f);
         Vector2 randPos = new Vector2(Mathf.Sin(randomAngle), Mathf.Cos(randomAngle)).normalized;
         return randPos * (ArenaRadius * 3f);
+    }
+
+    public Vector2 CheckPoint_CreateReflection(Vector2 origin, Vector2 testPoint)  // NEEDS WORK!
+    {
+        if (CheckIfPointIsWithinArena(testPoint))
+        {
+            return testPoint;
+        }
+        else
+        {
+            Vector2 dir = (origin - testPoint) * 2f;
+            Debug.Log($"reflecting {testPoint}. dir {dir}. new point: {testPoint -  dir}");
+            return (testPoint - dir);
+        }
+    }
+
+    public Vector2 CheckPoint_CreateMoreCenteredPoint(Vector2 testPoint)
+    {
+        if (CheckIfPointIsWithinArena(testPoint))
+        {
+            return testPoint;
+        }
+        else
+        {
+            Vector2 dir = (testPoint - Vector2.zero).normalized * (ArenaRadius / 5f);
+            
+            Debug.Log($"getting more centered point {testPoint}. dir {dir}. new point: {testPoint - dir}");
+            return (testPoint - dir);
+        }
     }
 
 }

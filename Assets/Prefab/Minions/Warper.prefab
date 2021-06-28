@@ -18,6 +18,7 @@ MonoBehaviour:
   currentAttackTarget: {fileID: 0}
   targetSortMode: 4
   targetingPriority: 0
+  idleNavBehaviour: 0
   detectorRange: 10
   accelRate_normal: 5
   maxTurnSpeed_normal: 180
@@ -27,7 +28,7 @@ MonoBehaviour:
   weaponLifetime: 10
   weaponSpeed: 7
   weaponTurnRate: 90
-  timeBetweenShots: 0
+  intervalBetweenWeapons: 0
   weaponNormalDamage: 0
   weaponShieldBonusDamage: 1
   weaponKnockback: 0
@@ -59,7 +60,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369869, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LinearDrag
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369871, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LocalPosition.x

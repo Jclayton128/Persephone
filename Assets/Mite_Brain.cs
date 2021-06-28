@@ -100,7 +100,7 @@ public class Mite_Brain : Brain
             dd.SetSpeedModifier(weaponSpeedMod);
             NetworkServer.Spawn(bullet);
             Destroy(bullet, weaponLifetime);
-            timeUntilNextShot = timeBetweenShots;
+            timeUntilNextShot = intervalBetweenWeapons;
         }
     }
 

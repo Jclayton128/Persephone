@@ -24,11 +24,12 @@ MonoBehaviour:
   maxTurnSpeed_normal: 180
   turnAccelRate_normal: 7
   faceMode: 0
+  moveMode: 1
   weaponPrefab: {fileID: 958226158259032579, guid: eba1bd7a46a628b4aa94342bfbb6e3b9, type: 3}
   weaponLifetime: 0
   weaponSpeed: 0
   weaponTurnRate: 0
-  timeBetweenShots: 0
+  intervalBetweenWeapons: 0
   weaponNormalDamage: 0
   weaponShieldBonusDamage: 0
   weaponKnockback: 0

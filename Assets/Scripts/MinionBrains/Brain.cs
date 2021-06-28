@@ -33,12 +33,15 @@ public abstract class Brain : NetworkBehaviour
     [SerializeField] protected float maxTurnSpeed_normal;
     [SerializeField] protected float turnAccelRate_normal;
     [SerializeField] protected FaceMode faceMode;
+    [SerializeField] protected MoveMode moveMode;
+    protected enum MoveMode { General, Precise};
+
 
     [SerializeField] protected GameObject weaponPrefab = null;
     [SerializeField] protected float weaponLifetime;
     [SerializeField] protected float weaponSpeed;
     [SerializeField] protected float weaponTurnRate;
-    [SerializeField] protected float timeBetweenShots;
+    [SerializeField] protected float intervalBetweenWeapons;
 
     [SerializeField] protected float weaponNormalDamage;
     [SerializeField] protected float weaponShieldBonusDamage;
@@ -109,7 +112,6 @@ public abstract class Brain : NetworkBehaviour
         }        
     }
 
-
     protected void TrackTimeBetweenScans()
     {
         timeSinceLastScan += Time.deltaTime;
@@ -137,14 +139,9 @@ public abstract class Brain : NetworkBehaviour
         }
     }
 
-    protected virtual void FixedUpdate()
-    {
-
-    }
-
 
     #region Targeting
-    protected void SelectBestTarget()
+    protected virtual void SelectBestTarget()
     {
         if (targets.Count == 0) { return; }
         switch (targetingPriority)
@@ -161,7 +158,7 @@ public abstract class Brain : NetworkBehaviour
         }
     }
 
-    public void CheckAddTargetToList(IFF target)
+    public virtual void CheckAddTargetToList(IFF target)
     {
         if (targetSortMode == TargetSortMode.MostHealthyPlayerFirst || targetSortMode == TargetSortMode.MostIonizedPlayerFirst)
         {
@@ -178,7 +175,7 @@ public abstract class Brain : NetworkBehaviour
         }
     }
 
-    public void RemoveTargetFromList(IFF target)
+    public virtual void RemoveTargetFromList(IFF target)
     {
         targets.Remove(target);
         if (targets.Count == 0)
@@ -192,7 +189,7 @@ public abstract class Brain : NetworkBehaviour
         incomingDamager = damager;
     }
 
-    public void ResortList()
+    public virtual void ResortList()
     {
         IFF iif = new IFF();
         switch (targetSortMode)
@@ -225,7 +222,7 @@ public abstract class Brain : NetworkBehaviour
     #endregion
 
     #region Navigation Behaviour
-
+    // Navigation Behaviours exist solely as a strategy to update a Brain's current Destination.
     private void ExecuteIdleNavigationBehavior()
     {
         switch (idleNavBehaviour)
@@ -236,6 +233,10 @@ public abstract class Brain : NetworkBehaviour
 
             case IdleNavBehaviour.WanderAroundAndIgnoreTargets:
                 NavBehaviour_WanderAroundAndIgnoreTarget();
+                return;
+
+            case IdleNavBehaviour.EightDirFencing:
+                NavBehaviour_EightDirFencing();
                 return;
 
         }
@@ -265,22 +266,152 @@ public abstract class Brain : NetworkBehaviour
         }
     }
 
+    private void NavBehaviour_EightDirFencing()
+    {
+        float newPositionDistanceAway = 4.0f;  //This is the minimum straightline distance between turn decisions for 8-dir fencing.
+        if (distToDest >= closeEnough)
+        {
+            Debug.DrawLine(transform.position, currentDest, Color.red);
+            return;
+        }
+        if (distToDest < closeEnough)
+        {
+
+            int leftStraightRight = UnityEngine.Random.Range(0, 3);
+            if (leftStraightRight == 0)
+            {
+                rb.velocity = transform.up * 0;
+                if (GetCardinalDirection_Helper() == 1)
+                {
+                    //Debug.Log("going N, choose NW");
+                    currentDest = transform.position + new Vector3(-newPositionDistanceAway, newPositionDistanceAway, 0);
+                }
+                if (GetCardinalDirection_Helper() == 2)
+                {
+                    //Debug.Log("going E, choose NE");
+                    currentDest = transform.position + new Vector3(newPositionDistanceAway, newPositionDistanceAway, 0);
+                }
+                if (GetCardinalDirection_Helper() == 3)
+                {
+                    //Debug.Log("going S, choose SE");
+                    currentDest = transform.position + new Vector3(newPositionDistanceAway, -newPositionDistanceAway, 0);
+                }
+                if (GetCardinalDirection_Helper() == 4)
+                {
+                    //Debug.Log("going W, choose SW");
+                    currentDest = transform.position + new Vector3(-newPositionDistanceAway, -newPositionDistanceAway, 0);
+                }
+            }
+            if (leftStraightRight == 1)
+            {
+                rb.velocity = transform.up * 0;
+                if (GetCardinalDirection_Helper() == 1)
+                {
+                    //Debug.Log("going N, choose N");
+                    currentDest = transform.position + new Vector3(0, newPositionDistanceAway, 0);
+                }
+                if (GetCardinalDirection_Helper() == 2)
+                {
+                    //Debug.Log("going E, choose E");
+                    currentDest = transform.position + new Vector3(newPositionDistanceAway, 0, 0);
+                }
+                if (GetCardinalDirection_Helper() == 3)
+                {
+                    //Debug.Log("going S, choose S");
+                    currentDest = transform.position + new Vector3(0, -newPositionDistanceAway, 0);
+                }
+                if (GetCardinalDirection_Helper() == 4)
+                {
+                    //Debug.Log("going W, choose W");
+                    currentDest = transform.position + new Vector3(-newPositionDistanceAway, 0, 0);
+                }
+            }
+            if (leftStraightRight == 2)
+            {
+                rb.velocity = transform.up * 0;
+                if (GetCardinalDirection_Helper() == 1)
+                {
+                    //Debug.Log("going N, choose NE");
+                    currentDest = transform.position + new Vector3(newPositionDistanceAway, newPositionDistanceAway, 0);
+                }
+                if (GetCardinalDirection_Helper() == 2)
+                {
+                    //Debug.Log("going E, choose SE");
+                    currentDest = transform.position + new Vector3(newPositionDistanceAway, -newPositionDistanceAway, 0);
+                }
+                if (GetCardinalDirection_Helper() == 3)
+                {
+                    //Debug.Log("going S, choose SW");
+                    currentDest = transform.position + new Vector3(-newPositionDistanceAway, -newPositionDistanceAway, 0);
+                }
+                if (GetCardinalDirection_Helper() == 4)
+                {
+                    //Debug.Log("going W, choose NW");
+                    currentDest = transform.position + new Vector3(-newPositionDistanceAway, newPositionDistanceAway, 0);
+                }
+            }
+            currentDest = ab.CheckPoint_CreateMoreCenteredPoint(currentDest);
+        }
+    }
+
+    private int GetCardinalDirection_Helper()
+    {
+        float angleFromNorth = Vector3.SignedAngle(transform.up, Vector3.up, Vector3.forward);
+        int cardinalDirection = 0;
+        if (Mathf.Abs(angleFromNorth) <= 45)
+        {
+            cardinalDirection = 1;
+        }
+        if (angleFromNorth > 45 && angleFromNorth <= 135)
+        {
+            cardinalDirection = 2;
+        }
+        if (Mathf.Abs(angleFromNorth) > 135)
+        {
+            cardinalDirection = 3;
+        }
+        if (angleFromNorth < -45 && angleFromNorth >= -135)
+        {
+            cardinalDirection = 4;
+        }
+
+        return cardinalDirection;
+    }
+
 
     #endregion
+
+    protected virtual void FixedUpdate()
+    {
+
+    }
 
     #region Movement
 
     protected virtual void MoveTowardsNavTarget()
     {
-        if (Mathf.Abs(angleToDest) <= angleThresholdForAccel)
+        switch (moveMode)
         {
-            rb.AddForce(accelRate_normal * transform.up);
-            return;
+            case MoveMode.General:
+                if (Mathf.Abs(angleToDest) <= angleThresholdForAccel)
+                {
+                    rb.AddForce(accelRate_normal * transform.up);
+                    return;
+                }
+                if (Mathf.Abs(angleToDest) <= angleThresholdForAccel * 3)
+                {
+                    rb.AddForce(accelRate_normal / 2 * transform.up);
+                }
+                return;
+
+            case MoveMode.Precise:
+                if (Mathf.Abs(angleToDest) <= angleThresholdForAccel)
+                {
+                    rb.AddForce(accelRate_normal * transform.up);
+                }
+                return;
         }
-        if (Mathf.Abs(angleToDest) <= angleThresholdForAccel*3)
-        {
-            rb.AddForce(accelRate_normal / 2 * transform.up);
-        }
+
     }
     protected virtual void MoveTowardsNavTarget(bool adjustForDistanceToTarget)
     {

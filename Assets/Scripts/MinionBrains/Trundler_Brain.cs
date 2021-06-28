@@ -65,7 +65,7 @@ public class Trundler_Brain : Brain
             //AudioSource.PlayClipAtPoint(selectedBlasterSound, gameObject.transform.position);
             NetworkServer.Spawn(newBlasterProjectile);
             Destroy(newBlasterProjectile, weaponLifetime);
-            timeUntilNextShot = timeBetweenShots;
+            timeUntilNextShot = intervalBetweenWeapons;
         }
     }
 

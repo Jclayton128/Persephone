@@ -42,7 +42,7 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
 
     public virtual void MouseClickDownValidate()
     {
-        if (es.CheckEnergy(costToActivate))
+        if (es.CheckEnergy(costToActivate))  
         {
             MouseClickDownEffect();
         }

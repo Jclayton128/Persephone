@@ -99,7 +99,7 @@ public class ArenaBounds : MonoBehaviour
         {
             Vector2 dir = (testPoint - Vector2.zero).normalized * (ArenaRadius / 5f);
             
-            Debug.Log($"getting more centered point {testPoint}. dir {dir}. new point: {testPoint - dir}");
+            //Debug.Log($"getting more centered point {testPoint}. dir {dir}. new point: {testPoint - dir}");
             return (testPoint - dir);
         }
     }

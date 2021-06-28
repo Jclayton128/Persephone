@@ -68,7 +68,7 @@ public class Mine_AI : NetworkBehaviour
         {
             Quaternion sector = Quaternion.Euler(0, 0, i * circleSubdivided + transform.eulerAngles.z + (shrapnelSpread / 2) + 180);
             GameObject newShrapnel = Instantiate(shrapnelPrefab, transform.position, sector) as GameObject;
-            newShrapnel.layer = 11;
+            newShrapnel.layer = 20;  //20 is neutral weapon - mines hurt everything on detonation
             newShrapnel.GetComponent<Rigidbody2D>().velocity = newShrapnel.transform.up * shrapnelSpeed;
             newShrapnel.GetComponent<DamageDealer>().SetNormalDamage(shrapnelDamage);
             NetworkServer.Spawn(newShrapnel);

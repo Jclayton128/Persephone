@@ -12,14 +12,9 @@ public class Ability_PopRockets : Ability
 
     protected override void MouseClickDownEffect()
     {
-        if (es.CheckSpendEnergy(costToActivate))
-        {
-            //TODO AudioClip here
-            Vector2 tgtPos = MouseHelper.GetMouseCursorLocation();
-            CmdRequestFirewWeapon(tgtPos);
-        }
-
-
+        //TODO AudioClip here
+        Vector2 tgtPos = MouseHelper.GetMouseCursorLocation();
+        CmdRequestFirewWeapon(tgtPos);
     }
 
     [Command]

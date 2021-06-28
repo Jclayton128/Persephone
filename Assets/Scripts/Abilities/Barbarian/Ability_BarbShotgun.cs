@@ -18,12 +18,8 @@ public class Ability_BarbShotgun : Ability
 
     protected override void MouseClickDownEffect()
     {
-        if (es.CheckSpendEnergy(costToActivate))
-        {
-            //TODO "Pa-CHOW" shotgun blast sound.
-            CmdRequestFireWeapon();
-        }
-        
+        //TODO "Pa-CHOW" shotgun blast sound.
+        CmdRequestFireWeapon();        
     }
 
     [Command]

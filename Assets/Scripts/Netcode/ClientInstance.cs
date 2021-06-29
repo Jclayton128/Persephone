@@ -6,7 +6,7 @@ using System;
 
 public class ClientInstance : NetworkBehaviour
 {
-    [SerializeField] AvatarShipyard avatarShipyard;
+    public string PlayerName { get; private set; }
     [SerializeField] GameObject shipSelectPanel = null;
     public static ClientInstance Instance;
     [SerializeField] Camera cam;
@@ -35,29 +35,31 @@ public class ClientInstance : NetworkBehaviour
     #endregion
 
     #region Client
-    public override void OnStartLocalPlayer()
-    {
-        base.OnStartLocalPlayer();
-        GameObject.DontDestroyOnLoad(gameObject);
-        Instance = this;
-        cam = Camera.main;
-        //avatarShipyard = FindObjectOfType<AvatarShipyard>();
-        if (!isLocalPlayer)
-        {
-            cam.enabled = false;
-        }
 
+    private void Start()
+    {
+
+        GameObject panel = Instantiate(shipSelectPanel, Vector2.zero, Quaternion.identity) as GameObject;
+        sspd = panel.GetComponent<ShipSelectPanelDriver>();
         if (isLocalPlayer)
         {
+            GameObject.DontDestroyOnLoad(gameObject);
+            Instance = this;
+            cam = Camera.main;
             cam.enabled = true;
-            GameObject panel = Instantiate(shipSelectPanel, Vector2.zero, Quaternion.identity) as GameObject;
-            sspd = panel.GetComponent<ShipSelectPanelDriver>();
+
             HookIntoLocalShipSelectPanel();
             FindObjectOfType<UIManager>().SetLocalPlayerForUI(this);
+
+        }
+        if (isServer)
+        {
+            lm = FindObjectOfType<LevelManager>();
         }
 
 
     }
+
 
     private void HookIntoLocalShipSelectPanel()
     {
@@ -66,24 +68,22 @@ public class ClientInstance : NetworkBehaviour
     }
     public void SetDesiredAvatar(int indexForShipyard)
     {
-
         //desiredAvatar = avatarShipyard.ReturnPrefabAtIndex(indexForShipyard); //doesn't update on the server here.
         CmdRequestSpawnDesiredAvatar(indexForShipyard);
     }
+
+    public void SetPlayerName(string newName)
+    {
+        PlayerName = newName;
+    }
+
+
 
 
     #endregion
 
 
     #region Server
-
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-        GameObject.DontDestroyOnLoad(gameObject);
-        //avatarShipyard = FindObjectOfType<AvatarShipyard>();
-        lm = FindObjectOfType<LevelManager>();
-    }
 
     [Command]
     private void CmdRequestSpawnDesiredAvatar(int index)

@@ -45,6 +45,14 @@ PrefabInstance:
       propertyPath: shieldRate_current
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6334781685113115072, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: ShipName
+      value: Fighter
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334781685113115072, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: ShipDescription
+      value: A fighter ship
+      objectReference: {fileID: 0}
     - target: {fileID: 6441007859182316285, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 0.8

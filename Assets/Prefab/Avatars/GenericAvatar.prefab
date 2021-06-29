@@ -198,6 +198,7 @@ GameObject:
   - component: {fileID: 5508274861021996712}
   - component: {fileID: -7943953684487488827}
   - component: {fileID: -3361430503782286581}
+  - component: {fileID: 6334781685113115072}
   m_Layer: 8
   m_Name: GenericAvatar
   m_TagString: Player
@@ -528,3 +529,17 @@ MonoBehaviour:
   hiderCollider: {fileID: 8787134790948424706}
   iffAllegiance: 0
   normalImportance: 2
+--- !u!114 &6334781685113115072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644570496936021407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1340c639e460a24280d8a063d98a216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShipName: Generic Name
+  ShipDescription: Generic Description

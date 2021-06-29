@@ -22,10 +22,9 @@ MonoBehaviour:
   timeBetweenShots: 0.5
   weaponLifetime: 5
   weaponSpeed: 10
-  hullDamage: 1
-  shieldDamage: 1
-  ionDamage: 1
-  costPerShot: 10
+  normalDamage: 0
+  shieldBonusDamage: 0
+  costToActivate: 0
   insufficientEnergySound: {fileID: 0}
   missileFiringSound: {fileID: 0}
 --- !u!1001 &4311644716161591293
@@ -35,6 +34,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6334781685113115072, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: ShipName
+      value: MissileShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334781685113115072, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: ShipDescription
+      value: This loves to shoot missiles.
+      objectReference: {fileID: 0}
     - target: {fileID: 6441007859182316285, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 1.12

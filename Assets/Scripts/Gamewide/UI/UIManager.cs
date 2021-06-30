@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Image primaryAbilityPlaceholder = null;
     [SerializeField] Image[] secondaryAbilityPlaceholders = null;
+    [SerializeField] Image[] secondaryAbilityStatusPlaceholders = null;
 
     [SerializeField] UpgradePanelUI upgradePanelUI = null;
 
@@ -115,6 +116,18 @@ public class UIManager : MonoBehaviour
                 secondaryAbilityPlaceholders[i].enabled = false;
             }
             return iconsToSend;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public Image[] GetSecAbilStatusIcons(ClientInstance askingCI)
+    {
+        if (askingCI == playerAtThisComputer)
+        {
+            return secondaryAbilityStatusPlaceholders;
         }
         else
         {

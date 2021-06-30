@@ -42,9 +42,10 @@ public class EnergySource : NetworkBehaviour
     [SerializeField] float ionizationRemoveRate;
     bool isPlayer = true;
     bool isDisabled = false;
+    float bonusRegen;
+    float endtimeForBonusRegen;
 
-    //bool isInMegaEnergyBonusMode = false;
-    //float timeInBonusMode = 0;
+
     void Start()
     {
         if (gameObject.tag != "Player")
@@ -97,9 +98,12 @@ public class EnergySource : NetworkBehaviour
         if (isServer)
         {
             ProcessIonization();
+            ProcessBonusRegen();
             RegenerateEnergy();
         }
     }
+
+
 
     private void ProcessIonization()
     {
@@ -117,8 +121,17 @@ public class EnergySource : NetworkBehaviour
         if (isDisabled == false)
         {
             energyMax_current = (1 - ionFactor) * energyMax_normal;
-            energyRate_current = (1 - ionFactor) * energyRate_normal;
+            energyRate_current = ((1 - ionFactor) * energyRate_normal);
         }
+    }
+
+    private void ProcessBonusRegen()
+    {
+        if (Time.time <= endtimeForBonusRegen)
+        {
+            energyRate_current += bonusRegen;
+        }
+
     }
 
     private void RegenerateEnergy()
@@ -177,6 +190,13 @@ public class EnergySource : NetworkBehaviour
     {
         return energyMax_normal;
     }
+
+    public void SetTemporaryRegen(float newBonusAmount, float duration)
+    {
+        bonusRegen = newBonusAmount;
+        endtimeForBonusRegen = Time.time + duration;
+    }
+
 
     public float GetPowerRegen()
     {

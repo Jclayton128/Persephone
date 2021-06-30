@@ -24,11 +24,12 @@ MonoBehaviour:
   maxTurnSpeed_normal: 180
   turnAccelRate_normal: 7
   faceMode: 1
+  moveMode: 0
   weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   weaponLifetime: 1
   weaponSpeed: 10
   weaponTurnRate: 0
-  timeBetweenShots: 1
+  intervalBetweenWeapons: 0.5
   weaponNormalDamage: 1
   weaponShieldBonusDamage: 0
   weaponKnockback: 0
@@ -52,11 +53,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: shieldMax_normal
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: shieldRate_normal
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 926614622845740750, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: isDying
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Sprite

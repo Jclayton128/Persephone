@@ -23,7 +23,7 @@ public class Level : ScriptableObject
 
     public void RegisterLevelMinions()
     {
-        Debug.Log($"registering {name}");
+
         foreach (GameObject prefab in minionPrefabs)
         {
             NetworkClient.RegisterPrefab(prefab);

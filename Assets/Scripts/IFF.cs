@@ -61,7 +61,7 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
     [Server]
     public void OverrideCurrentImportance(int newImportance)
     {
-        Debug.Log($"is Server{isServer} calling override importance to {newImportance}");
+        
         currentImportance = newImportance;
         OnModifyImportance?.Invoke();
     }

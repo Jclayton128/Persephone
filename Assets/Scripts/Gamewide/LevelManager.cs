@@ -23,6 +23,8 @@ public class LevelManager : NetworkBehaviour
 
     float timeUntilPersephoneArrives = 5f;
 
+    public Action<int> OnLevelAdvance;
+
     private void Awake()
     {
         NetworkClient.RegisterPrefab(persephonePrefab);
@@ -119,6 +121,7 @@ public class LevelManager : NetworkBehaviour
     private void IncrementLevelCount()
     {
         currentLevelCount++;
+        OnLevelAdvance?.Invoke(currentLevelCount);
     }
 
     private void SpawnNextLevelMinions()

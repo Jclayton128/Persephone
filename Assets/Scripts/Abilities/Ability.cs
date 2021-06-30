@@ -20,6 +20,7 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
     [SerializeField] protected float shieldBonusDamage;
     [SerializeField] protected float costToActivate;
     [SerializeField] AudioClip insufficientEnergySound = null;
+    [SerializeField] public bool UsesStatusIcon;
 
 
     protected EnergySource es;
@@ -30,7 +31,10 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
     {
         foreach (GameObject prefab in abilityPrefabs)
         {
-            NetworkClient.RegisterPrefab(prefab);
+            if (!NetworkClient.prefabs.ContainsValue(prefab))
+            {
+                NetworkClient.RegisterPrefab(prefab);
+            }
         }
     }
 
@@ -38,6 +42,10 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
     {
         es = GetComponent<EnergySource>();
         am = GetComponent<AbilityManager>();
+        if (UsesStatusIcon)
+        {
+            ToggleAbilityStatusOnUI(true);
+        }
     }
 
     public virtual void MouseClickDownValidate()
@@ -83,6 +91,12 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
         {
             return 0;
         }
+    }
+
+    [Client]
+    protected void ToggleAbilityStatusOnUI(bool shouldBeOn)
+    {
+        am.ToggleStatusIcon(this, shouldBeOn);
     }
 
 

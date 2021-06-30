@@ -511,6 +511,8 @@ MonoBehaviour:
   SecondaryMuzzle: {fileID: 151164276916241096}
   invalidSelectionAudioClip: {fileID: 0}
   lockedAbilitySprite: {fileID: 21300000, guid: faa6e913a1cffc04b8dbbba1123dbf4b, type: 3}
+  statusIcon_Off: {fileID: 21300000, guid: 8f62f27872513104fbf3f718705b41db, type: 3}
+  statusIcon_On: {fileID: 21300000, guid: 6f4feff5342ce1f419392424705cfb7b, type: 3}
   unlockedSecondaryAbilities: []
 --- !u!114 &-3361430503782286581
 MonoBehaviour:

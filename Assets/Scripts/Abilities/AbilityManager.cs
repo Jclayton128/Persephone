@@ -13,6 +13,9 @@ public class AbilityManager : NetworkBehaviour
     [SerializeField] public Transform SecondaryMuzzle = null;
     [SerializeField] AudioClip invalidSelectionAudioClip = null;
     [SerializeField] Sprite lockedAbilitySprite = null;
+    [SerializeField] Sprite statusIcon_Off = null;
+    [SerializeField] Sprite statusIcon_On = null;
+    Image[] statusIcons;
     Ability_Dummy dummyAbility;
 
     List<Ability> secondaryAbilities = new List<Ability>();
@@ -34,9 +37,10 @@ public class AbilityManager : NetworkBehaviour
         if (hasAuthority)
         {
             HookIntoLocalUI(secondaryAbilities.Count);
-
+            HideAllStatusIcons();
             UpdateSecondaryAbilitiesOnLevelUp(1); // Hard 1 because everyone starts on level 1
             UpdateSelectionUI();
+
         }
 
         if (unlockedSecondaryAbilities.Count == 0)
@@ -89,6 +93,8 @@ public class AbilityManager : NetworkBehaviour
             }
 
         }
+
+        statusIcons = uim.GetSecAbilStatusIcons(ci);
         
     }
 
@@ -163,6 +169,10 @@ public class AbilityManager : NetworkBehaviour
                 if (isClient)
                 {
                     secondaryAbilityIcons[secondaryToUnlock].sprite = secondaryAbilities[secondaryToUnlock].AbilityIcon;
+                    if (ability.UsesStatusIcon)
+                    {
+                        statusIcons[secondaryToUnlock].enabled = true;
+                    }
                 }
 
                 if (secondaryIndex == -1)
@@ -193,6 +203,31 @@ public class AbilityManager : NetworkBehaviour
 
     private void HighlightSelectedUIAbility()
     {
+        Debug.Log($"secondary index: {secondaryIndex}");
         secondaryAbilityIcons[secondaryIndex].color = Color.white;
     }
+    private void HideAllStatusIcons()
+    {
+        foreach(Image statusIcon in statusIcons)
+        {
+            statusIcon.enabled = false;
+        }
+    }
+
+    public void ToggleStatusIcon(Ability askingAbility, bool shouldBeOn)
+    {
+        int index = secondaryAbilities.IndexOf(askingAbility);
+        Image status = statusIcons[index];
+
+        if (shouldBeOn)
+        {
+            status.sprite = statusIcon_On;
+        }
+        if (!shouldBeOn)
+        {
+            status.sprite = statusIcon_Off;
+        }
+        // replace status icon with correct one.
+    }
+
 }

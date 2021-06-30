@@ -29,6 +29,8 @@ public class Ability_JammerMode : Ability
         retractedSprite = sr.sprite;
         iff = GetComponent<IFF>();
         regularImportance = iff.GetCurrentImportance();
+        ToggleAbilityStatusOnUI(false);
+        
     }
 
     protected override void MouseClickDownEffect()
@@ -46,6 +48,7 @@ public class Ability_JammerMode : Ability
         isDeployed = !isDeployed;
         CmdUpdateJammingMode(isDeployed);
         UpdateSprite(false, false);
+        ToggleAbilityStatusOnUI(isDeployed);
 
     }
 

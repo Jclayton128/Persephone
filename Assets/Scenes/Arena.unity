@@ -2036,6 +2036,7 @@ GameObject:
   - component: {fileID: 538501678}
   - component: {fileID: 538501677}
   - component: {fileID: 538501674}
+  - component: {fileID: 538501679}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2121,6 +2122,25 @@ MonoBehaviour:
   levelCounterTMP: {fileID: 1502423975}
   unencounteredLevels:
   - {fileID: 11400000, guid: 3c7979046c354714cb63025e05836154, type: 2}
+--- !u!114 &538501679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538501673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ce8ea8e48fec3a41a58e18de2f45ba0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  allAvatarPrefabs:
+  - {fileID: 831018614288581221, guid: 4d9c199875069434c8458e38c788dd76, type: 3}
+  - {fileID: 2887084537579551194, guid: 140f047c88ffdc5479a70a2ed8b18d70, type: 3}
+  - {fileID: 5485847337457805922, guid: 4c758cfbf3fa54342a8e16b94d988ee3, type: 3}
+  availableAvatarPrefabs: []
 --- !u!1 &554500651
 GameObject:
   m_ObjectHideFlags: 0

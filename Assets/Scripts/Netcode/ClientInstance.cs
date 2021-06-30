@@ -15,11 +15,10 @@ public class ClientInstance : NetworkBehaviour
     int desiredAvatar;
     public GameObject CurrentAvatar;
     LevelManager lm;
+    PlayerShipyard ps;
 
     public static Action<GameObject> OnAvatarSpawned; //Anytime an observer to this event hears it, they get passed a reference Game Object
-
-
-
+       
 
     #region EventResponse
 
@@ -38,15 +37,17 @@ public class ClientInstance : NetworkBehaviour
 
     private void Start()
     {
-
-        GameObject panel = Instantiate(shipSelectPanel, Vector2.zero, Quaternion.identity) as GameObject;
-        sspd = panel.GetComponent<ShipSelectPanelDriver>();
+        ps = FindObjectOfType<PlayerShipyard>();
         if (isLocalPlayer)
         {
             GameObject.DontDestroyOnLoad(gameObject);
             Instance = this;
             cam = Camera.main;
             cam.enabled = true;
+
+            GameObject panel = Instantiate(shipSelectPanel, Vector2.zero, Quaternion.identity) as GameObject;
+            sspd = panel.GetComponent<ShipSelectPanelDriver>();
+
 
             HookIntoLocalShipSelectPanel();
             FindObjectOfType<UIManager>().SetLocalPlayerForUI(this);
@@ -56,8 +57,6 @@ public class ClientInstance : NetworkBehaviour
         {
             lm = FindObjectOfType<LevelManager>();
         }
-
-
     }
 
 
@@ -66,43 +65,43 @@ public class ClientInstance : NetworkBehaviour
         sspd.ci = this;
         sspd.DisplayPanel();        
     }
-    public void SetDesiredAvatar(int indexForShipyard)
-    {
-        //desiredAvatar = avatarShipyard.ReturnPrefabAtIndex(indexForShipyard); //doesn't update on the server here.
-        CmdRequestSpawnDesiredAvatar(indexForShipyard);
-    }
 
     public void SetPlayerName(string newName)
     {
         PlayerName = newName;
     }
 
-
-
+    public void LaunchGame()
+    {
+        CmdNetworkSpawnAvatarAndStartGame(sspd.chosenAvatarIndex);
+    }
 
     #endregion
 
 
     #region Server
 
+    
+
+
     [Command]
-    private void CmdRequestSpawnDesiredAvatar(int index)
+    public void CmdNetworkSpawnAvatarAndStartGame(int indexOfChoiceFromShipyard)
     {
-        //desiredAvatar = avatarShipyard.ReturnPrefabAtIndex(index);
-        NetworkSpawnAvatar(index);
+        if (!CurrentAvatar)
+        {
+            GameObject prefab = ps.allAvatarPrefabs[indexOfChoiceFromShipyard];
+            Vector2 startPoint = FindObjectOfType<ArenaBounds>().CreateRandomPointWithinArena(Vector2.zero, 3.0f, ArenaBounds.DestinationMode.noFartherThan);
+            GameObject go = Instantiate(prefab, startPoint, Quaternion.identity);
+            go.GetComponent<IFF>().SetIFFAllegiance(IFF.PlayerIFF);
+            NetworkServer.Spawn(go, base.connectionToClient);
 
-    }
+            RequestStartingLevelIfFirstPlayer();
+        }
+        else
+        {
+            Debug.Log("player alread has a current avatar");
+        }
 
-    [Server]
-    private void NetworkSpawnAvatar(int index)
-    {
-        //Vector3 randomPos = MapHelper.CreateRandomValidStartPoint(); For random start position
-        GameObject test = FindObjectOfType<PersNetworkManager>().spawnPrefabs[index];
-        GameObject go = Instantiate(test, transform.position, Quaternion.identity);
-        go.GetComponent<IFF>().SetIFFAllegiance(IFF.PlayerIFF);
-        NetworkServer.Spawn(go, base.connectionToClient);
-
-        RequestStartingLevelIfFirstPlayer();
     }
 
     private void RequestStartingLevelIfFirstPlayer()

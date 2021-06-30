@@ -6,48 +6,42 @@ using UnityEngine.UI;
 using System;
 using TMPro;
 
-public class ShipSelectPanelDriver : NetworkBehaviour
+public class ShipSelectPanelDriver : MonoBehaviour
 {
     // Start is called before the first frame update
     public ClientInstance ci;
+    PlayerShipyard ps;
     Vector3 displayPos = Vector3.zero;
     Vector3 hidePos = new Vector3(999, 999, 0);
-    [SerializeField] GameObject[] avatarPrefabs = null;
+
     [SerializeField] Button[] avatarButtons = null;
     [SerializeField] TextMeshProUGUI choiceName = null;
     [SerializeField] TextMeshProUGUI choiceDescription = null;
 
-    GameObject chosenAvatar;
+    public int chosenAvatarIndex { get; private set; } = -1;
     void Start()
     {
-        if (isClient)
-        {
-            foreach (GameObject avatar in avatarPrefabs)
-            {
-                NetworkClient.RegisterPrefab(avatar);
-            }
-
-        }
+        ps = FindObjectOfType<PlayerShipyard>();
         SetButtonImagesToAvatarIcons();
     }
 
     private void SetButtonImagesToAvatarIcons()
     {
-        if (avatarPrefabs.Length > avatarButtons.Length)
+        if (ps.allAvatarPrefabs.Count > avatarButtons.Length)
         {
             Debug.Log("more avatar choices than buttons !");
             return;
         }
-        for (int i = 0; i < avatarPrefabs.Length; i++)
+        for (int i = 0; i < ps.allAvatarPrefabs.Count; i++)
         {
-            avatarButtons[i].GetComponent<Image>().sprite = avatarPrefabs[i].GetComponent<SpriteRenderer>().sprite;
+            avatarButtons[i].GetComponent<Image>().sprite = ps.allAvatarPrefabs[i].GetComponent<SpriteRenderer>().sprite;
         }       
 
     }
 
     public void FillDataFieldsOnHoverEnter(int index)
     {
-        ShipyardInfo syi = avatarPrefabs[index].GetComponent<ShipyardInfo>();
+        ShipyardInfo syi = ps.allAvatarPrefabs[index].GetComponent<ShipyardInfo>();
         choiceName.text = syi.ShipName;
         choiceDescription.text = syi.ShipDescription;
     }
@@ -60,23 +54,27 @@ public class ShipSelectPanelDriver : NetworkBehaviour
 
     public void SelectAvatar(int index)
     {
-        if (index > avatarPrefabs.Length - 1)
+        if (index > ps.allAvatarPrefabs.Count - 1)
         {
             Debug.Log("Invalid selection, exceeds array");
             return;
         }
         else
         {
-            chosenAvatar = avatarPrefabs[index];
-            Debug.Log($"player selected the {chosenAvatar.GetComponent<ShipyardInfo>().ShipName}");
+            chosenAvatarIndex = index;  // chosenAvatar is set on client side 
+            Debug.Log($"player selected the {ps.allAvatarPrefabs[index].GetComponent<ShipyardInfo>().ShipName}");
+
         }
 
     }
-    public void PushSelectPrefabToClient(int index)
+
+    public void LaunchIntoGame()
     {
-        ci.SetDesiredAvatar(index);
-        HidePanel();
-        //gameObject.SetActive(false);
+        if (chosenAvatarIndex != -1)
+        {
+            ci.LaunchGame();         
+            HidePanel();
+        }
     }
 
     public void DisplayPanel()
@@ -87,7 +85,8 @@ public class ShipSelectPanelDriver : NetworkBehaviour
 
     public void HidePanel()
     {
-        transform.position = hidePos;
+        gameObject.SetActive(false);
+        //transform.position = hidePos;
     }
 
 

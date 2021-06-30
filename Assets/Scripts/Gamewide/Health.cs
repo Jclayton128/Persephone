@@ -24,7 +24,7 @@ public class Health : NetworkBehaviour
     TextMeshProUGUI hullMaxTMP;
     TextMeshProUGUI shieldMaxTMP;
     TextMeshProUGUI shieldRateTMP;
-    Slider shieldDrainingSlider;
+    Slider ionizationSlider;
     // [SerializeField] Particle  //TODO cause drain thing to have a Purple particle effect 
 
     AudioClip chosenHurtSound;
@@ -118,7 +118,7 @@ public class Health : NetworkBehaviour
         hullMaxTMP = uipack.HullMaxTMP;
         shieldMaxTMP = uipack.ShieldMaxTMP;
         shieldRateTMP = uipack.ShieldRateTMP;
-        shieldDrainingSlider = uipack.ShieldIonizationSlider;
+        ionizationSlider = uipack.IonizationSlider;
 
         UpdateUI(0, 0);
     }
@@ -345,12 +345,7 @@ public class Health : NetworkBehaviour
 
         if (damage.Ionization > 0)
         {
-            es.ReceiveIonizationDamage(damage.Ionization);
-        }
-
-        if (damage.Draining > 0)
-        {
-            ionizationAmount += damage.Draining;
+            ionizationAmount += damage.Ionization;
         }
 
         ModifyShieldLevel(damage.ShieldBonusDamage * -1, false);
@@ -433,9 +428,18 @@ public class Health : NetworkBehaviour
             shieldMaxTMP.text = shieldMax_normal.ToString();
             shieldRateTMP.text = shieldRate_current.ToString();
         } 
-        if (shieldDrainingSlider)
+        if (ionizationSlider)
         {
-            shieldDrainingSlider.value = ionFactor;
+            if (ionFactor > 0)
+            {
+                ionizationSlider.enabled = true;
+                ionizationSlider.value = ionFactor;
+            }
+            if (ionFactor <= 0)
+            {
+                ionizationSlider.enabled = false;
+            }
+
         }
     }
 

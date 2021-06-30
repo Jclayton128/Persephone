@@ -57,7 +57,6 @@ public class DamageDealer : MonoBehaviour
             Ionization = ionization,
             KnockbackAmount = knockBack,
             SpeedModifier = speedModifier,
-            Draining = draining
         };
         return damage;
     }

@@ -18,8 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI energyMaxTMP = null;
     [SerializeField] TextMeshProUGUI shieldRateTMP = null;
     [SerializeField] TextMeshProUGUI energyRateTMP = null;
-    [SerializeField] Slider shieldIonizationSlider = null;
-    [SerializeField] Slider energyIonizationSlider = null;
+    [SerializeField] Slider ionizationSlider = null;
 
     [SerializeField] Slider throttle = null;
 
@@ -56,8 +55,7 @@ public class UIManager : MonoBehaviour
                 EnergyMaxTMP = energyMaxTMP,
                 ShieldRateTMP = shieldRateTMP,
                 EnergyRateTMP = energyRateTMP,
-                ShieldIonizationSlider = shieldIonizationSlider,
-                EnergyIonizationSlider = energyIonizationSlider,
+                IonizationSlider = ionizationSlider,
                 ScrapBar = scrapBar,
                 UpgradePointsTMP = upgradePointsTMP,
                 ShipLevelCounterTMP = shipLevelCounterTMP

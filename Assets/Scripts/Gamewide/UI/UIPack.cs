@@ -18,8 +18,7 @@ public class UIPack : Object
     public Image ScrapBar;
     public TextMeshProUGUI UpgradePointsTMP;
     public TextMeshProUGUI ShipLevelCounterTMP;
-    public Slider ShieldIonizationSlider;
-    public Slider EnergyIonizationSlider;
+    public Slider IonizationSlider;
 
     public UIPack()
     {

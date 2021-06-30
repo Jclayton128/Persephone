@@ -12,7 +12,7 @@ public class EnergySource : NetworkBehaviour
     Slider energySlider;
     TextMeshProUGUI energyMaxTMP;
     TextMeshProUGUI energyRateTMP;
-    Slider energyIonizationSlider;
+    Health health;
 
     //param
 
@@ -28,9 +28,6 @@ public class EnergySource : NetworkBehaviour
     [SyncVar(hook = nameof(UpdateUI))]
     float energyRate_current;
 
-    [SyncVar(hook = nameof(UpdateUI))]
-    float ionizationAmount = 0;
-
     float ionFactor = 0;
     //float megaPowerRegenPerSecond = 50.0f;
     //float maxTimeInBonusMode = 10;
@@ -39,7 +36,6 @@ public class EnergySource : NetworkBehaviour
     [SyncVar(hook = nameof(UpdateUI))]
     float energyCurrentLevel;
 
-    [SerializeField] float ionizationRemoveRate;
     bool isPlayer = true;
     bool isDisabled = false;
     float bonusRegen;
@@ -58,13 +54,12 @@ public class EnergySource : NetworkBehaviour
         }
         if (isServer)
         {
-            Health health = GetComponent<Health>();
+            health = GetComponent<Health>();
             health.EntityIsDying += ReactToBecomingDisabled;
             health.EntityIsRepaired += ReactToBecomingRepaired;
         }
 
         energyCurrentLevel = energyMax_normal;
-        ionizationRemoveRate = GetComponent<Health>().GetPurificationRate();
     }
 
     private void HookIntoLocalUI()
@@ -75,7 +70,6 @@ public class EnergySource : NetworkBehaviour
         energySlider = uipack.EnergySlider;
         energyMaxTMP = uipack.EnergyMaxTMP;
         energyRateTMP = uipack.EnergyRateTMP;
-        energyIonizationSlider = uipack.EnergyIonizationSlider;
         UpdateUI(0,0);
     }
 
@@ -88,7 +82,6 @@ public class EnergySource : NetworkBehaviour
             energySlider.value = energyCurrentLevel;
             energyMaxTMP.text = energyMax_normal.ToString();
             energyRateTMP.text = energyRate_current.ToString();
-            energyIonizationSlider.value = ionFactor;
         }
     }
 
@@ -107,17 +100,7 @@ public class EnergySource : NetworkBehaviour
 
     private void ProcessIonization()
     {
-        //Remove Ionization
-        ionizationAmount -= ionizationRemoveRate * Time.deltaTime;
-        ionizationAmount = Mathf.Clamp(ionizationAmount, 0, energyMax_normal);
-
-        if (ionizationAmount > 0)
-        {
-            //TODO spawn/maintain a particle effect. Ensure it is seen on all clients
-        }
-
-        //Process Ionization effects
-        ionFactor = 1 - ((energyMax_normal - ionizationAmount) / energyMax_normal);
+        ionFactor = 1 - ((energyMax_normal - health.GetCurrentIonization()) / energyMax_normal);
         if (isDisabled == false)
         {
             energyMax_current = (1 - ionFactor) * energyMax_normal;
@@ -208,45 +191,6 @@ public class EnergySource : NetworkBehaviour
         UpdateUI(0,0);
     }
 
-    public void ReceiveIonizationDamage(float value)
-    {
-        ionizationAmount += value;
-    }
-
-    //public void SetPowerRegen(float newRegen)
-    //{
-    //    energyRate_current = newRegen;
-    //    if (energyRateTMP)
-    //    {
-    //        energyRateTMP.text = energyRate_current.ToString("F1");
-    //        //Debug.Log("attempting to adjust energy regen text");
-    //    }
-    //}
-
-    //public void SetMegaPowerBonusMode()
-    //{
-    //    isInMegaEnergyBonusMode = true;
-    //    StartCoroutine(MegaPowerBonusModeTimer());
-    //    energyRate += megaPowerRegenPerSecond;
-    //    energyRateTMP.text = energyRate.ToString("F1");
-    //}
-
-    //IEnumerator MegaPowerBonusModeTimer()
-    //{
-    //    while (true)
-    //    {
-    //        timeInBonusMode += Time.deltaTime;
-    //        if (timeInBonusMode >= maxTimeInBonusMode)
-    //        {
-    //            isInMegaEnergyBonusMode = false;
-    //            timeInBonusMode = 0;
-    //            energyRate -= megaPowerRegenPerSecond;
-    //            energyRateTMP.text = energyRate.ToString("F1");
-    //            yield break;
-    //        }
-    //        yield return new WaitForFixedUpdate();
-    //    }
-    //}
 
     public void ReactToBecomingDisabled()
     {

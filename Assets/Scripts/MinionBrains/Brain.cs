@@ -53,6 +53,8 @@ public abstract class Brain : NetworkBehaviour
     protected float angleThresholdForAccel = 10f;
     protected float timeBetweenScans = 0.1f;
     protected float boresightThreshold = 2f;
+    protected float timeOfNextWeapon = 0;
+    protected float ionizationAttackRatePenaltyCoeff = 4; // being fully ionized (1.0) means that your attack require 4x as much time to recharge.
 
     public enum FaceMode { complex, simple};
 
@@ -510,6 +512,13 @@ public abstract class Brain : NetworkBehaviour
         if (firingSounds.Length == 0) { return; }
         int random = UnityEngine.Random.Range(0, firingSounds.Length);
         selectedFiringSound = firingSounds[random];
+    }
+
+    protected float ReturnAttackTimePenaltyDueToIonization()
+    {
+        float attackTimePenalty = ionizationAttackRatePenaltyCoeff * health.IonFactor;
+        Debug.Log($"penalty: {attackTimePenalty}, coeff: {ionizationAttackRatePenaltyCoeff}, ionFactor: {health.IonFactor}");
+        return attackTimePenalty;
     }
 
     #endregion

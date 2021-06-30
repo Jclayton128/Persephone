@@ -17,11 +17,12 @@ MonoBehaviour:
   hurtAudioClip: []
   dieAudioClip: []
   hullMax: 0.1
-  shieldMax_normal: 0.1
+  shieldMax_normal: 0
   shieldRate_normal: 0
   purificationRate: 0
   penetrationToSoakUp: 0
   isDying: 0
+  IonFactor: 0
   AssignedWreckerDrone: {fileID: 0}
 --- !u!114 &916099816890531952
 MonoBehaviour:

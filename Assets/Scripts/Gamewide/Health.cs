@@ -71,7 +71,7 @@ public class Health : NetworkBehaviour
     [SyncVar(hook = nameof(UpdateUI))]
     float ionizationAmount;
 
-    float ionFactor = 0;
+    public float IonFactor = 0;
     public GameObject AssignedWreckerDrone;
 
     DamageDealer lastDamageDealerToBeHitBy;
@@ -149,7 +149,7 @@ public class Health : NetworkBehaviour
     { 
         //Remove Draining
         ionizationAmount -= purificationRate * Time.deltaTime;
-        ionizationAmount = Mathf.Clamp(ionizationAmount, 0, shieldMax_normal);
+        ionizationAmount = Mathf.Clamp(ionizationAmount, 0, hullMax);
 
         if (ionizationAmount > 0)
         {
@@ -157,9 +157,9 @@ public class Health : NetworkBehaviour
         }
 
         //Process Draining effects
-        ionFactor = 1- ((shieldMax_normal - ionizationAmount) / shieldMax_normal);
-        shieldMax_current = (1 - ionFactor) * shieldMax_normal;
-        shieldRate_current = (1 - ionFactor) * shieldRate_normal;
+        IonFactor = 1- ((hullMax - ionizationAmount) / hullMax);
+        shieldMax_current = (1 - IonFactor) * shieldMax_normal;
+        shieldRate_current = (1 - IonFactor) * shieldRate_normal;
     }
 
     private void RechargeShield()
@@ -430,12 +430,12 @@ public class Health : NetworkBehaviour
         } 
         if (ionizationSlider)
         {
-            if (ionFactor > 0)
+            if (IonFactor > 0)
             {
                 ionizationSlider.enabled = true;
-                ionizationSlider.value = ionFactor;
+                ionizationSlider.value = IonFactor;
             }
-            if (ionFactor <= 0)
+            if (IonFactor <= 0)
             {
                 ionizationSlider.enabled = false;
             }

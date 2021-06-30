@@ -28,9 +28,6 @@ public class EnergySource : NetworkBehaviour
     [SyncVar(hook = nameof(UpdateUI))]
     float energyRate_current;
 
-    float ionFactor = 0;
-    //float megaPowerRegenPerSecond = 50.0f;
-    //float maxTimeInBonusMode = 10;
 
     //hood
     [SyncVar(hook = nameof(UpdateUI))]
@@ -100,11 +97,10 @@ public class EnergySource : NetworkBehaviour
 
     private void ProcessIonization()
     {
-        ionFactor = 1 - ((energyMax_normal - health.GetCurrentIonization()) / energyMax_normal);
         if (isDisabled == false)
         {
-            energyMax_current = (1 - ionFactor) * energyMax_normal;
-            energyRate_current = ((1 - ionFactor) * energyRate_normal);
+            energyMax_current = (1 - health.IonFactor) * energyMax_normal;
+            energyRate_current = ((1 - health.IonFactor) * energyRate_normal);
         }
     }
 

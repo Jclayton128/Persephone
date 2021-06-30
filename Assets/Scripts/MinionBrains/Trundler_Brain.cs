@@ -16,11 +16,7 @@ public class Trundler_Brain : Brain
 
     //blaster param
     float randomSpread = 10f;
-    bool isFiring = false;
 
-
-    //hood
-    float timeUntilNextShot = 0f;
 
     public override void OnStartServer()
     {
@@ -50,8 +46,8 @@ public class Trundler_Brain : Brain
 
     private void AttackBehaviour()
     {
-        timeUntilNextShot -= Time.deltaTime;
-        if (timeUntilNextShot > 0) { return; }
+        if (Time.time < timeOfNextWeapon) { return; }
+        Debug.Log($"Time now: {Time.time} and nextShot: {timeOfNextWeapon}");
         if (currentAttackTarget && distToAttackTarget < attackRange && angleToAttackTarget < boresightThreshold)
         {
             GameObject newBlasterProjectile = Instantiate(weaponPrefab, muz.PrimaryMuzzle.position, muz.PrimaryMuzzle.rotation) as GameObject;
@@ -61,11 +57,13 @@ public class Trundler_Brain : Brain
             DamageDealer damageDealer = newBlasterProjectile.GetComponent<DamageDealer>();
             damageDealer.SetNormalDamage(weaponNormalDamage);
             damageDealer.SetIonization(weaponIonization);
+            // TODO push via ClientRPC a sound to every client
             //SelectRandomFiringSound();
             //AudioSource.PlayClipAtPoint(selectedBlasterSound, gameObject.transform.position);
             NetworkServer.Spawn(newBlasterProjectile);
             Destroy(newBlasterProjectile, weaponLifetime);
-            timeUntilNextShot = intervalBetweenWeapons;
+            timeOfNextWeapon = Time.time + intervalBetweenWeapons + (intervalBetweenWeapons*ReturnAttackTimePenaltyDueToIonization());
+            Debug.Log("time of next shot: " + timeOfNextWeapon);
         }
     }
 

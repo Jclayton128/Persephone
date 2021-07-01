@@ -17,7 +17,7 @@ public class PlayerShipyard : NetworkBehaviour
             foreach (GameObject avatar in allAvatarPrefabs)
             {
                 if (!NetworkClient.prefabs.ContainsValue(avatar))
-                {
+                { 
                     NetworkClient.RegisterPrefab(avatar);
                 }
 

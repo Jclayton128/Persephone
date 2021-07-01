@@ -442,6 +442,7 @@ MonoBehaviour:
   purificationRate: 0.5
   penetrationToSoakUp: 1
   isDying: 0
+  IonFactor: 0
   AssignedWreckerDrone: {fileID: 0}
 --- !u!114 &8322484285054519442
 MonoBehaviour:
@@ -459,7 +460,6 @@ MonoBehaviour:
   syncInterval: 0.1
   energyMax_normal: 10
   energyRate_normal: 1
-  ionizationRemoveRate: 0
 --- !u!114 &-1544245098169655685
 MonoBehaviour:
   m_ObjectHideFlags: 0

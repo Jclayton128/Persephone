@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(Ability))]
+[RequireComponent(typeof(AbilityManager))]
 
 
 public class PlayerInput : NetworkBehaviour

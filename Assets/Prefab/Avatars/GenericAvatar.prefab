@@ -492,7 +492,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  allUpgradeOptions: []
+  allUpgradeOptions:
+  - {fileID: 11400000, guid: 609499a160419d64bbad132bac658467, type: 2}
+  - {fileID: 11400000, guid: bf61c90286ba47e4c804f5509b075e56, type: 2}
+  - {fileID: 11400000, guid: 680cb96bb9b22614aa43072979a3336b, type: 2}
+  - {fileID: 11400000, guid: ad7b020597860a746b6aa8c6cf470af3, type: 2}
 --- !u!114 &-7943953684487488827
 MonoBehaviour:
   m_ObjectHideFlags: 0

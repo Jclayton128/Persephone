@@ -9,6 +9,9 @@ public class Ability_MarkerTurret : Ability
     [SerializeField] GameObject turret;
     [SerializeField] Transform muzzle;
     [SerializeField] float turretTurnRate;
+    [SerializeField] float ionizationDamage;
+
+    bool isFiring = false;
 
     protected override void MouseClickDownEffect()
     {
@@ -16,23 +19,65 @@ public class Ability_MarkerTurret : Ability
         //TODO audio on clientside
     }
 
+    [Command]
     private void CmdRequestWeaponFire()
     {
-        throw new NotImplementedException();
+        if (es.CheckEnergy(costToActivate))
+        {
+            isFiring = true;
+        }
+    }
+
+
+    protected override void MouseClickUpEffect()
+    {
+        CmdRequestCeaseFire();
     }
 
     [Command]
-    protected override void MouseClickUpEffect()
+    private void CmdRequestCeaseFire()
     {
-        if (es.CheckSpendEnergy(costToActivate))
-        {
-
-        }
+        isFiring = false;
     }
 
     void Update()
     {
         PointAtMousePosition();
+        if (isServer)
+        {
+            HandleFiring();
+        }
+    }
+
+    [Server]
+    private void HandleFiring()
+    {
+        if (isFiring && Time.time >= timeOfNextShot)
+        {
+            if (!es.CheckSpendEnergy(costToActivate))
+            {
+                isFiring = false;
+                return;
+            }
+            else
+            {
+                //TODO ClientRPC a shot sound
+
+                GameObject bullet = Instantiate(abilityPrefabs[0], muzzle.position, muzzle.rotation) as GameObject;
+                bullet.layer = 9;
+
+                bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * weaponSpeed;
+
+                DamageDealer dd = bullet.GetComponent<DamageDealer>();
+                dd.SetNormalDamage(normalDamage);
+                dd.SetIonization(ionizationDamage);
+
+                Destroy(bullet, weaponLifetime);
+
+                timeOfNextShot = Time.time + timeBetweenShots;
+            }
+
+        }
     }
 
     private void PointAtMousePosition()

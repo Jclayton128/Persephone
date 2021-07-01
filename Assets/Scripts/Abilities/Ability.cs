@@ -13,7 +13,6 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
     [SerializeField] public bool IsPrimaryAbility;
 
     [SerializeField] protected float timeBetweenShots;
-    //[SerializeField] protected float damagePerShot;
     [SerializeField] protected float weaponLifetime;
     [SerializeField] protected float weaponSpeed;
     [SerializeField] protected float normalDamage;
@@ -21,8 +20,9 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
     [SerializeField] protected float costToActivate;
     [SerializeField] AudioClip insufficientEnergySound = null;
     [SerializeField] public bool UsesStatusIcon;
+    
 
-
+    protected float timeOfNextShot;
     protected EnergySource es;
     protected AbilityManager am;
 

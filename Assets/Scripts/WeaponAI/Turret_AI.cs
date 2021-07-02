@@ -77,8 +77,7 @@ public class Turret_AI : MonoBehaviour
         }
         int layerMask = (1 << primaryLayerToTarget) | (1 << secondaryLayerToTarget);
         target = CUR.GetNearestGameObjectOnLayer(transform, layerMask, range);
-        targetRB = target?.GetComponent<Rigidbody2D>();
-        
+        targetRB = target?.GetComponent<Rigidbody2D>();        
     }
 
     private void FaceTarget()

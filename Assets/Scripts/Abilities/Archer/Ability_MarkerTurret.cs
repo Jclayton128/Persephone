@@ -10,8 +10,16 @@ public class Ability_MarkerTurret : Ability
     [SerializeField] Transform muzzle;
     [SerializeField] float turretTurnRate;
     [SerializeField] float ionizationDamage;
+    PlayerInput plin;
 
     bool isFiring = false;
+
+    protected override void Start()
+    {
+        base.Start();
+        plin = GetComponent<PlayerInput>();
+    }
+
 
     protected override void MouseClickDownEffect()
     {
@@ -42,7 +50,11 @@ public class Ability_MarkerTurret : Ability
 
     void Update()
     {
-        PointAtMousePosition();
+        if (!plin.IsDisabled)
+        {
+            PointAtMousePosition();
+        }
+
         if (isServer)
         {
             HandleFiring();

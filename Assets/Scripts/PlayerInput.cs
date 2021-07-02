@@ -29,7 +29,7 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] Vector2 desAimDir = Vector2.zero;
     [SerializeField] float desMoveSpeed = 0;
     Vector3 mousePos = Vector3.zero;
-    [SerializeField] bool isDisabled = false;
+    public bool IsDisabled { get; private set; } = false;
 
     void Start()
     {
@@ -56,7 +56,7 @@ public class PlayerInput : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (hasAuthority && isDisabled == false)
+        if (hasAuthority && IsDisabled == false)
         {
             HandleMouseInput();
             HandleKeyboardInput();
@@ -138,7 +138,7 @@ public class PlayerInput : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if (isDisabled) { return; }
+        if (IsDisabled) { return; }
         if (isServer)
         {
             ExecuteTurn(desAimDir);
@@ -176,12 +176,12 @@ public class PlayerInput : NetworkBehaviour
 
     private void ReactToBecomingDisabled()
     {
-        isDisabled = true;
+        IsDisabled = true;
     }
 
     private void ReactToBecomingRepaired()
     {
-        isDisabled = false;
+        IsDisabled = false;
     }
 
 }

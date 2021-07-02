@@ -517,7 +517,6 @@ public abstract class Brain : NetworkBehaviour
     protected float ReturnAttackTimePenaltyDueToIonization()
     {
         float attackTimePenalty = ionizationAttackRatePenaltyCoeff * health.IonFactor;
-        Debug.Log($"penalty: {attackTimePenalty}, coeff: {ionizationAttackRatePenaltyCoeff}, ionFactor: {health.IonFactor}");
         return attackTimePenalty;
     }
 

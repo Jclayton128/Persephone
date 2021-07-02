@@ -192,17 +192,18 @@ public static class CUR : object
         //Debug.Log(LayerMask.LayerToName(layerIndex));
         float distance = maxSearchDistance;
         GameObject closestTarget = null;
-        RaycastHit2D[] hitColliders = Physics2D.CircleCastAll(posToSearchFrom.position, maxSearchDistance, Vector2.up, 0f, layerMask, -1f, 1f);
-        foreach (RaycastHit2D contact in hitColliders)
+        //RaycastHit2D[] hitColliders = Physics2D.CircleCastAll(posToSearchFrom.position, maxSearchDistance, Vector2.up, 0f, layerMask, -1f, 1f);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(posToSearchFrom.position, maxSearchDistance, layerMask);
+        foreach (Collider2D hit in hits)
         {
-            GameObject go = contact.transform.gameObject;
-            float evaluatedObjectDistance = (go.transform.position - posToSearchFrom.position).sqrMagnitude;
+            GameObject go = hit.transform.gameObject;
+            float evaluatedObjectDistance = (go.transform.position - posToSearchFrom.position).magnitude;
             if (evaluatedObjectDistance <= distance)
             {
                 distance = evaluatedObjectDistance;
                 closestTarget = go;
             }
         }
-        return closestTarget; ;
+        return closestTarget;
     }
 }

@@ -1,5 +1,64 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-162795060062047139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2887084537579551194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd582c096eee62d47bf05aac12454838, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  AbilityIcon: {fileID: 21300000, guid: 88edd8f8186c4f94e90999c41156350f, type: 3}
+  unlockLevel: 0
+  abilityPrefabs:
+  - {fileID: 3613166345378396961, guid: c1ed44dca621de649874b7ac183f6df5, type: 3}
+  IsPrimaryAbility: 0
+  timeBetweenShots: 0
+  weaponLifetime: 1
+  weaponSpeed: 20
+  normalDamage: 7
+  shieldBonusDamage: 0
+  costToActivate: 3
+  insufficientEnergySound: {fileID: 0}
+  UsesStatusIcon: 1
+  turret: {fileID: 6759264587172777393}
+  muzzle: {fileID: 2919189759707093791}
+  turretTurnRate: 360
+  knockback: 3
+--- !u!114 &3301506171939034145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2887084537579551194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c3556ac341d7e42acdce10cb77b776, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  AbilityIcon: {fileID: 21300000, guid: b6fc1f683054f534784794875aea64e9, type: 3}
+  unlockLevel: 0
+  abilityPrefabs:
+  - {fileID: 3613166345378396961, guid: c0715783cea05f847bbf95989fe08efb, type: 3}
+  IsPrimaryAbility: 0
+  timeBetweenShots: 0
+  weaponLifetime: 1
+  weaponSpeed: 30
+  normalDamage: 3
+  shieldBonusDamage: 10
+  costToActivate: 4
+  insufficientEnergySound: {fileID: 0}
+  UsesStatusIcon: 1
+  muzzle: {fileID: 2919189759707093791}
 --- !u!114 &7825004858239442965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14,7 +73,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  AbilityIcon: {fileID: 21300000, guid: 1f4dd0a9b423f9444898d3d240c44ea8, type: 3}
+  AbilityIcon: {fileID: 21300000, guid: 16713d91302e60240b9ff29a8f668953, type: 3}
   unlockLevel: 0
   abilityPrefabs:
   - {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
@@ -359,3 +418,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 761a71958c7e704429ed13bc8971b17c, type: 3}
+--- !u!1 &6759264587172777393 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2693130342032500453, guid: 761a71958c7e704429ed13bc8971b17c, type: 3}
+  m_PrefabInstance: {fileID: 8688095221560634196}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2919189759707093791 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5769492705754181707, guid: 761a71958c7e704429ed13bc8971b17c, type: 3}
+  m_PrefabInstance: {fileID: 8688095221560634196}
+  m_PrefabAsset: {fileID: 0}

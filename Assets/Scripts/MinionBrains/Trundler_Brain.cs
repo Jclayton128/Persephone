@@ -47,7 +47,6 @@ public class Trundler_Brain : Brain
     private void AttackBehaviour()
     {
         if (Time.time < timeOfNextWeapon) { return; }
-        Debug.Log($"Time now: {Time.time} and nextShot: {timeOfNextWeapon}");
         if (currentAttackTarget && distToAttackTarget < attackRange && angleToAttackTarget < boresightThreshold)
         {
             GameObject newBlasterProjectile = Instantiate(weaponPrefab, muz.PrimaryMuzzle.position, muz.PrimaryMuzzle.rotation) as GameObject;
@@ -63,7 +62,6 @@ public class Trundler_Brain : Brain
             NetworkServer.Spawn(newBlasterProjectile);
             Destroy(newBlasterProjectile, weaponLifetime);
             timeOfNextWeapon = Time.time + intervalBetweenWeapons + (intervalBetweenWeapons*ReturnAttackTimePenaltyDueToIonization());
-            Debug.Log("time of next shot: " + timeOfNextWeapon);
         }
     }
 

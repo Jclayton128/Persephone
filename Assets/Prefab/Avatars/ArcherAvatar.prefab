@@ -59,6 +59,34 @@ MonoBehaviour:
   insufficientEnergySound: {fileID: 0}
   UsesStatusIcon: 1
   muzzle: {fileID: 2919189759707093791}
+--- !u!114 &5516577094757120486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2887084537579551194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9f3c43f3a542b449c6751017999584, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  AbilityIcon: {fileID: 21300000, guid: 266e216e0d3533e4cae08c4132a4339a, type: 3}
+  unlockLevel: 0
+  abilityPrefabs: []
+  IsPrimaryAbility: 0
+  timeBetweenShots: 0
+  weaponLifetime: 0
+  weaponSpeed: 0
+  normalDamage: 0
+  shieldBonusDamage: 0
+  costToActivate: 5
+  insufficientEnergySound: {fileID: 0}
+  UsesStatusIcon: 0
+  repelRadius: 7
+  repelForce: 20
 --- !u!114 &7825004858239442965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,6 +268,14 @@ PrefabInstance:
       propertyPath: m_SpriteTilingProperty.oldSize.y
       value: 0.84
       objectReference: {fileID: 0}
+    - target: {fileID: 8272013079848900639, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_ForceMagnitude
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272013079848900639, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_ForceMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8322484285054519442, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: energyMax
       value: 10
@@ -251,6 +287,10 @@ PrefabInstance:
     - target: {fileID: 8322484285054519442, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: energyRate_normal
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8521535806602911024, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_Radius
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8644570496936021376, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_AssetId

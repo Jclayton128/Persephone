@@ -144,25 +144,17 @@ public class Ability_ArcherTurret : Ability
     {
         int layerMask = (1 << primaryLayerToTarget) | (1 << secondaryLayerToTarget);
         GameObject target = CUR.GetNearestGameObjectOnLayer(transform, layerMask, range);
-        Debug.DrawLine(transform.position, Vector2.right * range);
-        Debug.DrawLine(transform.position, Vector2.right * range * -1);
-        Debug.DrawLine(transform.position, Vector2.up * range);
-        Debug.DrawLine(transform.position, Vector2.up * range * -1);
-
-
         if (!target)
         {
             targetPos = turret.transform.position + transform.up;
         }
         else
         {
-            Debug.Log("found target");
             Vector3 enemyVel = target.GetComponent<Rigidbody2D>().velocity;
             float timeOfShot = ((target.transform.position + enemyVel) - transform.position).magnitude / weaponSpeed;
             targetPos = target.transform.position + (enemyVel * timeOfShot);
             Debug.DrawLine(turret.transform.position, target.transform.position, Color.blue);
         }
-
     }
 
     private void PointAtTargetPos()

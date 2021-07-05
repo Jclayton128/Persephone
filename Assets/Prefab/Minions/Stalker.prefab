@@ -1,44 +1,47 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &4436521870336940920
+--- !u!114 &2895971287853520331
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8798660456887285136}
+  m_GameObject: {fileID: 4465107883179748394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 693ac9e9100268641bf296a2889e2543, type: 3}
+  m_Script: {fileID: 11500000, guid: 24b2ee83d0444f248852de8d2b643374, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
   targets: []
   currentAttackTarget: {fileID: 0}
-  targetSortMode: 4
+  targetSortMode: 0
   targetingPriority: 0
-  idleNavBehaviour: 0
+  idleNavBehaviour: 2
   detectorRange: 10
-  accelRate_normal: 5
-  maxTurnSpeed_normal: 180
+  accelRate_normal: 10
+  maxTurnSpeed_normal: 90
   turnAccelRate_normal: 7
   faceMode: 0
   moveMode: 0
-  stoppingDist: 1
-  weaponPrefab: {fileID: 1230300639563859961, guid: e45cb8edce83bb849870fc8563cdb076, type: 3}
-  weaponLifetime: 10
-  weaponSpeed: 7
-  weaponTurnRate: 90
-  intervalBetweenWeapons: 0
+  stoppingDist: 0
+  weaponPrefab: {fileID: 7555527035714178122, guid: 876ce0088e60b4744b7ffe81772bd2b4, type: 3}
+  weaponLifetime: 0.3
+  weaponSpeed: 10
+  weaponTurnRate: 0
+  intervalBetweenWeapons: 0.5
   weaponNormalDamage: 0
-  weaponShieldBonusDamage: 1
+  weaponShieldBonusDamage: 0
   weaponKnockback: 0
   weaponIonization: 0
   weaponSpeedMod: 0
   weaponIsCharged: 0
   firingSounds: []
---- !u!1001 &5893349847462417089
+  cloakSound: {fileID: 0}
+  decloakSound: {fileID: 0}
+  weaponFiringSound: {fileID: 0}
+--- !u!1001 &1595754834981211003
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -48,22 +51,26 @@ PrefabInstance:
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 909edade415e4964bac9bbaacafdf71c, type: 3}
+      objectReference: {fileID: 21300000, guid: 5c6d7b26c598d7f418a6dafeca345a24, type: 3}
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Size.x
-      value: 1.36
+      value: 1.26
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Size.y
-      value: 0.84
+      value: 1.08
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369868, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369869, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_Mass
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3157724171066369869, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LinearDrag
-      value: 10
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369871, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LocalPosition.x
@@ -111,36 +118,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369873, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_Name
-      value: Warper
+      value: Stalker
       objectReference: {fileID: 0}
     - target: {fileID: 3157724171066369874, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_AssetId
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3157724171066369875, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_Radius
+      value: 0.65
+      objectReference: {fileID: 0}
     - target: {fileID: 5624013662604118736, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.522
+      value: 0.273
       objectReference: {fileID: 0}
     - target: {fileID: 5624013662604118736, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.275
+      value: 0.594
       objectReference: {fileID: 0}
     - target: {fileID: 6469742619674677656, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.522
+      value: -0.273
       objectReference: {fileID: 0}
     - target: {fileID: 6469742619674677656, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.275
-      objectReference: {fileID: 0}
-    - target: {fileID: 8591628276914722625, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
-      propertyPath: ignoreDamageDealers
-      value: 0
+      value: 0.594
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
---- !u!1 &8798660456887285136 stripped
+--- !u!1 &4465107883179748394 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3157724171066369873, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
-  m_PrefabInstance: {fileID: 5893349847462417089}
+  m_PrefabInstance: {fileID: 1595754834981211003}
   m_PrefabAsset: {fileID: 0}

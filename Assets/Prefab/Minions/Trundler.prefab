@@ -155,7 +155,8 @@ PrefabInstance:
       propertyPath: numberOfScraps
       value: 19
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8847382733866794059, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
 --- !u!1 &3937818766114237639 stripped
 GameObject:

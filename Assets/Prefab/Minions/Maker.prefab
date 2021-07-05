@@ -18,21 +18,25 @@ MonoBehaviour:
   currentAttackTarget: {fileID: 0}
   targetSortMode: 4
   targetingPriority: 0
+  idleNavBehaviour: 0
   detectorRange: 20
   accelRate_normal: 5
   maxTurnSpeed_normal: 90
   turnAccelRate_normal: 3
   faceMode: 0
+  moveMode: 0
+  stoppingDist: 1
   weaponPrefab: {fileID: 211914637558519759, guid: 03bb80dffccc7dc4ea84f31de335b709, type: 3}
   weaponLifetime: 0
   weaponSpeed: 0
   weaponTurnRate: 0
-  timeBetweenShots: 0
+  intervalBetweenWeapons: 0
   weaponNormalDamage: 0
   weaponShieldBonusDamage: 0
   weaponKnockback: 0
   weaponIonization: 0
   weaponSpeedMod: 0
+  weaponIsCharged: 0
   firingSounds: []
 --- !u!1001 &7845942134807942810
 PrefabInstance:

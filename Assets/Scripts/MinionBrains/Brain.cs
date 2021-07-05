@@ -24,7 +24,7 @@ public abstract class Brain : NetworkBehaviour
     [SerializeField] TargetSortMode targetSortMode;
     private enum TargetingPriority {FirstInList, LastInList};
     [SerializeField] TargetingPriority targetingPriority;
-    private enum IdleNavBehaviour { WanderAroundThenAttackTarget, WanderAroundAndIgnoreTargets, EightDirFencing}
+    private enum IdleNavBehaviour { WanderAroundThenAttackTarget, WanderAroundAndIgnoreTargets, WanderSaveTargetAttackWhenCharged ,EightDirFencing}
     [SerializeField] IdleNavBehaviour idleNavBehaviour;
 
 
@@ -34,6 +34,7 @@ public abstract class Brain : NetworkBehaviour
     [SerializeField] protected float turnAccelRate_normal;
     [SerializeField] protected FaceMode faceMode;
     [SerializeField] protected MoveMode moveMode;
+    [SerializeField] protected float stoppingDist;
     protected enum MoveMode { General, Precise};
 
 
@@ -55,6 +56,7 @@ public abstract class Brain : NetworkBehaviour
     protected float boresightThreshold = 2f;
     protected float timeOfNextWeapon = 0;
     protected float ionizationAttackRatePenaltyCoeff = 4; // being fully ionized (1.0) means that your attack require 4x as much time to recharge.
+    [SerializeField] protected bool weaponIsCharged;
 
     public enum FaceMode { complex, simple};
 
@@ -138,6 +140,11 @@ public abstract class Brain : NetworkBehaviour
             Vector2 dir2 = currentAttackTarget.transform.position - transform.position;
             angleToAttackTarget = Vector3.SignedAngle(dir2, transform.up, transform.forward);
             distToAttackTarget = dir2.magnitude;
+        }
+        else
+        {
+            distToAttackTarget = Mathf.Infinity;
+            angleToAttackTarget = 0;
         }
     }
 
@@ -237,6 +244,10 @@ public abstract class Brain : NetworkBehaviour
                 NavBehaviour_WanderAroundAndIgnoreTarget();
                 return;
 
+            case IdleNavBehaviour.WanderSaveTargetAttackWhenCharged:
+                NavBehaviour_WanderSaveTargetAttackWhenCharged();
+                return;
+
             case IdleNavBehaviour.EightDirFencing:
                 NavBehaviour_EightDirFencing();
                 return;
@@ -265,6 +276,23 @@ public abstract class Brain : NetworkBehaviour
         if (distToDest < closeEnough)
         {
             currentDest = ab.CreateValidRandomPointWithinArena();
+        }
+    }
+
+    private void NavBehaviour_WanderSaveTargetAttackWhenCharged()
+    {
+        if (currentAttackTarget && weaponIsCharged)
+        {
+            currentDest = currentAttackTarget.transform.position;
+            return;
+        }
+        if (!currentAttackTarget || !weaponIsCharged)
+        {
+            if (distToDest < attackRange * 4f)
+            {
+                currentDest = ab.CreateValidRandomPointWithinArena();
+            }
+
         }
     }
 
@@ -415,17 +443,12 @@ public abstract class Brain : NetworkBehaviour
         }
 
     }
-    protected virtual void MoveTowardsNavTarget(bool adjustForDistanceToTarget)
+    protected virtual void MoveTowardsNavTarget(float distToStop)
     {
-        if (Mathf.Abs(angleToDest) <= angleThresholdForAccel && adjustForDistanceToTarget == true)
+        if (Mathf.Abs(angleToDest) <= angleThresholdForAccel && distToStop > 0)
         {
-            float distThresh = closeEnough;
-            float factor = Mathf.Clamp(distToDest / distThresh, 0, 1);
+            float factor = Mathf.Clamp01(distToDest - distToStop);
             rb.AddForce(accelRate_normal * transform.up * Time.timeScale * factor);
-        }
-        if (Mathf.Abs(angleToDest) <= angleThresholdForAccel && adjustForDistanceToTarget == false)
-        {
-            rb.AddForce(accelRate_normal * transform.up * Time.timeScale);
         }
     }
 
@@ -489,7 +512,7 @@ public abstract class Brain : NetworkBehaviour
             {
                 rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
             }
-            Debug.Log("angVel: " + rb.angularVelocity);
+
             return;
         }
 

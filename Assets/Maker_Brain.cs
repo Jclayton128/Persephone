@@ -56,7 +56,7 @@ public class Maker_Brain : Brain
         {
             base.FixedUpdate();
             TurnToFaceDestination(FaceMode.simple);
-            MoveTowardsNavTarget(true);
+            MoveTowardsNavTarget(stoppingDist);
         }
     }
 

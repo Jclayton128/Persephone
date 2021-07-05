@@ -25,7 +25,7 @@ public class Fencer_Brain : Brain
     {
         base.FixedUpdate();
         TurnToFaceDestination(faceMode);
-        MoveTowardsNavTarget(true);
+        MoveTowardsNavTarget(stoppingDist);
     }
 
     private void LayMines()

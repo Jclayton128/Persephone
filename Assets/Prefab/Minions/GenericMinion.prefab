@@ -18,7 +18,6 @@ GameObject:
   - component: {fileID: 5688006805919652889}
   - component: {fileID: 8591628276914722625}
   - component: {fileID: 7004619822151118274}
-  - component: {fileID: 4906215226377361269}
   - component: {fileID: 2461284178872643384}
   m_Layer: 10
   m_Name: GenericMinion
@@ -192,6 +191,7 @@ MonoBehaviour:
   purificationRate: 0
   penetrationToSoakUp: 1
   isDying: 0
+  IonFactor: 0
   AssignedWreckerDrone: {fileID: 0}
 --- !u!114 &5688006805919652889
 MonoBehaviour:
@@ -242,23 +242,6 @@ MonoBehaviour:
   asteroidPrefabs: []
   numberOfScraps: 1
   numberOfAsteroids: 0
---- !u!114 &4906215226377361269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3157724171066369873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c42a9afb5396da14dadc1757bbbd1cb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  energyMax_normal: 1
-  energyRate_normal: 1
-  ionizationRemoveRate: 0
 --- !u!114 &2461284178872643384
 MonoBehaviour:
   m_ObjectHideFlags: 0

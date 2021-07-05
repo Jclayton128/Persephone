@@ -119,7 +119,7 @@ public class Warper_Brain : Brain
         if (isServer)
         {
             TurnToFaceDestination(FaceMode.simple);
-            MoveTowardsNavTarget(true);
+            MoveTowardsNavTarget(stoppingDist);
         }
     }
 

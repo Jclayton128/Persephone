@@ -2252,7 +2252,7 @@ MonoBehaviour:
   allAvatarPrefabs:
   - {fileID: 2887084537579551194, guid: 140f047c88ffdc5479a70a2ed8b18d70, type: 3}
   - {fileID: 831018614288581221, guid: 4d9c199875069434c8458e38c788dd76, type: 3}
-  - {fileID: 5485847337457805922, guid: 4c758cfbf3fa54342a8e16b94d988ee3, type: 3}
+  - {fileID: 5666640253333592021, guid: 9df2a8043610d2d49813fdbe85979869, type: 3}
   availableAvatarPrefabs: []
 --- !u!1 &554500651
 GameObject:

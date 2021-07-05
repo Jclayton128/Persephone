@@ -125,7 +125,7 @@ public class Stalker_Brain : Brain
     {
         if (cloakFactor == 0)
         {
-            gameObject.layer = 0;
+            gameObject.layer = 21;
         }
         if (cloakFactor == 1)
         {

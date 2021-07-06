@@ -6,5 +6,6 @@ public class ShipyardInfo : MonoBehaviour
 {
     [SerializeField] public string ShipName = null;
     [SerializeField] public string ShipDescription = null;
+    [SerializeField] public Sprite shipyardSprite = null;
 
 }

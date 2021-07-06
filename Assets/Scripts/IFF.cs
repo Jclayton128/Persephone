@@ -77,6 +77,7 @@ public class IFF : NetworkBehaviour , IComparer<IFF>
         {
             currentImportance = normalImportance;
         }
+        Debug.Log($"importance now {currentImportance}");
         OnModifyImportance?.Invoke();
 
     }

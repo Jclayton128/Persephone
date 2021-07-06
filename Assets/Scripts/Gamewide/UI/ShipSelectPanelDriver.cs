@@ -34,7 +34,7 @@ public class ShipSelectPanelDriver : MonoBehaviour
         }
         for (int i = 0; i < ps.allAvatarPrefabs.Count; i++)
         {
-            avatarButtons[i].GetComponent<Image>().sprite = ps.allAvatarPrefabs[i].GetComponent<SpriteRenderer>().sprite;
+            avatarButtons[i].GetComponent<Image>().sprite = ps.allAvatarPrefabs[i].GetComponent<ShipyardInfo>().shipyardSprite;
         }       
 
     }

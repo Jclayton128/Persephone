@@ -52,7 +52,7 @@ public abstract class Brain : NetworkBehaviour
 
     protected float closeEnough = 0.2f;
     protected float angleThresholdForAccel = 10f;
-    protected float timeBetweenScans = 0.1f;
+    protected float timeBetweenScans = 0.5f;
     protected float boresightThreshold = 2f;
     protected float timeOfNextWeapon = 0;
     protected float ionizationAttackRatePenaltyCoeff = 4; // being fully ionized (1.0) means that your attack require 4x as much time to recharge.
@@ -75,7 +75,7 @@ public abstract class Brain : NetworkBehaviour
     protected float angleToAttackTarget;
     protected float distToAttackTarget;
     protected float attackRange;
-    protected float timeSinceLastScan = 0;
+    protected float timeOfNextScan = 0;
 
     protected virtual void Awake()
     {
@@ -90,7 +90,7 @@ public abstract class Brain : NetworkBehaviour
         ab = FindObjectOfType<ArenaBounds>();
         det = GetComponent<Detector>();
         det.SetDetectorRange(detectorRange);
-        timeSinceLastScan = UnityEngine.Random.Range(0, timeBetweenScans);
+        timeOfNextScan = UnityEngine.Random.Range(0, timeBetweenScans);
         ut = FindObjectOfType<UnitTracker>();
         ut.AddMinion(gameObject);
         muz = GetComponent<Muzzle>();
@@ -118,17 +118,17 @@ public abstract class Brain : NetworkBehaviour
 
     protected void TrackTimeBetweenScans()
     {
-        timeSinceLastScan += Time.deltaTime;
-        if (timeSinceLastScan >= timeBetweenScans)
+       
+        if (Time.time >= timeOfNextScan)
         {
             Scan();
-            timeSinceLastScan = 0;
+            timeOfNextScan = Time.time + timeBetweenScans;
         }
     }
 
     protected virtual void Scan()
     {
-        
+        det.HiderSpotCheck(detectorRange);
     }
     private void UpdateNavData()
     {
@@ -153,6 +153,11 @@ public abstract class Brain : NetworkBehaviour
     protected virtual void SelectBestTarget()
     {
         if (targets.Count == 0) { return; }
+        if (targets[0].GetCurrentImportance() == 0)
+        {
+            RemoveTargetFromList(targets[0]);
+            return;
+        }
         switch (targetingPriority)
         {
             case TargetingPriority.FirstInList:

@@ -260,6 +260,10 @@ PrefabInstance:
       propertyPath: ShipDescription
       value: A long-range turret-equipped ship
       objectReference: {fileID: 0}
+    - target: {fileID: 6334781685113115072, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: shipyardSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 98fce1993854b514e84047ddcc4ebde3, type: 3}
     - target: {fileID: 6441007859182316285, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 0.8

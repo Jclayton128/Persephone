@@ -7,16 +7,28 @@ using Mirror;
 public class Ability_DarkBolter : Ability
 {
     [SerializeField] float ionizationDamage;
+    Ability_RockMode arm;
+
+    protected override void Start()
+    {
+        base.Start();
+        arm = GetComponent<Ability_RockMode>();
+    }
+
     protected override void MouseClickDownEffect()
     {
-        CmdRequestFireWeapon();
+        if (arm.CheckFullyDeployed())
+        {
+            CmdRequestFireWeapon();
+        }
+
         //TODO audio firing sound
     }
 
     [Command]
     private void CmdRequestFireWeapon()
     {
-        if (es.CheckSpendEnergy(costToActivate))
+        if (es.CheckSpendEnergy(costToActivate) && arm.CheckFullyDeployed())
         {
             GameObject bullet = Instantiate(abilityPrefabs[0], am.PrimaryMuzzle.position, am.PrimaryMuzzle.transform.rotation) as GameObject;
             NetworkServer.Spawn(bullet);

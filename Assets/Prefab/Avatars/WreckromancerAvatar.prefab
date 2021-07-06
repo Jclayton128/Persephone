@@ -274,6 +274,34 @@ MonoBehaviour:
   insufficientEnergySound: {fileID: 0}
   UsesStatusIcon: 0
   ionizationDamage: 1
+--- !u!114 &68736641999099046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5666640253333592021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5aab12a7650bcca48b0212ec726dc7f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  AbilityIcon: {fileID: 0}
+  unlockLevel: 0
+  abilityPrefabs:
+  - {fileID: 1831248515497082076, guid: b7042c35f37b875428359491bcac8e83, type: 3}
+  IsPrimaryAbility: 0
+  timeBetweenShots: 0
+  weaponLifetime: 10
+  weaponSpeed: 6
+  normalDamage: 0.2
+  shieldBonusDamage: 0
+  costToActivate: 10
+  insufficientEnergySound: {fileID: 0}
+  UsesStatusIcon: 0
+  weaponTurnRate: 90
 --- !u!114 &3296415582723947589
 MonoBehaviour:
   m_ObjectHideFlags: 0

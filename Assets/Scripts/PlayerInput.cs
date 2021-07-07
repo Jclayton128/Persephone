@@ -22,6 +22,8 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] float maxTurnSpeed_normal;
     [SerializeField] float turnAccelRate_normal;
 
+    float performanceFactor = 1;  //This factor should change how fast a ship moves and turns on a temporary basis.
+
     float throttleSensitivity = 0.05f;
     float scrollSensitivity = 0.1f;
 
@@ -29,6 +31,8 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] Vector2 desAimDir = Vector2.zero;
     [SerializeField] float desMoveSpeed = 0;
     Vector3 mousePos = Vector3.zero;
+
+
     public bool IsDisabled { get; private set; } = false;
 
     void Start()
@@ -151,11 +155,11 @@ public class PlayerInput : NetworkBehaviour
         float theta = Vector2.SignedAngle(aimDir, transform.up);
         if (theta > 0.02)
         {
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -1 * maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -1 * maxTurnSpeed_normal * performanceFactor, turnAccelRate_normal * Time.deltaTime);
         }
         if (theta < -0.02)
         {
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal * performanceFactor, turnAccelRate_normal * Time.deltaTime);
         }
     }
 
@@ -164,7 +168,7 @@ public class PlayerInput : NetworkBehaviour
         if (desMoveSpeed > 0)
         {
             rb.drag = drag_normal;
-            rb.AddForce(transform.up * accelRate_normal);
+            rb.AddForce(transform.up * accelRate_normal * performanceFactor);
         }
         if (desMoveSpeed < 0)
         {
@@ -182,6 +186,11 @@ public class PlayerInput : NetworkBehaviour
     private void ReactToBecomingRepaired()
     {
         IsDisabled = false;
+    }
+
+    public void SetPerformanceFactor(float zeroToOneFactor)
+    {
+        performanceFactor = zeroToOneFactor;
     }
 
 }

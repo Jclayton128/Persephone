@@ -1,0 +1,175 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-4116441661365647574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 357377898457060053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a279d24f08cfba4ea4e103aacdab84e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  AbilityIcon: {fileID: 0}
+  unlockLevel: 0
+  abilityPrefabs: []
+  IsPrimaryAbility: 1
+  timeBetweenShots: 0
+  weaponLifetime: 0
+  weaponSpeed: 0
+  normalDamage: 0
+  shieldBonusDamage: 0
+  costToActivate: 0
+  insufficientEnergySound: {fileID: 0}
+  UsesStatusIcon: 0
+  ionizationDamage: 0
+--- !u!114 &194901994997442335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 357377898457060053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c4791250b9716846b9d05b3007da6b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  AbilityIcon: {fileID: 21300000, guid: 1f4dd0a9b423f9444898d3d240c44ea8, type: 3}
+  unlockLevel: 0
+  abilityPrefabs:
+  - {fileID: 5392660631742042847, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
+  IsPrimaryAbility: 0
+  timeBetweenShots: 0
+  weaponLifetime: 0
+  weaponSpeed: 0
+  normalDamage: 0
+  shieldBonusDamage: 0
+  costToActivate: 3
+  insufficientEnergySound: {fileID: 0}
+  UsesStatusIcon: 0
+  IsBlinking: 0
+--- !u!1001 &8287193268495212362
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2754486748955791981, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: accelRate_normal
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754486748955791981, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: drag_normal
+      value: 0.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754486748955791981, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: drag_retro
+      value: 4.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754486748955791981, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: maxTurnSpeed_normal
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 2754486748955791981, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: turnAccelRate_normal
+      value: 360
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334781685113115072, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: ShipName
+      value: Ninja
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334781685113115072, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: ShipDescription
+      value: A fast-moving, lightly-protected deadly stealth fightser
+      objectReference: {fileID: 0}
+    - target: {fileID: 6334781685113115072, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: shipyardSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 577996c5c51bfde4b890fc30be205c87, type: 3}
+    - target: {fileID: 6441007859182316285, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 6441007859182316285, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021376, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_AssetId
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021378, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021379, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 577996c5c51bfde4b890fc30be205c87, type: 3}
+    - target: {fileID: 8644570496936021379, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_Size.x
+      value: 0.98
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021379, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8644570496936021407, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_Name
+      value: NinjaAvatar
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+--- !u!1 &357377898457060053 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8644570496936021407, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+  m_PrefabInstance: {fileID: 8287193268495212362}
+  m_PrefabAsset: {fileID: 0}

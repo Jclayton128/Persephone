@@ -2253,6 +2253,7 @@ MonoBehaviour:
   - {fileID: 2887084537579551194, guid: 140f047c88ffdc5479a70a2ed8b18d70, type: 3}
   - {fileID: 831018614288581221, guid: 4d9c199875069434c8458e38c788dd76, type: 3}
   - {fileID: 5666640253333592021, guid: 9df2a8043610d2d49813fdbe85979869, type: 3}
+  - {fileID: 357377898457060053, guid: f540cc07c0b3e83498a07d6c0a5da9c9, type: 3}
   availableAvatarPrefabs: []
 --- !u!1 &554500651
 GameObject:
@@ -11415,6 +11416,10 @@ PrefabInstance:
     - target: {fileID: 5392660631742042847, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
       propertyPath: m_TagString
       value: WarpPortal
+      objectReference: {fileID: 0}
+    - target: {fileID: 6731475867213952929, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
+      propertyPath: sceneId
+      value: 4221547364
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}

@@ -60,12 +60,13 @@ public class Ability_ReanimatorTorpedo : Ability
     [Command]
     private void CmdDetonateTorpedo()
     {
-        activeTorpedo.Detonate();
+        activeTorpedo?.Detonate();
     }
 
+    [Command]
     private void CmdPassTargetPoint(Vector2 vector2)
     {
-        activeTorpedo.SetTargetPoint(vector2);
+        activeTorpedo?.SetTargetPoint(vector2);
     }
 
     private void Update()

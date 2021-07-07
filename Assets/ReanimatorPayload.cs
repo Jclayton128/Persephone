@@ -92,6 +92,7 @@ public class ReanimatorPayload : NetworkBehaviour
     {
         if (!reanimatedThing)
         {
+            Debug.Log("generating a new thing");
             int rand = UnityEngine.Random.Range(0, coreClumps.Length);
             Quaternion randQuat = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-180, 180));
             reanimatedThing = Instantiate(coreClumps[rand], transform.position, randQuat) as GameObject;
@@ -99,6 +100,7 @@ public class ReanimatorPayload : NetworkBehaviour
         }   
         if (reanimatedThing)
         {
+            Debug.Log("generating a bonus clump");
             reanimatedThing.GetComponent<ReanimatedBrain>().AddNewClump();
         }
     }

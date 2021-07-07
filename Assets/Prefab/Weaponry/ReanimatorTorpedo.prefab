@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 315b07feeaa8f27418c817ac3741850c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  payloadPrefab: {fileID: 3614753265741497238, guid: 350246ad3ea3aa5479e1876f38faa3a6, type: 3}
+  payloadPrefab: {fileID: 7500074090314098892, guid: f7d2dd8a9b4442e4894045a1431f9b7a, type: 3}
   normalSpeed: 0
   maxTurnRate: 0
 --- !u!1001 &8446392179081315437

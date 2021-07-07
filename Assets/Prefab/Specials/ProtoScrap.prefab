@@ -203,4 +203,6 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7ba86ef91a5815c498858ca9e466ddae, type: 3}
   - {fileID: 21300000, guid: ad565446021c85845a241a98559bf93c, type: 3}
   - {fileID: 21300000, guid: c43f5b26b42abd644bf9521a4131ee12, type: 3}
+  - {fileID: 21300000, guid: 04789e5c505c2f1439c0fed188a79327, type: 3}
+  - {fileID: 21300000, guid: 6ca9d6f5bc5949e40a70d3386efc1df0, type: 3}
   trigColl: {fileID: -5934226802915403351}

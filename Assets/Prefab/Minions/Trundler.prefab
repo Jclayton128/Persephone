@@ -21,10 +21,11 @@ MonoBehaviour:
   idleNavBehaviour: 0
   detectorRange: 4
   accelRate_normal: 0
-  maxTurnSpeed_normal: 180
+  maxTurnSpeed_normal: 0
   turnAccelRate_normal: 7
   faceMode: 1
   moveMode: 0
+  stoppingDist: 0
   weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   weaponLifetime: 1
   weaponSpeed: 10
@@ -35,6 +36,7 @@ MonoBehaviour:
   weaponKnockback: 0
   weaponIonization: 1
   weaponSpeedMod: 0
+  weaponIsCharged: 0
   firingSounds: []
 --- !u!1001 &2123319864885529494
 PrefabInstance:

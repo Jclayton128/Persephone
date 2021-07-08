@@ -329,7 +329,7 @@ public class Health : NetworkBehaviour
             ownerOfLastDamageDealerToBeHitBy = damageDealer.GetOwner();
         }
 
-        Damage damage = damageDealer.GetDamage();
+        Damage damage = damageDealer.GetDamage(transform);
 
         if (damage.KnockbackAmount != 0)
         {

@@ -5,6 +5,7 @@ using UnityEngine;
 public class DamageDealer : MonoBehaviour
 {
     float regularDamage = 0;
+    float directionalBonus = 0;
     float shieldBonusDamage = 0;
     float ionization = 0;
     float draining = 0;
@@ -13,6 +14,7 @@ public class DamageDealer : MonoBehaviour
 
     GameObject owner = null;
     int penetration = 1;
+    public bool UsesDirectionalBonus { private get; set; } = false;
 
     public GameObject particleExplosionAtImpact = null;
 
@@ -48,16 +50,25 @@ public class DamageDealer : MonoBehaviour
         speedModifier = amount;
     }
 
-    public Damage GetDamage()
+    public Damage GetDamage(Transform transformOfThingDamaged)
     {
-        Damage damage = new Damage
+        Damage damage = new Damage();
+
+        if (UsesDirectionalBonus)
         {
-            RegularDamage = regularDamage,
-            ShieldBonusDamage = shieldBonusDamage,
-            Ionization = ionization,
-            KnockbackAmount = knockBack,
-            SpeedModifier = speedModifier,
-        };
+            float diff = Mathf.Abs(Quaternion.Angle(transform.rotation, transformOfThingDamaged.rotation));
+            float diffFactor = 1 - (diff / 180);
+            damage.RegularDamage = regularDamage * diffFactor;
+        }
+        else
+        {
+            damage.RegularDamage = regularDamage;
+        }
+
+        damage.ShieldBonusDamage = shieldBonusDamage;
+        damage.Ionization = ionization;
+        damage.KnockbackAmount = knockBack;
+        damage.SpeedModifier = speedModifier;
         return damage;
     }
 
@@ -105,6 +116,8 @@ public class DamageDealer : MonoBehaviour
     {
         return owner;
     }
+
+
 
 }
 

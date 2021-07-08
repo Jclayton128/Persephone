@@ -8,11 +8,13 @@ public class Ability_DarkBlade : Ability
 {
     [SerializeField] float ionizationDamage;
     Ability_Blink abbl;
+    Rigidbody2D rb;
 
     public override void OnStartServer()
     {
         base.OnStartServer();
         abbl = GetComponent<Ability_Blink>();
+        rb = GetComponent<Rigidbody2D>();
     }
     protected override void MouseClickDownEffect()
     {
@@ -26,28 +28,13 @@ public class Ability_DarkBlade : Ability
             GameObject priBlade = Instantiate(abilityPrefabs[0], am.PrimaryMuzzle.position, am.PrimaryMuzzle.rotation) as GameObject;
             NetworkServer.Spawn(priBlade);
             priBlade.layer = 9;
-            priBlade.GetComponent<Rigidbody2D>().velocity = priBlade.transform.up * weaponSpeed;
+            priBlade.GetComponent<Rigidbody2D>().velocity = priBlade.transform.up * (weaponSpeed + rb.velocity.magnitude);
 
             DamageDealer dd = priBlade.GetComponent<DamageDealer>();
             dd.SetNormalDamage(normalDamage);
-            dd.SetShieldBonusDamage(shieldBonusDamage);
             dd.SetIonization(ionizationDamage);
-
+            dd.UsesDirectionalBonus = true;
             Destroy(priBlade, weaponLifetime);
-
-
-            GameObject secBlade = Instantiate(abilityPrefabs[0], am.PrimaryMuzzle.position, am.PrimaryMuzzle.rotation) as GameObject;
-            NetworkServer.Spawn(secBlade);
-            secBlade.layer = 9;
-            secBlade.GetComponent<Rigidbody2D>().velocity = secBlade.transform.up * weaponSpeed;
-
-            DamageDealer dd2 = secBlade.GetComponent<DamageDealer>();
-            dd2.SetNormalDamage(normalDamage);
-            dd2.SetShieldBonusDamage(shieldBonusDamage);
-            dd2.SetIonization(ionizationDamage);
-
-            Destroy(secBlade, weaponLifetime);
-
         }
     }
 

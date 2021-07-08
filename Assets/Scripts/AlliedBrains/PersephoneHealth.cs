@@ -161,7 +161,7 @@ public class PersephoneHealth : NetworkBehaviour
                 Destroy(damageParticleEffect, 10);
             }
 
-            Damage damage = damageDealer.GetDamage();
+            Damage damage = damageDealer.GetDamage(transform);
 
             ModifyHullLevel(damage.RegularDamage * -1);
 

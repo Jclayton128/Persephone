@@ -85,13 +85,13 @@ public class PlayerInput : NetworkBehaviour
 
     private void UpdateGadgetScrolling()
     {
-        if (Input.mouseScrollDelta.y * scrollSensitivity < 0)
-        {
-            am.ScrollUpThruAbilities();
-        }
         if (Input.mouseScrollDelta.y * scrollSensitivity > 0)
         {
-            am.ScrollUpThruAbilities();
+            am.ScrollUpThroughAbilities();
+        }
+        if (Input.mouseScrollDelta.y * scrollSensitivity < 0)
+        {
+            am.ScrollDownThroughAbilities();
         }
     }
 

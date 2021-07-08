@@ -6,8 +6,7 @@ using Mirror;
 
 public class Ability_Blink : Ability
 {
-    [SerializeField] Sprite[] upgradedAbilityIcons = null;
-    GameObject currentBlinkShadow;
+    [SerializeField] Ability upgradedAbility = null;
     GameObject warpPortalExit;
     SpriteRenderer sr;
     PlayerInput pi;
@@ -18,7 +17,8 @@ public class Ability_Blink : Ability
     float blinkFactor = 1; //
     float postBlinkFactor = 0;
 
-    int blinkAbilityLevel = 0; // 0 = basic blink, 1 = nova blink, 2 = blaze nova blink
+    enum BlinkAbilityLevel {Basic, Nova, BlazeNova};
+    BlinkAbilityLevel blinkAbilityLevel = BlinkAbilityLevel.Basic;
     public bool IsBlinking = false;
     [SyncVar (hook = nameof(HandlePostBlinkOnClient))]
     bool inPostBlink = false;
@@ -153,10 +153,24 @@ public class Ability_Blink : Ability
         rb.velocity = Vector2.zero;
 
     }
-
-    public void AdvanceBlinkAbilityLevel()
+    public override bool CheckUnlockOnLevelUp(int newLevel)
     {
-        blinkAbilityLevel++;
-        blinkAbilityLevel = Mathf.Clamp(blinkAbilityLevel, 0, 2);
+        if (newLevel >= unlockLevel)
+        {
+            if (newLevel == upgradedAbility.GetUnlockLevel())
+            {
+                am.ReplaceSecondaryAbilityWithUpgradedVersion(this, upgradedAbility);
+                return true;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
+
 }

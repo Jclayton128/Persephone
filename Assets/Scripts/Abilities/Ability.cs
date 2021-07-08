@@ -46,6 +46,10 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
         {
             ToggleAbilityStatusOnUI(true);
         }
+        if(unlockLevels.Length == 0)
+        {
+            unlockLevels = new int[1];
+        }
     }
 
     public virtual void MouseClickDownValidate()
@@ -100,6 +104,10 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
         if (x.unlockLevels[0] < y.unlockLevels[0])
         {
             return -1;
+        }
+        if (x.unlockLevels[0] == y.unlockLevels[0])
+        {
+            return 0;
         }
         else
         {

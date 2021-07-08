@@ -16,7 +16,7 @@ MonoBehaviour:
   syncInterval: 0.1
   AbilityIcons:
   - {fileID: 21300000, guid: 88edd8f8186c4f94e90999c41156350f, type: 3}
-  unlockLevels: 
+  unlockLevels: 00000000
   abilityPrefabs:
   - {fileID: 3613166345378396961, guid: c1ed44dca621de649874b7ac183f6df5, type: 3}
   IsPrimaryAbility: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
   syncInterval: 0.1
   AbilityIcons:
   - {fileID: 21300000, guid: b6fc1f683054f534784794875aea64e9, type: 3}
-  unlockLevels: 
+  unlockLevels: 00000000
   abilityPrefabs:
   - {fileID: 3613166345378396961, guid: c0715783cea05f847bbf95989fe08efb, type: 3}
   IsPrimaryAbility: 0
@@ -77,7 +77,7 @@ MonoBehaviour:
   syncInterval: 0.1
   AbilityIcons:
   - {fileID: 21300000, guid: 266e216e0d3533e4cae08c4132a4339a, type: 3}
-  unlockLevels: 
+  unlockLevels: 00000000
   abilityPrefabs: []
   IsPrimaryAbility: 0
   timeBetweenShots: 0
@@ -106,7 +106,7 @@ MonoBehaviour:
   syncInterval: 0.1
   AbilityIcons:
   - {fileID: 21300000, guid: 16713d91302e60240b9ff29a8f668953, type: 3}
-  unlockLevels: 
+  unlockLevels: 00000000
   abilityPrefabs:
   - {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   IsPrimaryAbility: 1

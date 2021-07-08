@@ -12,7 +12,7 @@ public class Ability_Blink : Ability
     PlayerInput pi;
     Rigidbody2D rb;
 
-    float blinkRate = 1.0f;
+    float blinkRate = 2.0f;
     [SyncVar]
     float blinkFactor = 1; //
     float postBlinkFactor = 0;
@@ -26,6 +26,7 @@ public class Ability_Blink : Ability
 
     Vector3 blinkToPos;
     Vector3 dirToFacePostBlink;
+    Vector3 blinkFromPos;
 
     public override void OnStartServer()
     {
@@ -36,6 +37,7 @@ public class Ability_Blink : Ability
     }
     protected override void MouseClickDownEffect()
     {
+        blinkFromPos = transform.position;
         blinkToPos = MouseHelper.GetMouseCursorLocation();
         CmdRequestBlink(blinkToPos);
 
@@ -144,7 +146,6 @@ public class Ability_Blink : Ability
 
     protected virtual void HandleBlink()
     {
-        Debug.Log("blink level: " + blinkAbilityLevel.ToString());
         switch (blinkAbilityLevel)
         {
             case BlinkAbilityLevel.Basic:
@@ -168,7 +169,6 @@ public class Ability_Blink : Ability
 
     private void ExecuteBasicBlink()
     {
-        Debug.Log("executing basic blink");
         transform.position = blinkToPos;
         Destroy(warpPortalExit);
         IsBlinking = false;
@@ -183,7 +183,6 @@ public class Ability_Blink : Ability
 
     private void ExecuteNovaBlink()
     {
-        Debug.Log("executing nova blink");
         ExecuteBasicBlink();
         int shrapnelCount = 24;
         float circleSubdivided = 360 / shrapnelCount;
@@ -203,8 +202,20 @@ public class Ability_Blink : Ability
     private void ExecuteBlazeNovaBlink()
     {
         ExecuteNovaBlink();
+        int shrapnelCount = 24;
+        float circleSubdivided = 360 / shrapnelCount;
+        for (int i = 1; i <= shrapnelCount; i++)
+        {
+            Quaternion sector = Quaternion.Euler(0, 0, i * circleSubdivided + transform.eulerAngles.z + (weaponSpeed / 2) + 180);
+            GameObject newShrapnel = Instantiate(abilityPrefabs[1], transform.position, sector) as GameObject;
+            newShrapnel.layer = 9;
+            newShrapnel.transform.localScale = Vector3.one * 0.5f;
+            newShrapnel.GetComponent<Rigidbody2D>().velocity = newShrapnel.transform.up * weaponSpeed;
+            newShrapnel.GetComponent<DamageDealer>().SetNormalDamage(normalDamage);
+            NetworkServer.Spawn(newShrapnel);
+            Destroy(newShrapnel, weaponLifetime);
+        }
 
-        //TODO implement the Blaze functionality;
     }
 
     public override bool CheckUnlockOnLevelUp(int newLevel, out int tier)
@@ -215,20 +226,17 @@ public class Ability_Blink : Ability
             {
                 blinkAbilityLevel = BlinkAbilityLevel.BlazeNova;
                 tier = (int)blinkAbilityLevel;
-                Debug.Log("tier2: " + tier);
                 return true;
             }
             if (newLevel >= unlockLevels[1])
             {
                 blinkAbilityLevel = BlinkAbilityLevel.Nova;
                 tier = (int)blinkAbilityLevel;
-                Debug.Log("tier1: " + tier);
                 return true;
             }
             else
             {
                 tier = (int)blinkAbilityLevel;
-                Debug.Log("tier0: " + tier);
                 return true;
             }
         }

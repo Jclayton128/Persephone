@@ -51,17 +51,17 @@ MonoBehaviour:
   abilityPrefabs:
   - {fileID: 5392660631742042847, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
   - {fileID: 8469018735137222058, guid: c409e004d5daa9545b8efeea4f33099e, type: 3}
+  - {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   IsPrimaryAbility: 0
   timeBetweenShots: 0
-  weaponLifetime: 1
+  weaponLifetime: 0.5
   weaponSpeed: 5
-  normalDamage: 0
+  normalDamage: 2
   shieldBonusDamage: 0
   costToActivate: 3
   insufficientEnergySound: {fileID: 0}
   UsesStatusIcon: 0
   novaBlinkIonizationDamage: 5
-  blinkAbilityLevel: 0
   IsBlinking: 0
 --- !u!1001 &8287193268495212362
 PrefabInstance:

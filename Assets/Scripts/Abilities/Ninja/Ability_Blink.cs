@@ -191,7 +191,7 @@ public class Ability_Blink : Ability
             Quaternion sector = Quaternion.Euler(0, 0, i * circleSubdivided + transform.eulerAngles.z + (weaponSpeed / 2) + 180);
             GameObject newShrapnel = Instantiate(abilityPrefabs[1], transform.position, sector) as GameObject;
             newShrapnel.layer = 9;
-            newShrapnel.transform.localScale = Vector3.one * 0.5f;
+            newShrapnel.transform.localScale = Vector3.one * 0.75f;
             newShrapnel.GetComponent<Rigidbody2D>().velocity = newShrapnel.transform.up * weaponSpeed;
             newShrapnel.GetComponent<DamageDealer>().SetIonization(novaBlinkIonizationDamage);
             NetworkServer.Spawn(newShrapnel);
@@ -207,9 +207,9 @@ public class Ability_Blink : Ability
         for (int i = 1; i <= shrapnelCount; i++)
         {
             Quaternion sector = Quaternion.Euler(0, 0, i * circleSubdivided + transform.eulerAngles.z + (weaponSpeed / 2) + 180);
-            GameObject newShrapnel = Instantiate(abilityPrefabs[1], transform.position, sector) as GameObject;
+            GameObject newShrapnel = Instantiate(abilityPrefabs[2], blinkFromPos, sector) as GameObject;
             newShrapnel.layer = 9;
-            newShrapnel.transform.localScale = Vector3.one * 0.5f;
+            newShrapnel.transform.localScale = Vector3.one;
             newShrapnel.GetComponent<Rigidbody2D>().velocity = newShrapnel.transform.up * weaponSpeed;
             newShrapnel.GetComponent<DamageDealer>().SetNormalDamage(normalDamage);
             NetworkServer.Spawn(newShrapnel);

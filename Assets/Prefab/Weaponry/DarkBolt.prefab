@@ -15,7 +15,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   maxTurnRate: 180
-  snakeAmount: 20
+  snakeAmount: 10
 --- !u!1001 &1862666800749532443
 PrefabInstance:
   m_ObjectHideFlags: 0

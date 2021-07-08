@@ -6,7 +6,7 @@ using Mirror;
 
 public class Ability_Blink : Ability
 {
-    [SerializeField] Ability upgradedAbility = null;
+    [SerializeField] float novaBlinkIonizationDamage;
     GameObject warpPortalExit;
     SpriteRenderer sr;
     PlayerInput pi;
@@ -18,6 +18,7 @@ public class Ability_Blink : Ability
     float postBlinkFactor = 0;
 
     enum BlinkAbilityLevel {Basic, Nova, BlazeNova};
+    [SyncVar]
     BlinkAbilityLevel blinkAbilityLevel = BlinkAbilityLevel.Basic;
     public bool IsBlinking = false;
     [SyncVar (hook = nameof(HandlePostBlinkOnClient))]
@@ -37,6 +38,7 @@ public class Ability_Blink : Ability
     {
         blinkToPos = MouseHelper.GetMouseCursorLocation();
         CmdRequestBlink(blinkToPos);
+
     }
 
     [Command]
@@ -136,12 +138,37 @@ public class Ability_Blink : Ability
         }
         if (blinkFactor == 0)
         {
-            Blink();
+            HandleBlink();
         }
     }
 
-    protected virtual void Blink()
+    protected virtual void HandleBlink()
     {
+        Debug.Log("blink level: " + blinkAbilityLevel.ToString());
+        switch (blinkAbilityLevel)
+        {
+            case BlinkAbilityLevel.Basic:
+                ExecuteBasicBlink();
+                return;
+
+            case BlinkAbilityLevel.Nova:
+                ExecuteNovaBlink();
+                return;
+
+            case BlinkAbilityLevel.BlazeNova:
+                ExecuteBlazeNovaBlink();
+                return;
+
+            default:
+                Debug.Log("Unexpected input!");
+                return;
+        }            
+
+    }
+
+    private void ExecuteBasicBlink()
+    {
+        Debug.Log("executing basic blink");
         transform.position = blinkToPos;
         Destroy(warpPortalExit);
         IsBlinking = false;
@@ -153,22 +180,61 @@ public class Ability_Blink : Ability
         rb.velocity = Vector2.zero;
 
     }
-    public override bool CheckUnlockOnLevelUp(int newLevel)
+
+    private void ExecuteNovaBlink()
     {
-        if (newLevel >= unlockLevel)
+        Debug.Log("executing nova blink");
+        ExecuteBasicBlink();
+        int shrapnelCount = 24;
+        float circleSubdivided = 360 / shrapnelCount;
+        for (int i = 1; i <= shrapnelCount; i++)
         {
-            if (newLevel == upgradedAbility.GetUnlockLevel())
+            Quaternion sector = Quaternion.Euler(0, 0, i * circleSubdivided + transform.eulerAngles.z + (weaponSpeed / 2) + 180);
+            GameObject newShrapnel = Instantiate(abilityPrefabs[1], transform.position, sector) as GameObject;
+            newShrapnel.layer = 9;
+            newShrapnel.transform.localScale = Vector3.one * 0.5f;
+            newShrapnel.GetComponent<Rigidbody2D>().velocity = newShrapnel.transform.up * weaponSpeed;
+            newShrapnel.GetComponent<DamageDealer>().SetIonization(novaBlinkIonizationDamage);
+            NetworkServer.Spawn(newShrapnel);
+            Destroy(newShrapnel, weaponLifetime);
+        }
+    }
+
+    private void ExecuteBlazeNovaBlink()
+    {
+        ExecuteNovaBlink();
+
+        //TODO implement the Blaze functionality;
+    }
+
+    public override bool CheckUnlockOnLevelUp(int newLevel, out int tier)
+    {
+        if (newLevel >= unlockLevels[0])
+        {
+            if (newLevel >= unlockLevels[2])
             {
-                am.ReplaceSecondaryAbilityWithUpgradedVersion(this, upgradedAbility);
+                blinkAbilityLevel = BlinkAbilityLevel.BlazeNova;
+                tier = (int)blinkAbilityLevel;
+                Debug.Log("tier2: " + tier);
+                return true;
+            }
+            if (newLevel >= unlockLevels[1])
+            {
+                blinkAbilityLevel = BlinkAbilityLevel.Nova;
+                tier = (int)blinkAbilityLevel;
+                Debug.Log("tier1: " + tier);
                 return true;
             }
             else
             {
+                tier = (int)blinkAbilityLevel;
+                Debug.Log("tier0: " + tier);
                 return true;
             }
         }
         else
         {
+            tier = -1;
             return false;
         }
     }

@@ -25,21 +25,24 @@ public class AbilityManager : NetworkBehaviour
 
     int secondaryIndex = -1;
 
+    #region Initialization
     private void Start()
     {
         um = GetComponent<UpgradeManager>();
         //um.OnLevelUp += UpdateSecondaryAbilitiesOnLevelUp;
         um.OnLevelUp += TargetRequestClientUpdateSecondaryAbilitiesOnLevelUp;
+        um.OnLevelUp += UpdateSecondaryAbilitiesOnLevelUpOnServer;
 
 
         IdentifyAllAbilities();
 
-        if (hasAuthority)
+        if (isClient && hasAuthority)
         {
             HookIntoLocalUI(allSecondaryAbilities.Count);
             HideAllStatusIcons();
-            UpdateSecondaryAbilitiesOnLevelUp(1); // Hard 1 because everyone starts on level 1
+            UpdateSecondaryAbilitiesOnLevelUpOnServer(1); // Hard 1 because everyone starts on level 1
             UpdateSelectionUI();
+
 
         }
 
@@ -65,10 +68,6 @@ public class AbilityManager : NetworkBehaviour
                 PrimaryAbility = allAbilities[i];
                 continue;
             }
-            if (allAbilities[i].IsHiddenFromPlayer)
-            {
-                continue;
-            }
             else
             {
                 allSecondaryAbilities.Add(allAbilities[i]);
@@ -83,14 +82,15 @@ public class AbilityManager : NetworkBehaviour
         ClientInstance ci = ClientInstance.ReturnClientInstance();
         UIManager uim = FindObjectOfType<UIManager>();
 
-        uim.GetPrimaryAbilityIcon(ci).sprite = PrimaryAbility.AbilityIcon;
+        uim.GetPrimaryAbilityIcon(ci).sprite = PrimaryAbility.AbilityIcons[0];
 
         secondaryAbilityIcons = uim.GetSecondaryAbilityIcons(ci, numberOfAbilitiesToPull);
         for (int i = 0; i < numberOfAbilitiesToPull; i++)
         {
-            if (allSecondaryAbilities[i].CheckUnlockOnLevelUp(um.GetCurrentLevel()))
+            int unusedInt;
+            if (allSecondaryAbilities[i].CheckUnlockOnLevelUp(um.GetCurrentLevel(), out unusedInt))
             {
-                secondaryAbilityIcons[i].sprite = allSecondaryAbilities[i].AbilityIcon;
+                secondaryAbilityIcons[i].sprite = allSecondaryAbilities[i].AbilityIcons[0];
             }
             else
             {
@@ -103,6 +103,9 @@ public class AbilityManager : NetworkBehaviour
         
     }
 
+    #endregion
+
+    #region Ability Selection
     [Client]
     public void ScrollUpThroughAbilities()
     {
@@ -154,31 +157,47 @@ public class AbilityManager : NetworkBehaviour
         secondaryIndex = index;
         //SelectedSecondaryAbility = unlockedSecondaryAbilities[secondaryIndex];
     }
+    #endregion
 
     [TargetRpc]
     public void TargetRequestClientUpdateSecondaryAbilitiesOnLevelUp(int newLevel)
     {
-        UpdateSecondaryAbilitiesOnLevelUp(newLevel);
+        UpdateSecondaryAbilitiesOnLevelUpOnClient(newLevel);
     }
 
 
-    private void UpdateSecondaryAbilitiesOnLevelUp(int newLevel)
+    private void UpdateSecondaryAbilitiesOnLevelUpOnServer(int newLevel)
     {
         foreach (Ability ability in allSecondaryAbilities)
         {
-            if (ability.CheckUnlockOnLevelUp(newLevel))
+            int abilityTier;
+
+            if (ability.CheckUnlockOnLevelUp(newLevel, out abilityTier))
             {
+                Debug.Log("abilityTier passed out: " + abilityTier + "is client: " + isClient);
                 int secondaryToUnlock = allSecondaryAbilities.IndexOf(ability);
-                if (unlockedSecondaryAbilities.Contains(ability)) { continue; }
-                unlockedSecondaryAbilities.Add(ability);
-                if (isClient)
+                if (!unlockedSecondaryAbilities.Contains(ability))
                 {
-                    Debug.Log($"icon list length: {secondaryAbilityIcons.Length} vs index: {secondaryToUnlock}. AllSecAbLeng: {allSecondaryAbilities.Count}");
-                    secondaryAbilityIcons[secondaryToUnlock].sprite = allSecondaryAbilities[secondaryToUnlock].AbilityIcon;
+                    unlockedSecondaryAbilities.Add(ability);
+                }
+                if (isClient && abilityTier == 0)
+                {
+                    Debug.Log("unlock found");
+                    //Debug.Log($"icon list length: {secondaryAbilityIcons.Length} vs index: {secondaryToUnlock}. AllSecAbLeng: {allSecondaryAbilities.Count}");
+                    secondaryAbilityIcons[secondaryToUnlock].sprite = allSecondaryAbilities[secondaryToUnlock].AbilityIcons[0];
                     if (ability.UsesStatusIcon)
                     {
                         statusIcons[secondaryToUnlock].enabled = true;
                     }
+                }
+                if (isClient && abilityTier > 0)
+                {
+                    Debug.Log("upgrade found, should upgrade the icon");
+                    UpdateUpgradedAbilityIcon(secondaryToUnlock, abilityTier);
+                }
+                else
+                {
+                    Debug.Log("ability remains locked");
                 }
 
                 if (secondaryIndex == -1)
@@ -194,22 +213,19 @@ public class AbilityManager : NetworkBehaviour
 
     }
 
-    public void ReplaceSecondaryAbilityWithUpgradedVersion(Ability oldAbility, Ability newAbility)
+    private void UpdateSecondaryAbilitiesOnLevelUpOnClient(int newLevel)
     {
-        int oldAbilityIndex = allSecondaryAbilities.IndexOf(oldAbility);
-        allSecondaryAbilities.RemoveAt(oldAbilityIndex);
-        allSecondaryAbilities.Insert(oldAbilityIndex, newAbility);
-
-        secondaryAbilityIcons[oldAbilityIndex].sprite = newAbility.AbilityIcon;
-
-        int unlockedAbilityIndex = unlockedSecondaryAbilities.IndexOf(oldAbility);
-        unlockedSecondaryAbilities.RemoveAt(unlockedAbilityIndex);
-        unlockedSecondaryAbilities.Insert(unlockedAbilityIndex, newAbility);
-
-        SelectedSecondaryAbility = unlockedSecondaryAbilities[secondaryIndex];
 
     }
 
+    private void UpdateUpgradedAbilityIcon(int index, int tier)
+    {
+        Sprite upgradedAbilityIcon = allSecondaryAbilities[index].AbilityIcons[tier];
+        secondaryAbilityIcons[index].sprite = upgradedAbilityIcon;
+    }
+
+
+    #region routine UI changes
     private void UpdateSelectionUI()
     {
         DarkenAllSecondaryAbilities();
@@ -251,5 +267,7 @@ public class AbilityManager : NetworkBehaviour
         }
         // replace status icon with correct one.
     }
+
+    #endregion
 
 }

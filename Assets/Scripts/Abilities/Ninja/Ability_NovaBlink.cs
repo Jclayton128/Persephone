@@ -8,9 +8,9 @@ public class Ability_NovaBlink : Ability_Blink
     int shrapnelCount = 24;
     [SerializeField] float ionizationDamage = 5;
 
-    protected override void Blink()
+    protected override void HandleBlink()
     {
-        base.Blink();
+        base.HandleBlink();
         float circleSubdivided = 360 / shrapnelCount;
         for (int i = 1; i <= shrapnelCount; i++)
         {

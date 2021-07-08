@@ -6,9 +6,8 @@ using UnityEngine;
 
 public abstract class Ability : NetworkBehaviour, IComparer<Ability>
 {
-    [SerializeField] public Sprite AbilityIcon = null;
-    [SerializeField] protected int unlockLevel;
-    [SerializeField] public bool IsHiddenFromPlayer = false;
+    [SerializeField] public Sprite[] AbilityIcons = null;
+    [SerializeField] protected int[] unlockLevels;
     [SerializeField] protected GameObject[] abilityPrefabs = null;
 
     [SerializeField] public bool IsPrimaryAbility;
@@ -70,17 +69,20 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
 
     public int GetUnlockLevel()
     {
-        return unlockLevel;
+        return unlockLevels[0];
     }
 
-    public virtual bool CheckUnlockOnLevelUp(int newLevel)
+    public virtual bool CheckUnlockOnLevelUp(int newLevel, out int abilityTier)
     {
-        if (newLevel >= unlockLevel)
+
+        if (newLevel >= unlockLevels[0])
         {
+            abilityTier = 0;
             return true;
         }
         else
         {
+            abilityTier = -1;
             return false;
         }
     }
@@ -91,11 +93,11 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
         {
             return 0;
         }
-        if (x.unlockLevel > y.unlockLevel)
+        if (x.unlockLevels[0] > y.unlockLevels[0])
         {
             return 1;
         }
-        if (x.unlockLevel < y.unlockLevel)
+        if (x.unlockLevels[0] < y.unlockLevels[0])
         {
             return -1;
         }

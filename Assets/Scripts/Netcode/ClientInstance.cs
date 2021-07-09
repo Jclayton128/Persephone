@@ -18,7 +18,15 @@ public class ClientInstance : NetworkBehaviour
     PlayerShipyard ps;
 
     public static Action<GameObject> OnAvatarSpawned; //Anytime an observer to this event hears it, they get passed a reference Game Object
-       
+
+
+    private void Awake()
+    {
+        if (isClient)
+        {
+            FindObjectOfType<PlayerShipyard>().RegisterAvatarPrefabs();
+        }
+    }
 
     #region EventResponse
 

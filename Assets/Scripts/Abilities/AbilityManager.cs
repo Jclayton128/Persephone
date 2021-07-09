@@ -31,7 +31,7 @@ public class AbilityManager : NetworkBehaviour
         um = GetComponent<UpgradeManager>();
         //um.OnLevelUp += UpdateSecondaryAbilitiesOnLevelUp;
         um.OnLevelUp += TargetRequestClientUpdateSecondaryAbilitiesOnLevelUp;
-        um.OnLevelUp += UpdateSecondaryAbilitiesOnLevelUpOnServer;
+        um.OnLevelUp += UpdateSecondaryAbilitiesOnLevelUp;
 
 
         IdentifyAllAbilities();
@@ -40,7 +40,7 @@ public class AbilityManager : NetworkBehaviour
         {
             HookIntoLocalUI(allSecondaryAbilities.Count);
             HideAllStatusIcons();
-            UpdateSecondaryAbilitiesOnLevelUpOnServer(1); // Hard 1 because everyone starts on level 1
+            UpdateSecondaryAbilitiesOnLevelUp(1); // Hard 1 because everyone starts on level 1
             UpdateSelectionUI();
 
 
@@ -166,7 +166,7 @@ public class AbilityManager : NetworkBehaviour
     }
 
 
-    private void UpdateSecondaryAbilitiesOnLevelUpOnServer(int newLevel)
+    private void UpdateSecondaryAbilitiesOnLevelUp(int newLevel)
     {
         foreach (Ability ability in allSecondaryAbilities)
         {
@@ -180,7 +180,7 @@ public class AbilityManager : NetworkBehaviour
                 {
                     unlockedSecondaryAbilities.Add(ability);
                 }
-                if (isClient && abilityTier == 0)
+                if (isClient && hasAuthority && abilityTier == 0)
                 {
                     Debug.Log("unlock found");
                     //Debug.Log($"icon list length: {secondaryAbilityIcons.Length} vs index: {secondaryToUnlock}. AllSecAbLeng: {allSecondaryAbilities.Count}");
@@ -190,7 +190,7 @@ public class AbilityManager : NetworkBehaviour
                         statusIcons[secondaryToUnlock].enabled = true;
                     }
                 }
-                if (isClient && abilityTier > 0)
+                if (isClient && hasAuthority && abilityTier > 0)
                 {
                     Debug.Log("upgrade found, should upgrade the icon");
                     UpdateUpgradedAbilityIcon(secondaryToUnlock, abilityTier);

@@ -3,27 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class PlayerShipyard : NetworkBehaviour
+public class PlayerShipyard : MonoBehaviour
 {
     
     [SerializeField] public List<GameObject> allAvatarPrefabs = null;
     public List<GameObject> availableAvatarPrefabs = new List<GameObject>();
 
-    void Start()
+    private void Awake()
     {
-        // Is a sort of the prefab list required to ensure sync between client and server versions?
-        if (isClient)
-        {
-            foreach (GameObject avatar in allAvatarPrefabs)
-            {
-                if (!NetworkClient.prefabs.ContainsValue(avatar))
-                { 
-                    NetworkClient.RegisterPrefab(avatar);
-                }
+        RegisterAvatarPrefabs();
+    }
 
+    public void RegisterAvatarPrefabs()
+    {
+        foreach (GameObject avatar in allAvatarPrefabs)
+        {
+            NetworkClient.RegisterPrefab(avatar);
+            Debug.Log($"Registered Avatar Prefab {avatar.name}");
+            if (!NetworkClient.prefabs.ContainsValue(avatar))
+            {
+                //Debug.Log($"Registered Avatar Prefab {avatar.name}");
+                //NetworkClient.RegisterPrefab(avatar);
             }
+
         }
     }
+
 
     public bool CheckClaimStatus(int index)
     {

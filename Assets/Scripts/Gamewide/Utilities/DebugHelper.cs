@@ -16,6 +16,7 @@ public class DebugHelper : NetworkBehaviour
 
     public override void OnStartClient()
     {
+        base.OnStartClient();
         debugModeTMP = GameObject.FindGameObjectWithTag("DebugText").GetComponent<TextMeshProUGUI>();
 
             

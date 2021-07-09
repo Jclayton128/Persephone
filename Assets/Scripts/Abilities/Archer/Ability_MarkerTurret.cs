@@ -85,7 +85,7 @@ public class Ability_MarkerTurret : Ability
                 dd.SetIonization(ionizationDamage);
 
                 Destroy(bullet, weaponLifetime);
-
+                NetworkServer.Spawn(bullet);
                 timeOfNextShot = Time.time + timeBetweenShots;
             }
 

@@ -16,8 +16,8 @@ MonoBehaviour:
   syncInterval: 0.1
   targets: []
   currentAttackTarget: {fileID: 0}
-  targetSortMode: 0
-  targetingPriority: 0
+  targetSortMode: 3
+  targetingPriority: 1
   idleNavBehaviour: 2
   detectorRange: 10
   accelRate_normal: 10

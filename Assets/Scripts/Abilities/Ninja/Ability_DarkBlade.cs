@@ -21,12 +21,13 @@ public class Ability_DarkBlade : Ability
         CmdRequestSpawnDarkBlade();
     }
 
+    [Command]
     private void CmdRequestSpawnDarkBlade()
     {
         if (es.CheckSpendEnergy(costToActivate) && !abbl.IsBlinking)
         {
             GameObject priBlade = Instantiate(abilityPrefabs[0], am.PrimaryMuzzle.position, am.PrimaryMuzzle.rotation) as GameObject;
-            NetworkServer.Spawn(priBlade);
+
             priBlade.layer = 9;
             priBlade.GetComponent<Rigidbody2D>().velocity = priBlade.transform.up * (weaponSpeed + rb.velocity.magnitude);
 
@@ -34,6 +35,7 @@ public class Ability_DarkBlade : Ability
             dd.SetNormalDamage(normalDamage);
             dd.SetIonization(ionizationDamage);
             dd.UsesDirectionalBonus = true;
+            NetworkServer.Spawn(priBlade);
             Destroy(priBlade, weaponLifetime);
         }
     }

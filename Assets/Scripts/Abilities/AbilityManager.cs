@@ -254,6 +254,7 @@ public class AbilityManager : NetworkBehaviour
 
     public void ToggleStatusIcon(Ability askingAbility, bool shouldBeOn)
     {
+        if (!hasAuthority) { return; }
         int index = allSecondaryAbilities.IndexOf(askingAbility);
         Image status = statusIcons[index];
 

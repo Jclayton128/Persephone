@@ -118,7 +118,11 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
     [Client]
     protected void ToggleAbilityStatusOnUI(bool shouldBeOn)
     {
-        am.ToggleStatusIcon(this, shouldBeOn);
+        if (hasAuthority)
+        {
+            am.ToggleStatusIcon(this, shouldBeOn);
+        }
+
     }
 
 

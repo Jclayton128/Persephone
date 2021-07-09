@@ -73,7 +73,7 @@ MonoBehaviour:
   syncInterval: 0.1
   AbilityIcons:
   - {fileID: 21300000, guid: 7e3f2231190cd40448cc9460e902e5fc, type: 3}
-  unlockLevels: 
+  unlockLevels: 00000000
   abilityPrefabs:
   - {fileID: 7555527035714178122, guid: 876ce0088e60b4744b7ffe81772bd2b4, type: 3}
   IsPrimaryAbility: 1
@@ -101,7 +101,7 @@ MonoBehaviour:
   syncInterval: 0.1
   AbilityIcons:
   - {fileID: 21300000, guid: 4df246da5f52ab64ea0d517d94cf2bcd, type: 3}
-  unlockLevels: 
+  unlockLevels: 00000000
   abilityPrefabs: []
   IsPrimaryAbility: 0
   timeBetweenShots: 0

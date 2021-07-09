@@ -18,7 +18,7 @@ MonoBehaviour:
   currentAttackTarget: {fileID: 0}
   targetSortMode: 0
   targetingPriority: 0
-  idleNavBehaviour: 2
+  idleNavBehaviour: 3
   detectorRange: 0
   accelRate_normal: 20
   maxTurnSpeed_normal: 360

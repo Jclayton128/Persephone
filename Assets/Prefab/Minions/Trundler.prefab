@@ -16,12 +16,12 @@ MonoBehaviour:
   syncInterval: 0.1
   targets: []
   currentAttackTarget: {fileID: 0}
-  targetSortMode: 2
-  targetingPriority: 1
+  targetSortMode: 4
+  targetingPriority: 0
   idleNavBehaviour: 0
   detectorRange: 4
-  accelRate_normal: 0
-  maxTurnSpeed_normal: 0
+  accelRate_normal: 7
+  maxTurnSpeed_normal: 180
   turnAccelRate_normal: 7
   faceMode: 1
   moveMode: 0

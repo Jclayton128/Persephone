@@ -342,9 +342,11 @@ MonoBehaviour:
   drag_retro: 3
   maxTurnSpeed_normal: 180
   turnAccelRate_normal: 30
+  truePosition: {x: 0, y: 0}
+  trueZRotation: 0
+  correctionRate: 1
   desAimDir: {x: 0, y: 0}
   desMoveSpeed: 0
-  isDisabled: 0
 --- !u!50 &8706150506697623497
 Rigidbody2D:
   serializedVersion: 4
@@ -373,7 +375,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8644570496936021407}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
   m_Name: 
@@ -517,6 +519,7 @@ MonoBehaviour:
   lockedAbilitySprite: {fileID: 21300000, guid: faa6e913a1cffc04b8dbbba1123dbf4b, type: 3}
   statusIcon_Off: {fileID: 21300000, guid: 8f62f27872513104fbf3f718705b41db, type: 3}
   statusIcon_On: {fileID: 21300000, guid: 6f4feff5342ce1f419392424705cfb7b, type: 3}
+  allSecondaryAbilities: []
   unlockedSecondaryAbilities: []
 --- !u!114 &-3361430503782286581
 MonoBehaviour:
@@ -549,3 +552,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShipName: Generic Name
   ShipDescription: Generic Description
+  shipyardSprite: {fileID: 0}

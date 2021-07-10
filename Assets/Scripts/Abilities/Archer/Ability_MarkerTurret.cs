@@ -50,7 +50,7 @@ public class Ability_MarkerTurret : Ability
 
     void Update()
     {
-        if (!plin.IsDisabled)
+        if (!plin.GetDisabledStatus())
         {
             PointAtMousePosition();
         }

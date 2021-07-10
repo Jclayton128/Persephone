@@ -88,7 +88,7 @@ public class Ability_ArcherTurret : Ability
 
     void Update()
     {
-        if (!plin.IsDisabled)
+        if (!plin.GetDisabledStatus())
         {
             FindBestTargetPos();
             PointAtTargetPos();

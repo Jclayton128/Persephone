@@ -167,7 +167,7 @@ MonoBehaviour:
   localRotationSensitivity: 0.01
   localScaleSensitivity: 0.01
   compressRotation: 0
-  interpolateScale: 1
+  interpolateScale: 0
   syncScale: 1
 --- !u!114 &926614622845740750
 MonoBehaviour:

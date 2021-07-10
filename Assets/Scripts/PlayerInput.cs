@@ -22,18 +22,27 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] float maxTurnSpeed_normal;
     [SerializeField] float turnAccelRate_normal;
 
+    [SyncVar]
     float performanceFactor = 1;  //This factor should change how fast a ship moves and turns on a temporary basis.
 
     float throttleSensitivity = 0.05f;
     float scrollSensitivity = 0.1f;
+    float aimSensitivity = 1.0f;
 
     //hood
+    [SyncVar]
+    [SerializeField] Vector2 truePosition;
+    [SyncVar]
+    [SerializeField] float trueZRotation;
+    [SerializeField] float correctionRate;
+
+    Vector2 previousAimDir = Vector2.one;
     [SerializeField] Vector2 desAimDir = Vector2.zero;
     [SerializeField] float desMoveSpeed = 0;
     Vector3 mousePos = Vector3.zero;
 
-
-    public bool IsDisabled { get; private set; } = false;
+    [SyncVar]
+    bool isDisabled = false;
 
     void Start()
     {
@@ -44,28 +53,19 @@ public class PlayerInput : NetworkBehaviour
         health = GetComponent<Health>();
         health.EntityIsDying += ReactToBecomingDisabled;
         health.EntityIsRepaired += ReactToBecomingRepaired;
-        HookIntoLocalUI();
-
-    
+        HookIntoLocalUI();    
     }
-
-
     private void HookIntoLocalUI()
     {
         playerAtThisComputer = ClientInstance.ReturnClientInstance();
     }
 
-
-
     // Update is called once per frame
     void Update()
     {
-        if (hasAuthority && IsDisabled == false)
+        if (hasAuthority)
         {
             HandleMouseInput();
-            HandleKeyboardInput();
-
-            CmdSendServerDesiredInputs(desAimDir, desMoveSpeed);
         }
     }
 
@@ -80,7 +80,19 @@ public class PlayerInput : NetworkBehaviour
     {
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
+
         desAimDir = (mousePos - transform.position).normalized;
+        float difference = Vector3.Angle(desAimDir, previousAimDir);
+        if (difference < aimSensitivity)
+        {
+            Debug.Log("Too little difference");
+            desAimDir = previousAimDir;
+        }
+        else
+        {
+            Debug.Log("okay, new pos is differnet enough");
+            previousAimDir = desAimDir;
+        }
     }
 
     private void UpdateGadgetScrolling()
@@ -118,7 +130,6 @@ public class PlayerInput : NetworkBehaviour
     }
 
 
-
     private void HandleKeyboardInput()
     {
         float throttle = Input.GetAxis("Vertical");
@@ -142,35 +153,82 @@ public class PlayerInput : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if (IsDisabled) { return; }
         if (isServer)
         {
             ExecuteTurn(desAimDir);
             ExecuteSpeedChange(desMoveSpeed);
+            Vector2 truePosToPush = new Vector2(transform.position.x, transform.position.y);
+            float trueZRotToPush = transform.rotation.eulerAngles.z;
+            RpcPushTruePosAndZRotation(truePosToPush, trueZRotToPush);
         }
+        if (isClient)
+        {
+            if (hasAuthority)
+            {
+                HandleKeyboardInput();
+                CmdSendServerDesiredInputs(desAimDir, desMoveSpeed);
+                ReconcileDifferenceBetweenClientAndServerPositionOverTime();
+            }
+            //Execute client-side movement for satisfying movement. Not true movement, however.
+            ExecuteTurn(desAimDir);
+            ExecuteSpeedChange(desMoveSpeed);
+
+            if (!hasAuthority)
+            {
+                ReconcileDifferenceBetweenClientAndServerPositionInstantly();
+            }
+
+
+        }
+    }
+    private void ReconcileDifferenceBetweenClientAndServerPositionOverTime()
+    {
+        transform.position = Vector2.MoveTowards(transform.position, truePosition, correctionRate * Time.deltaTime);
+    }
+    private void ReconcileDifferenceBetweenClientAndServerPositionInstantly()
+    {
+        transform.position = (Vector3)truePosition;
+    }
+
+
+    [ClientRpc]
+    private void RpcPushTruePosAndZRotation(Vector2 newPos, float newZRot)
+    {
+        truePosition = newPos;
+        trueZRotation = newZRot;
     }
 
     private void ExecuteTurn(Vector2 aimDir)
     {
+        if (isDisabled) { return; }
         float theta = Vector2.SignedAngle(aimDir, transform.up);
-        if (theta > 0.02)
+        float factor = Mathf.Clamp01(Mathf.Abs(theta/30));
+        if (theta > 0.3f)
         {
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -1 * maxTurnSpeed_normal * performanceFactor, turnAccelRate_normal * Time.deltaTime);
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -1 * maxTurnSpeed_normal * performanceFactor * factor, turnAccelRate_normal * Time.deltaTime);
+            return;
         }
-        if (theta < -0.02)
+        if (theta < -0.3f)
         {
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal * performanceFactor, turnAccelRate_normal * Time.deltaTime);
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal * performanceFactor * factor, turnAccelRate_normal * Time.deltaTime);
+            return;
         }
+        else
+        {
+            rb.angularVelocity = 0;
+        }
+
     }
 
     private void ExecuteSpeedChange(float desMoveSpeed)
     {
+        if (isDisabled) { return; }
         if (desMoveSpeed > 0)
         {
             rb.drag = drag_normal;
             rb.AddForce(transform.up * accelRate_normal * performanceFactor);
         }
-        if (desMoveSpeed < 0)
+        if (desMoveSpeed <= 0)
         {
             rb.drag = drag_retro;
         }
@@ -180,17 +238,22 @@ public class PlayerInput : NetworkBehaviour
 
     private void ReactToBecomingDisabled()
     {
-        IsDisabled = true;
+        isDisabled = true;
     }
 
     private void ReactToBecomingRepaired()
     {
-        IsDisabled = false;
+        isDisabled = false;
     }
 
     public void SetPerformanceFactor(float zeroToOneFactor)
     {
         performanceFactor = zeroToOneFactor;
+    }
+
+    public bool GetDisabledStatus()
+    {
+        return isDisabled;
     }
 
 }

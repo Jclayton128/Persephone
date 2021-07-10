@@ -234,6 +234,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: NinjaAvatar
       objectReference: {fileID: 0}
+    - target: {fileID: 8706150506697623497, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
 --- !u!1 &357377898457060053 stripped

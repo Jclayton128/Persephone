@@ -86,7 +86,7 @@ public abstract class Brain : NetworkBehaviour
     {
         base.OnStartServer();
         rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
+
         ab = FindObjectOfType<ArenaBounds>();
         det = GetComponent<Detector>();
         det.SetDetectorRange(detectorRange);
@@ -102,6 +102,7 @@ public abstract class Brain : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
+        sr = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -271,7 +272,7 @@ public abstract class Brain : NetworkBehaviour
         {
             if (distToDest < closeEnough)
             {
-                currentDest = ab.CreateValidRandomPointWithinArena();
+                currentDest = ab.CreateRandomPointWithinArena();
             }
         }
     }
@@ -280,7 +281,7 @@ public abstract class Brain : NetworkBehaviour
     {
         if (distToDest < closeEnough)
         {
-            currentDest = ab.CreateValidRandomPointWithinArena();
+            currentDest = ab.CreateRandomPointWithinArena();
         }
     }
 
@@ -295,7 +296,7 @@ public abstract class Brain : NetworkBehaviour
         {
             if (distToDest < attackRange * 4f)
             {
-                currentDest = ab.CreateValidRandomPointWithinArena();
+                currentDest = ab.CreateRandomPointWithinArena();
             }
 
         }

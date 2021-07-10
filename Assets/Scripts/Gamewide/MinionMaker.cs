@@ -18,7 +18,7 @@ public class MinionMaker : NetworkBehaviour
 
     public void SpawnNewMinion(GameObject chosenMinion)
     {
-        Vector2 startPos = ab.CreateValidRandomPointWithinArena();
+        Vector2 startPos = ab.CreateRandomPointWithinArena();
         GameObject newMinion = Instantiate(chosenMinion, startPos, Quaternion.identity) as GameObject;
         NetworkServer.Spawn(newMinion);
     }

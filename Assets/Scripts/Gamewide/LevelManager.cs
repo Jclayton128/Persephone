@@ -9,7 +9,9 @@ public class LevelManager : NetworkBehaviour
 {
     MinionMaker mm;
     UnitTracker ut;
+    ArenaBounds ab;
 
+    [SerializeField] GameObject asteroidPrefab = null;
     [SerializeField] GameObject persephonePrefab = null;
     [SerializeField] TextMeshProUGUI levelCounterTMP = null;
     [SerializeField] List<Level> unencounteredLevels = null;
@@ -27,6 +29,7 @@ public class LevelManager : NetworkBehaviour
 
     private void Awake()
     {
+        NetworkClient.RegisterPrefab(asteroidPrefab);
         NetworkClient.RegisterPrefab(persephonePrefab);
         foreach (Level level in unencounteredLevels)
         {
@@ -39,6 +42,7 @@ public class LevelManager : NetworkBehaviour
         base.OnStartServer();
         mm = GetComponent<MinionMaker>();
         ut = GetComponent<UnitTracker>();
+        ab = FindObjectOfType<ArenaBounds>();
     }
 
     public override void OnStartClient()
@@ -66,6 +70,7 @@ public class LevelManager : NetworkBehaviour
         IncrementLevelCount();
         ResetPlayerPositions();
         SpawnNextLevelMinions();
+        SpawnNextLevelAsteroids();
         SetTimeUntilPersephoneArrives();
     }
 
@@ -81,6 +86,12 @@ public class LevelManager : NetworkBehaviour
         foreach (GameObject scrap in scraps)
         {
             Destroy(scrap);
+        }
+
+        var asteroids = GameObject.FindGameObjectsWithTag("Asteroid");
+        foreach (GameObject asteroid in asteroids)
+        {
+            Destroy(asteroid);
         }
 
         ut.DestroyAllMinions();
@@ -131,6 +142,57 @@ public class LevelManager : NetworkBehaviour
             GameObject minion = currentLevel.ReturnRandomEnemyFromList();
             mm.SpawnNewMinion(minion);
         }
+    }
+
+    private void SpawnNextLevelAsteroids()
+    {
+        int quantity;
+        switch (currentLevel.asteroidLevel)
+        {
+            case Level.AsteroidLevel.None:
+                return;
+
+            case Level.AsteroidLevel.Sparse:
+                quantity = UnityEngine.Random.Range(0, 4);
+                for (int i = 0; i < quantity; i++)
+                {
+                    GameObject asteroid = Instantiate(asteroidPrefab, ab.CreateRandomPointWithinArena(), Quaternion.identity) as GameObject;
+                    int size = UnityEngine.Random.Range(2, 4);
+                    Asteroid asteroid1 = asteroid.GetComponent<Asteroid>();
+                    asteroid1.asteroidSize = (Asteroid.AsteroidSize)size;
+                    asteroid1.InitializeAsteroid();
+                    NetworkServer.Spawn(asteroid);
+                }
+                return;
+
+            case Level.AsteroidLevel.Medium:
+                quantity = UnityEngine.Random.Range(2, 7);
+                for (int i = 0; i < quantity; i++)
+                {
+                    GameObject asteroid = Instantiate(asteroidPrefab, ab.CreateRandomPointWithinArena(), Quaternion.identity) as GameObject;
+                    int size = UnityEngine.Random.Range(1, 4);
+                    Asteroid asteroid1 = asteroid.GetComponent<Asteroid>();
+                    asteroid1.asteroidSize = (Asteroid.AsteroidSize)size;
+                    asteroid1.InitializeAsteroid();
+                    NetworkServer.Spawn(asteroid);
+                }
+                return;
+
+            case Level.AsteroidLevel.Heavy:
+                quantity = UnityEngine.Random.Range(5, 12);
+                for (int i = 0; i < quantity; i++)
+                {
+                    GameObject asteroid = Instantiate(asteroidPrefab, ab.CreateRandomPointWithinArena(), Quaternion.identity) as GameObject;
+                    int size = UnityEngine.Random.Range(0, 4);
+                    Asteroid asteroid1 = asteroid.GetComponent<Asteroid>();
+                    asteroid1.asteroidSize = (Asteroid.AsteroidSize)size;
+                    asteroid1.InitializeAsteroid();
+                    NetworkServer.Spawn(asteroid);
+                }
+                return;
+
+        }
+
     }
 
     private void StartPersephone()

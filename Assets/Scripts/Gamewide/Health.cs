@@ -448,5 +448,11 @@ public class Health : NetworkBehaviour
         return purificationRate;
     }
 
+    public void SetMaxHullAndHealToIt(float newMaxHull)
+    {
+        hullMax = newMaxHull;
+        hullCurrentLevel = hullMax;
+    }
+
 }
 

@@ -21,7 +21,7 @@ public class Trundler_Brain : Brain
     public override void OnStartServer()
     {
         base.OnStartServer();
-        currentDest = ab.CreateValidRandomPointWithinArena();
+        currentDest = ab.CreateRandomPointWithinArena();
  
     }
 

@@ -2230,6 +2230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  asteroidPrefab: {fileID: 4554407695335934994, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
   persephonePrefab: {fileID: 1647500759589659975, guid: 22bde83cf5a51264e9db4eab4bd3145b, type: 3}
   levelCounterTMP: {fileID: 1502423975}
   unencounteredLevels:

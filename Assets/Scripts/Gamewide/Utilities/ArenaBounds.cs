@@ -28,7 +28,7 @@ public class ArenaBounds : MonoBehaviour
         }
     }
 
-    public Vector2 CreateValidRandomPointWithinArena()
+    public Vector2 CreateRandomPointWithinArena()
     {
         float randDist = UnityEngine.Random.Range(0, ArenaRadius * 0.9f);
         Vector2 randPos = Random.insideUnitCircle * ArenaRadius * 0.9f;
@@ -67,6 +67,8 @@ public class ArenaBounds : MonoBehaviour
             return Vector2.zero;
         }
     }
+
+
 
     public Vector2 CreateValidRandomPointOutsideOfArena()
     {

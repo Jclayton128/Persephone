@@ -26,7 +26,7 @@ public class Maker_Brain : Brain
     public override void OnStartServer()
     {
         base.OnStartServer();
-        currentDest = ab.CreateValidRandomPointWithinArena();
+        currentDest = ab.CreateRandomPointWithinArena();
         health.EntityWasDamaged += ReceivedDamage;
     }
 
@@ -46,7 +46,7 @@ public class Maker_Brain : Brain
     {
         if ((currentDest - transform.position).magnitude <= closeEnough)
         {
-            currentDest = ab.CreateValidRandomPointWithinArena();
+            currentDest = ab.CreateRandomPointWithinArena();
         }
     }
 

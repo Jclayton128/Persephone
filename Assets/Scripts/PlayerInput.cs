@@ -30,11 +30,11 @@ public class PlayerInput : NetworkBehaviour
     float aimSensitivity = 1.0f;
 
     //hood
-    [SyncVar]
-    [SerializeField] Vector2 truePosition;
-    [SyncVar]
-    [SerializeField] float trueZRotation;
-    [SerializeField] float correctionRate;
+    //[SyncVar]
+    //[SerializeField] Vector2 truePosition;
+    //[SyncVar]
+    //[SerializeField] float trueZRotation;
+    //[SerializeField] float correctionRate;
 
     Vector2 previousAimDir = Vector2.one;
     [SerializeField] Vector2 desAimDir = Vector2.zero;
@@ -66,6 +66,9 @@ public class PlayerInput : NetworkBehaviour
         if (hasAuthority)
         {
             HandleMouseInput();
+            HandleKeyboardInput();
+            CmdSendServerDesiredInputs(desAimDir, desMoveSpeed);
+           // ReconcileDifferenceBetweenClientAndServerPositionOverTime();
         }
     }
 
@@ -157,50 +160,37 @@ public class PlayerInput : NetworkBehaviour
         {
             ExecuteTurn(desAimDir);
             ExecuteSpeedChange(desMoveSpeed);
-            Vector2 truePosToPush = new Vector2(transform.position.x, transform.position.y);
-            float trueZRotToPush = transform.rotation.eulerAngles.z;
-            RpcPushTruePosAndZRotation(truePosToPush, trueZRotToPush);
+            //Vector2 truePosToPush = new Vector2(transform.position.x, transform.position.y);
+            //float trueZRotToPush = transform.rotation.eulerAngles.z;
+            //RpcPushTruePosAndZRotation(truePosToPush, trueZRotToPush);
         }
         if (isClient)
         {
-            if (hasAuthority)
-            {
-                HandleKeyboardInput();
-                CmdSendServerDesiredInputs(desAimDir, desMoveSpeed);
-                ReconcileDifferenceBetweenClientAndServerPositionOverTime();
-            }
             //Execute client-side movement for satisfying movement. Not true movement, however.
-            ExecuteTurn(desAimDir);
-            ExecuteSpeedChange(desMoveSpeed);
-
-            if (!hasAuthority)
-            {
-                ReconcileDifferenceBetweenClientAndServerPositionInstantly();
-            }
-
-
+            //ExecuteTurn(desAimDir);
+            //ExecuteSpeedChange(desMoveSpeed);
         }
     }
-    private void ReconcileDifferenceBetweenClientAndServerPositionOverTime()
-    {
-        transform.position = Vector2.MoveTowards(transform.position, truePosition, correctionRate * Time.deltaTime);
-    }
-    private void ReconcileDifferenceBetweenClientAndServerPositionInstantly()
-    {
-        transform.position = (Vector3)truePosition;
-    }
+    //private void ReconcileDifferenceBetweenClientAndServerPositionOverTime()
+    //{
+    //    transform.position = Vector2.MoveTowards(transform.position, truePosition, correctionRate * Time.deltaTime);
+    //}
+    //private void ReconcileDifferenceBetweenClientAndServerPositionInstantly()
+    //{
+    //    transform.position = (Vector3)truePosition;
+    //}
 
 
-    [ClientRpc]
-    private void RpcPushTruePosAndZRotation(Vector2 newPos, float newZRot)
-    {
-        truePosition = newPos;
-        trueZRotation = newZRot;
-    }
+    //[ClientRpc]
+    //private void RpcPushTruePosAndZRotation(Vector2 newPos, float newZRot)
+    //{
+    //    truePosition = newPos;
+    //    trueZRotation = newZRot;
+    //}
 
     private void ExecuteTurn(Vector2 aimDir)
     {
-        if (isDisabled) { return; }
+        //if (isDisabled) { return; }
         float theta = Vector2.SignedAngle(aimDir, transform.up);
         float factor = Mathf.Clamp01(Mathf.Abs(theta/30));
         if (theta > 0.3f)
@@ -222,7 +212,7 @@ public class PlayerInput : NetworkBehaviour
 
     private void ExecuteSpeedChange(float desMoveSpeed)
     {
-        if (isDisabled) { return; }
+        //if (isDisabled) { return; }
         if (desMoveSpeed > 0)
         {
             rb.drag = drag_normal;

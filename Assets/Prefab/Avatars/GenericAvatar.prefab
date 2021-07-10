@@ -342,9 +342,6 @@ MonoBehaviour:
   drag_retro: 3
   maxTurnSpeed_normal: 180
   turnAccelRate_normal: 30
-  truePosition: {x: 0, y: 0}
-  trueZRotation: 0
-  correctionRate: 1
   desAimDir: {x: 0, y: 0}
   desMoveSpeed: 0
 --- !u!50 &8706150506697623497
@@ -375,13 +372,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8644570496936021407}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0
   clientAuthority: 0
   localPositionSensitivity: 0.01
   localRotationSensitivity: 0.01

@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0
   clientAuthority: 0
   localPositionSensitivity: 0.01
   localRotationSensitivity: 0.01
@@ -191,6 +191,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22cb061d2575fca45b487ffa4dcb7707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
   particleExplosionAtImpact: {fileID: 0}
-  IsReal: 0

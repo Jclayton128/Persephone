@@ -29,6 +29,7 @@ public class Asteroid : NetworkBehaviour
 
     public void InitializeAsteroid()
     {
+        Debug.Log("okay this at least was called");
         if (isClient)
         {
             Debug.Log("this was called");
@@ -46,6 +47,15 @@ public class Asteroid : NetworkBehaviour
             CreateRandomStartingMotion();
             health.EntityIsDying += HandleAsteroidDying;
         }
+        sr = GetComponent<SpriteRenderer>();
+        SelectStartingSprite();
+        rb = GetComponent<Rigidbody2D>();
+        health = GetComponent<Health>();
+        coll = GetComponent<CircleCollider2D>();
+        SelectStartingColliderSizeAndMass();
+        SelectStartingHealth();
+        CreateRandomStartingMotion();
+        health.EntityIsDying += HandleAsteroidDying;
 
     }
 
@@ -104,7 +114,10 @@ public class Asteroid : NetworkBehaviour
                 Vector2 randOffset = CUR.GetPointOnUnitCircleCircumference() * coll.radius + new Vector2(transform.position.x, transform.position.y);
                 Quaternion randRot = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-179f, 179f));
                 GameObject newAsteroid = Instantiate(gameObject, randOffset, randRot) as GameObject;
-                newAsteroid.GetComponent<Asteroid>().asteroidSize = asteroidSize++;
+                Asteroid asteroid = newAsteroid.GetComponent<Asteroid>();
+                asteroid.asteroidSize = asteroidSize++;
+                asteroid.InitializeAsteroid();
+
                 NetworkServer.Spawn(newAsteroid);
             }
         }

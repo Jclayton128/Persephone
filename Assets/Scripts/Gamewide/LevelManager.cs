@@ -174,6 +174,7 @@ public class LevelManager : NetworkBehaviour
                     Asteroid asteroid1 = asteroid.GetComponent<Asteroid>();
                     asteroid1.asteroidSize = (Asteroid.AsteroidSize)size;
                     asteroid1.InitializeAsteroid();
+
                     NetworkServer.Spawn(asteroid);
                 }
                 return;
@@ -187,6 +188,7 @@ public class LevelManager : NetworkBehaviour
                     Asteroid asteroid1 = asteroid.GetComponent<Asteroid>();
                     asteroid1.asteroidSize = (Asteroid.AsteroidSize)size;
                     asteroid1.InitializeAsteroid();
+                    Debug.Log("calling the init for new asteroid");
                     NetworkServer.Spawn(asteroid);
                 }
                 return;

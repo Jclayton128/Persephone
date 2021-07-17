@@ -11,7 +11,10 @@ public class Health : NetworkBehaviour
     //init
 
     [SerializeField] AudioClip[] hurtAudioClip = null;
+    [SerializeField] GameObject hullDamageParticleFX = null;
+    [SerializeField] GameObject shieldDamageParticleFX = null;
     [SerializeField] AudioClip[] dieAudioClip = null;
+    [SerializeField] GameObject dyingParticleFX = null;
 
     EnergySource es;
     PlayerInput pi;
@@ -146,7 +149,7 @@ public class Health : NetworkBehaviour
     }
 
     private void ProcessIonization()
-    { 
+    {
         //Remove Draining
         ionizationAmount -= purificationRate * Time.deltaTime;
         ionizationAmount = Mathf.Clamp(ionizationAmount, 0, hullMax);
@@ -157,7 +160,7 @@ public class Health : NetworkBehaviour
         }
 
         //Process Draining effects
-        IonFactor = 1- ((hullMax - ionizationAmount) / hullMax);
+        IonFactor = 1 - ((hullMax - ionizationAmount) / hullMax);
         shieldMax_current = (1 - IonFactor) * shieldMax_normal;
         shieldRate_current = (1 - IonFactor) * shieldRate_normal;
     }
@@ -169,7 +172,7 @@ public class Health : NetworkBehaviour
 
     }
 
-    public void ModifyShieldLevel(float amount, bool affectHullToo)
+    public void ModifyShieldLevel(float amount, bool affectHullToo, Vector2 positionOfDamage)
     {
         //if (GetComponentInChildren<PhaseShield>()) { return; } //phase shield prevent all damage
 
@@ -178,16 +181,21 @@ public class Health : NetworkBehaviour
 
         if (shieldCurrentLevel <= 0 && affectHullToo)
         {
-            ModifyHullLevel(amount, false); //Go direct to hull and do no shield damage
+            ModifyHullLevel(amount, false, positionOfDamage); //Go direct to hull and do no shield damage
         }
 
         if (shieldCurrentLevel > 0)
         {
             shieldCurrentLevel += amount;
+            if (amount < 0)
+            {
+                HandleDamageParticleFX(ParticleType.Shield, positionOfDamage);
+            }
+
             if (shieldCurrentLevel < 0 && affectHullToo)  //If shield was positive, takes damage, and becomes negative, pass the negative amount on to the hull;
             {
                 float negativeShield = shieldCurrentLevel;
-                ModifyHullLevel(negativeShield, false);
+                ModifyHullLevel(negativeShield, false, positionOfDamage);
                 shieldCurrentLevel = 0;
             }
             if (shieldCurrentLevel < 0 && !affectHullToo)
@@ -202,9 +210,51 @@ public class Health : NetworkBehaviour
         }
     }
 
-    public void ModifyHullLevel(float amount, bool shouldPurifyToo)
+    #region Particle FX
+    private enum ParticleType { Shield, Hull, Dying};
+    private void HandleDamageParticleFX(ParticleType pt, Vector2 positionOfDamage)
+    {
+        RpcPushShieldDamageParticleFXToClient(pt, positionOfDamage) ;
+        if (isServer)
+        {
+            GenerateParticleFX(pt, positionOfDamage);
+        }
+    }
+    
+    [ClientRpc]
+    private void RpcPushShieldDamageParticleFXToClient(ParticleType pt, Vector2 positionOfDamage)
+    {
+        GenerateParticleFX(pt, positionOfDamage);
+    }
+
+    private void GenerateParticleFX(ParticleType pt, Vector2 positionOfDamage)
+    {
+        if (pt == ParticleType.Shield && shieldDamageParticleFX)
+        {
+            GameObject particle = Instantiate(shieldDamageParticleFX, positionOfDamage, transform.rotation) as GameObject;
+            return;
+        }
+        if (pt == ParticleType.Hull && hullDamageParticleFX)
+        {
+            GameObject particle = Instantiate(hullDamageParticleFX, positionOfDamage, transform.rotation) as GameObject;
+            return;
+        }
+        if (pt == ParticleType.Dying && dyingParticleFX)
+        {
+            GameObject particle = Instantiate(dyingParticleFX, transform.position, transform.rotation) as GameObject;
+            return;
+        }
+    }
+
+    #endregion
+    public void ModifyHullLevel(float amount, bool shouldPurifyToo, Vector2 positionOfDamage)
     {
         hullCurrentLevel += amount;
+        if (amount < 0)
+        {
+            HandleDamageParticleFX(ParticleType.Hull, positionOfDamage);
+        }
+
         if (hullCurrentLevel >= hullMax)
         {
             SignalRepairIsComplete();
@@ -226,7 +276,7 @@ public class Health : NetworkBehaviour
     [Command]
     public void CmdModifyHullLevelViaClientDebug(float amount, bool shouldPurifyToo)
     {
-        ModifyHullLevel(amount, shouldPurifyToo);
+        ModifyHullLevel(amount, shouldPurifyToo, transform.position);
     }
 
 
@@ -237,6 +287,7 @@ public class Health : NetworkBehaviour
             rb.drag = dragAtDeath; //This slows the wreckage down.
             rb.angularDrag = angularDragAtDeath;  //This slows the wreckage down.
             isDying = true;
+            HandleDamageParticleFX(ParticleType.Dying, transform.position);
             //if (lastDamageDealerToBeHitBy && GetComponent<ScrapDropper>() == true)
             //{
             //    float bonusScrapThresh = lastDamageDealerToBeHitBy.GetBonusScrapThreshold();
@@ -280,18 +331,19 @@ public class Health : NetworkBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Vector2 contactPoint = GetComponent<Collider2D>().ClosestPoint(other.transform.position);
         if (isClient)
         {
-            HandlePossibleDamageOnClientSide(other);
+            HandlePossibleDamageOnClientSide(other, contactPoint);
         }
 
         if (isServer)
         {
-            HandlePossibleDamageOnServerSide(other);
+            HandlePossibleDamageOnServerSide(other, contactPoint);
         }
 
     }
-    private void HandlePossibleDamageOnClientSide(Collider2D other)
+    private void HandlePossibleDamageOnClientSide(Collider2D other, Vector2 positionOfDamage)
     {
         DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
         //Begin check for validity of received damage - "should this weapon actually affect me?"
@@ -300,7 +352,7 @@ public class Health : NetworkBehaviour
 
         if (damageDealer.particleExplosionAtImpact)
         {
-            GameObject damageParticleEffect = Instantiate(damageDealer.particleExplosionAtImpact, transform.position, transform.rotation) as GameObject;
+            GameObject damageParticleEffect = Instantiate(damageDealer.particleExplosionAtImpact, positionOfDamage, transform.rotation) as GameObject;
             Destroy(damageParticleEffect, 10);
         }
 
@@ -313,7 +365,7 @@ public class Health : NetworkBehaviour
         //damageDealer.ModifyPenetration(-1 * penetrationToSoakUp);
     }
 
-    private void HandlePossibleDamageOnServerSide(Collider2D other)
+    private void HandlePossibleDamageOnServerSide(Collider2D other, Vector2 positionOfDamage)
     {
         DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
 
@@ -348,8 +400,8 @@ public class Health : NetworkBehaviour
             ionizationAmount += damage.Ionization;
         }
 
-        ModifyShieldLevel(damage.ShieldBonusDamage * -1, false);
-        ModifyShieldLevel(damage.RegularDamage * -1, true);
+        ModifyShieldLevel(damage.ShieldBonusDamage * -1, false, positionOfDamage);
+        ModifyShieldLevel(damage.RegularDamage * -1, true, positionOfDamage);
 
 
         damageDealer.ModifyPenetration(-1 * penetrationToSoakUp);

@@ -70,7 +70,7 @@ public class AoERocket_AI : MonoBehaviour
             Health health;
             if (splashRecipient.gameObject.TryGetComponent<Health>(out health))
             {
-                health.ModifyShieldLevel(-1 * normalDamage, true);
+                health.ModifyShieldLevel(-1 * normalDamage, true, transform.position);
             }
         }
         //GameObject exp = Instantiate(particleExplosion, transform.position, transform.rotation) as GameObject;

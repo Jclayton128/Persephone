@@ -6,8 +6,10 @@ using Mirror;
 
 public class Asteroid : NetworkBehaviour
 {
+
     [SerializeField] GameObject[] componentAsteroids = null;
     [SerializeField] Sprite[] asteroidSprites = null;
+    [SerializeField] GameObject dyingParticleFX = null;
     [SerializeField] float asteroidRadius;
     public Vector2 startingVel { get; set; }
 
@@ -71,6 +73,15 @@ public class Asteroid : NetworkBehaviour
 
     private void HandleAsteroidDying()
     {
+        RpcPushParticleFXOnClients();
+        if (isServer)
+        {
+            if (dyingParticleFX)
+            {
+                GameObject particle = Instantiate(dyingParticleFX, transform.position, transform.rotation) as GameObject;
+                particle.transform.localScale = Vector3.one * asteroidRadius;
+            }
+        }
         if (componentAsteroids.Length > 0)
         {
             for (int i = 0; i < componentAsteroids.Length; i++)
@@ -82,6 +93,16 @@ public class Asteroid : NetworkBehaviour
                 asteroid.SetOutwardStartingMotion(componentAsteroids.Length, i);
                 NetworkServer.Spawn(newAsteroid);
             }
+        }
+    }
+
+    [ClientRpc]
+    private void RpcPushParticleFXOnClients()
+    {
+        if (dyingParticleFX)
+        {
+            GameObject particle = Instantiate(dyingParticleFX, transform.position, transform.rotation) as GameObject;
+            particle.transform.localScale = Vector3.one * asteroidRadius;
         }
     }
 

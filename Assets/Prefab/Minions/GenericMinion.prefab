@@ -184,13 +184,17 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   hurtAudioClip: []
+  hullDamageParticleFX: {fileID: 6687864425758096907, guid: af3e8b3d349dd6044884f0146da62256, type: 3}
+  shieldDamageParticleFX: {fileID: 2833466044137799666, guid: 19986c838c4ab64419ac88989c686e40, type: 3}
   dieAudioClip: []
+  dyingParticleFX: {fileID: 0}
   hullMax: 1
   shieldMax_normal: 1
   shieldRate_normal: 0
   purificationRate: 0
   penetrationToSoakUp: 1
   isDying: 0
+  hullCurrentLevel: 0
   IonFactor: 0
   AssignedWreckerDrone: {fileID: 0}
 --- !u!114 &5688006805919652889

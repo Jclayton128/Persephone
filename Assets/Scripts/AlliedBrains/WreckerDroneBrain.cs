@@ -98,7 +98,7 @@ public class WreckerDroneBrain : NetworkBehaviour
         if (distToNavTarget <= repairRange && Time.time >= timeForNextRepairTick && !isDoneRepairing)
         {
             float quintileHealth = targetHealth.GetMaxHull() / 5f;
-            targetHealth.ModifyHullLevel(quintileHealth, false);
+            targetHealth.ModifyHullLevel(quintileHealth, false, transform.position);
             timeForNextRepairTick = Time.time + timeBetweenRepairTicks;
         }
         if (targetHealth.GetCurrentHull() >= targetHealth.GetMaxHull())

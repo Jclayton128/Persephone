@@ -120,7 +120,10 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   hurtAudioClip: []
+  hullDamageParticleFX: {fileID: 5342583061610593485, guid: 62fb5611612eea642a2335692e150d53, type: 3}
+  shieldDamageParticleFX: {fileID: 0}
   dieAudioClip: []
+  dyingParticleFX: {fileID: 0}
   hullMax: 1
   shieldMax_normal: 0
   shieldRate_normal: 0
@@ -165,30 +168,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  asteroidPrefab: {fileID: 4554407695335934994}
-  giantAsteroidSprites:
-  - {fileID: 21300000, guid: 749345b74f5967047a91855d3f286e42, type: 3}
-  - {fileID: 21300000, guid: a9c5887e9af8447479951df57a11707b, type: 3}
-  - {fileID: 21300000, guid: 7fb0ee62f27981649a0e92f80b930053, type: 3}
-  largeAsteroidSprites:
-  - {fileID: 21300000, guid: 58920bc89017a894dbc54907d85b0ed7, type: 3}
-  - {fileID: 21300000, guid: cd23aec8e5788ed42b05e23bdc5433b6, type: 3}
-  - {fileID: 21300000, guid: 0307dcec1bc24fd41b8158301b5d2168, type: 3}
-  - {fileID: 21300000, guid: 5c82d89b0dda59a4cb4c6b77141db3c5, type: 3}
-  mediumAsteroidSprites:
-  - {fileID: 21300000, guid: a5598f224ce4392458f738fde3e6524e, type: 3}
-  - {fileID: 21300000, guid: d15d362551708f34b80016a91b2ac389, type: 3}
-  - {fileID: 21300000, guid: 6a29fce26494658488a357669c29a051, type: 3}
-  - {fileID: 21300000, guid: 5ef8279b4d2c4594f8631d20421a0eea, type: 3}
-  smallAsteroidSprites:
-  - {fileID: 21300000, guid: f8c508c0a3d2fd3448eb152593ab4a1b, type: 3}
-  - {fileID: 21300000, guid: 576e9d210d2389048a3f45d44e2e278d, type: 3}
-  asteroidRadii:
-  - 1
-  - 0.46
-  - 0.22
-  - 0.1
-  asteroidSize: 0
+  componentAsteroids: []
+  asteroidSprites: []
+  dyingParticleFX: {fileID: 6687864425758096907, guid: af3e8b3d349dd6044884f0146da62256, type: 3}
+  asteroidRadius: 0
 --- !u!58 &4554407695335935085
 CircleCollider2D:
   m_ObjectHideFlags: 0

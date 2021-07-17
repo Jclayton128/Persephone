@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &2587891828715397134
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4554407695335934994, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_Name
+      value: Asteroid_Small
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935080, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a5598f224ce4392458f738fde3e6524e, type: 3}
+    - target: {fileID: 4554407695335935081, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_AssetId
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935083, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935083, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935083, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935083, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935083, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935083, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935083, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935083, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935083, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935083, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935083, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935084, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: asteroidSprites.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935084, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: componentAsteroids.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935084, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: asteroidSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: a5598f224ce4392458f738fde3e6524e, type: 3}
+    - target: {fileID: 4554407695335935084, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: asteroidSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: d15d362551708f34b80016a91b2ac389, type: 3}
+    - target: {fileID: 4554407695335935084, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: asteroidSprites.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 6a29fce26494658488a357669c29a051, type: 3}
+    - target: {fileID: 4554407695335935084, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: asteroidSprites.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 5ef8279b4d2c4594f8631d20421a0eea, type: 3}
+    - target: {fileID: 4554407695335935084, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: asteroidRadius
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335935084, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: componentAsteroids.Array.data[0]
+      value: 
+      objectReference: {fileID: 3458571426114811222, guid: e05989a0e5f329c4a8630fda45be721f, type: 3}
+    - target: {fileID: 4554407695335935084, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: componentAsteroids.Array.data[1]
+      value: 
+      objectReference: {fileID: 3458571426114811222, guid: e05989a0e5f329c4a8630fda45be721f, type: 3}
+    - target: {fileID: 4554407695335935084, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: componentAsteroids.Array.data[2]
+      value: 
+      objectReference: {fileID: 3458571426114811222, guid: e05989a0e5f329c4a8630fda45be721f, type: 3}
+    - target: {fileID: 4554407695335935085, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_Radius
+      value: 0.18
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}

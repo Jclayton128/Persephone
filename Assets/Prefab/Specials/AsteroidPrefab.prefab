@@ -127,6 +127,7 @@ MonoBehaviour:
   purificationRate: 0.3
   penetrationToSoakUp: 0
   isDying: 0
+  hullCurrentLevel: 0
   IonFactor: 0
   AssignedWreckerDrone: {fileID: 0}
 --- !u!114 &4554407695335935087
@@ -164,6 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  asteroidPrefab: {fileID: 4554407695335934994}
   giantAsteroidSprites:
   - {fileID: 21300000, guid: 749345b74f5967047a91855d3f286e42, type: 3}
   - {fileID: 21300000, guid: a9c5887e9af8447479951df57a11707b, type: 3}

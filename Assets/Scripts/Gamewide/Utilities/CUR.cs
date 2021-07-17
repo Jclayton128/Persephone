@@ -187,6 +187,15 @@ public static class CUR : object
         float randomAngle = Random.Range(0f, Mathf.PI * 2f);
         return new Vector2(Mathf.Sin(randomAngle), Mathf.Cos(randomAngle)).normalized;
     }
+
+    static public Vector2 GetPointOnUnitCircleCircumference(float sectorStartDeg, float sectorEndDeg)
+    {
+        float randAngleDeg = Random.Range(sectorStartDeg, sectorEndDeg);
+        float randomAngle = randAngleDeg * Mathf.Deg2Rad;
+        return new Vector2(Mathf.Sin(randomAngle), Mathf.Cos(randomAngle)).normalized;
+    }
+
+
     static public GameObject GetNearestGameObjectOnLayer(Transform posToSearchFrom, int layerMask, float maxSearchDistance)
     {
         //Debug.Log(LayerMask.LayerToName(layerIndex));

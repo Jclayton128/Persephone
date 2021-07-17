@@ -66,7 +66,7 @@ public class Health : NetworkBehaviour
     float shieldCurrentLevel;
 
     [SyncVar(hook = nameof(UpdateUI))]
-    float hullCurrentLevel;
+    [SerializeField] float hullCurrentLevel;
 
     [SyncVar(hook = nameof(UpdateUI))]
     float ionizationAmount;

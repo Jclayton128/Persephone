@@ -6,11 +6,10 @@ using Mirror;
 
 public class Asteroid : NetworkBehaviour
 {
-    [SerializeField] Sprite[] giantAsteroidSprites = null;
-    [SerializeField] Sprite[] largeAsteroidSprites = null;
-    [SerializeField] Sprite[] mediumAsteroidSprites = null;
-    [SerializeField] Sprite[] smallAsteroidSprites = null;
-    [SerializeField] float[] asteroidRadii;
+    [SerializeField] GameObject[] componentAsteroids = null;
+    [SerializeField] Sprite[] asteroidSprites = null;
+    [SerializeField] float asteroidRadius;
+    public Vector2 startingVel { get; set; }
 
     float randomSpeedMax = 4f;
     float randomSpinMax = 30;
@@ -21,103 +20,66 @@ public class Asteroid : NetworkBehaviour
     SpriteRenderer sr;
     Health health;
 
-
-    public enum AsteroidSize { Giant, Large, Medium, Small};
-
-    [SyncVar]
-    [SerializeField] public AsteroidSize asteroidSize;
-
-    public void InitializeAsteroid()
+    public override void OnStartServer()
     {
-        Debug.Log("okay this at least was called");
-        if (isClient)
-        {
-            Debug.Log("this was called");
-            sr = GetComponent<SpriteRenderer>();
-            SelectStartingSprite();
-        }
-        if (isServer)
-        {
-            Debug.Log("this too was called");
-            rb = GetComponent<Rigidbody2D>();
-            health = GetComponent<Health>();
-            coll = GetComponent<CircleCollider2D>();
-            SelectStartingColliderSizeAndMass();
-            SelectStartingHealth();
-            CreateRandomStartingMotion();
-            health.EntityIsDying += HandleAsteroidDying;
-        }
-        sr = GetComponent<SpriteRenderer>();
-        SelectStartingSprite();
+        base.OnStartServer();
         rb = GetComponent<Rigidbody2D>();
+        rb.velocity = startingVel;
         health = GetComponent<Health>();
         coll = GetComponent<CircleCollider2D>();
-        SelectStartingColliderSizeAndMass();
-        SelectStartingHealth();
-        CreateRandomStartingMotion();
+        SelectStartingColliderSizeMassHealth();
         health.EntityIsDying += HandleAsteroidDying;
 
     }
 
-    private void SelectStartingSprite()
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        sr = GetComponent<SpriteRenderer>();
+        SelectStartingSprite();
+    }
+
+    public void SelectStartingSprite()
     {
         int rand;
-        switch (asteroidSize)
-        {
-
-            case AsteroidSize.Giant:
-                rand = UnityEngine.Random.Range(0, giantAsteroidSprites.Length);
-                sr.sprite = giantAsteroidSprites[rand];
-                return;
-
-            case AsteroidSize.Large:
-                rand = UnityEngine.Random.Range(0, largeAsteroidSprites.Length);
-                sr.sprite = largeAsteroidSprites[rand];
-                return;
-
-            case AsteroidSize.Medium:
-                rand = UnityEngine.Random.Range(0, mediumAsteroidSprites.Length);
-                sr.sprite = mediumAsteroidSprites[rand];
-                return;
-
-            case AsteroidSize.Small:
-                rand = UnityEngine.Random.Range(0, smallAsteroidSprites.Length);
-                sr.sprite = smallAsteroidSprites[rand];
-                return;
-
-        }
-
+        rand = UnityEngine.Random.Range(0, asteroidSprites.Length);
+        sr.sprite = asteroidSprites[rand];
     }
 
-    private void SelectStartingColliderSizeAndMass()
+    private void SelectStartingColliderSizeMassHealth()
     {
-        coll.radius = asteroidRadii[(int)asteroidSize];
+        coll.radius = asteroidRadius;
         rb.mass = coll.radius * radiusToHealthMassCoefficient;
-    }
-    private void SelectStartingHealth()
-    {
         health.SetMaxHullAndHealToIt(coll.radius * radiusToHealthMassCoefficient);
     }
-    public void CreateRandomStartingMotion()
+
+    public void SetRandomStartingMotion()
     {
-        rb.velocity = CUR.GetPointOnUnitCircleCircumference() * UnityEngine.Random.Range(0,randomSpeedMax);
-        rb.angularVelocity = UnityEngine.Random.Range(-randomSpinMax, randomSpinMax);
+        startingVel = CUR.GetPointOnUnitCircleCircumference() * UnityEngine.Random.Range(0,randomSpeedMax);
+        //rb.angularVelocity = UnityEngine.Random.Range(-randomSpinMax, randomSpinMax);
+    }
+
+    public void SetOutwardStartingMotion(int total, int indexWithinTotal)
+    {
+        float circleSubdivided = 360f / total;
+        float middleDeg = indexWithinTotal * circleSubdivided + transform.eulerAngles.z + (360f / 2f) + 180f;
+
+        startingVel = CUR.GetPointOnUnitCircleCircumference(middleDeg - 30f, middleDeg + 30f);
+
     }
 
 
     private void HandleAsteroidDying()
     {
-        if (asteroidSize != AsteroidSize.Small)
+        if (componentAsteroids.Length > 0)
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < componentAsteroids.Length; i++)
             {
                 Vector2 randOffset = CUR.GetPointOnUnitCircleCircumference() * coll.radius + new Vector2(transform.position.x, transform.position.y);
                 Quaternion randRot = Quaternion.Euler(0, 0, UnityEngine.Random.Range(-179f, 179f));
-                GameObject newAsteroid = Instantiate(gameObject, randOffset, randRot) as GameObject;
+                GameObject newAsteroid = Instantiate(componentAsteroids[i], randOffset, randRot) as GameObject;
                 Asteroid asteroid = newAsteroid.GetComponent<Asteroid>();
-                asteroid.asteroidSize = asteroidSize++;
-                asteroid.InitializeAsteroid();
-
+                asteroid.SetOutwardStartingMotion(componentAsteroids.Length, i);
                 NetworkServer.Spawn(newAsteroid);
             }
         }

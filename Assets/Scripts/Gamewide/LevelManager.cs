@@ -11,7 +11,7 @@ public class LevelManager : NetworkBehaviour
     UnitTracker ut;
     ArenaBounds ab;
 
-    [SerializeField] GameObject asteroidPrefab = null;
+    [SerializeField] GameObject[] asteroidPrefabsLarge2Small = null;
     [SerializeField] GameObject persephonePrefab = null;
     [SerializeField] TextMeshProUGUI levelCounterTMP = null;
     [SerializeField] List<Level> unencounteredLevels = null;
@@ -29,7 +29,14 @@ public class LevelManager : NetworkBehaviour
 
     private void Awake()
     {
-        NetworkClient.RegisterPrefab(asteroidPrefab);
+        foreach (GameObject asteroid in asteroidPrefabsLarge2Small)
+        {
+            if (!NetworkClient.prefabs.ContainsValue(asteroid))
+            {
+                NetworkClient.RegisterPrefab(asteroid);
+            }
+        }
+
         NetworkClient.RegisterPrefab(persephonePrefab);
         foreach (Level level in unencounteredLevels)
         {
@@ -156,11 +163,9 @@ public class LevelManager : NetworkBehaviour
                 quantity = UnityEngine.Random.Range(0, 4);
                 for (int i = 0; i < quantity; i++)
                 {
-                    GameObject asteroid = Instantiate(asteroidPrefab, ab.CreateRandomPointWithinArena(), Quaternion.identity) as GameObject;
-                    int size = UnityEngine.Random.Range(2, 4);
-                    Asteroid asteroid1 = asteroid.GetComponent<Asteroid>();
-                    asteroid1.asteroidSize = (Asteroid.AsteroidSize)size;
-                    asteroid1.InitializeAsteroid();
+                    int size = UnityEngine.Random.Range(2, 3);
+                    GameObject asteroid = Instantiate(asteroidPrefabsLarge2Small[size], ab.CreateRandomPointWithinArena(), Quaternion.identity) as GameObject;
+                    asteroid.GetComponent<Asteroid>().SetRandomStartingMotion();
                     NetworkServer.Spawn(asteroid);
                 }
                 return;
@@ -169,12 +174,9 @@ public class LevelManager : NetworkBehaviour
                 quantity = UnityEngine.Random.Range(2, 7);
                 for (int i = 0; i < quantity; i++)
                 {
-                    GameObject asteroid = Instantiate(asteroidPrefab, ab.CreateRandomPointWithinArena(), Quaternion.identity) as GameObject;
-                    int size = UnityEngine.Random.Range(1, 4);
-                    Asteroid asteroid1 = asteroid.GetComponent<Asteroid>();
-                    asteroid1.asteroidSize = (Asteroid.AsteroidSize)size;
-                    asteroid1.InitializeAsteroid();
-
+                    int size = UnityEngine.Random.Range(1, 3);
+                    GameObject asteroid = Instantiate(asteroidPrefabsLarge2Small[size], ab.CreateRandomPointWithinArena(), Quaternion.identity) as GameObject;
+                    asteroid.GetComponent<Asteroid>().SetRandomStartingMotion();
                     NetworkServer.Spawn(asteroid);
                 }
                 return;
@@ -183,12 +185,9 @@ public class LevelManager : NetworkBehaviour
                 quantity = UnityEngine.Random.Range(5, 12);
                 for (int i = 0; i < quantity; i++)
                 {
-                    GameObject asteroid = Instantiate(asteroidPrefab, ab.CreateRandomPointWithinArena(), Quaternion.identity) as GameObject;
-                    int size = UnityEngine.Random.Range(0, 4);
-                    Asteroid asteroid1 = asteroid.GetComponent<Asteroid>();
-                    asteroid1.asteroidSize = (Asteroid.AsteroidSize)size;
-                    asteroid1.InitializeAsteroid();
-                    Debug.Log("calling the init for new asteroid");
+                    int size = UnityEngine.Random.Range(0, 2);
+                    GameObject asteroid = Instantiate(asteroidPrefabsLarge2Small[size], ab.CreateRandomPointWithinArena(), Quaternion.identity) as GameObject;
+                    asteroid.GetComponent<Asteroid>().SetRandomStartingMotion();
                     NetworkServer.Spawn(asteroid);
                 }
                 return;

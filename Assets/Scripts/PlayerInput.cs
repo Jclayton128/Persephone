@@ -21,11 +21,15 @@ public class PlayerInput : NetworkBehaviour
     [SerializeField] float drag_retro;
     [SerializeField] float maxTurnSpeed_normal;
     [SerializeField] float turnAccelRate_normal;
+    [SerializeField] ParticleSystem[] engineParticleFX = null;
 
     [SyncVar]
     float performanceFactor = 1;  //This factor should change how fast a ship moves and turns on a temporary basis.
 
-    float throttleSensitivity = 0.05f;
+    [SyncVar (hook = nameof(ToggleEngineFXOnClient))]
+    [SerializeField] bool isEmittingEngineFX = false;
+    
+    float throttleNullThreshold = 0.05f;
     float scrollSensitivity = 0.1f;
     float aimSensitivity = 1.0f;
 
@@ -37,8 +41,8 @@ public class PlayerInput : NetworkBehaviour
     //[SerializeField] float correctionRate;
 
     Vector2 previousAimDir = Vector2.one;
-    [SerializeField] Vector2 desAimDir = Vector2.zero;
-    [SerializeField] float desMoveSpeed = 0;
+    Vector2 desAimDir = Vector2.zero;
+    float desMoveSpeed = 0;
     Vector3 mousePos = Vector3.zero;
 
     [SyncVar]
@@ -53,7 +57,8 @@ public class PlayerInput : NetworkBehaviour
         health = GetComponent<Health>();
         health.EntityIsDying += ReactToBecomingDisabled;
         health.EntityIsRepaired += ReactToBecomingRepaired;
-        HookIntoLocalUI();    
+        HookIntoLocalUI();
+        ToggleEngineFXOnClient(false, false);
     }
     private void HookIntoLocalUI()
     {
@@ -136,14 +141,15 @@ public class PlayerInput : NetworkBehaviour
     private void HandleKeyboardInput()
     {
         float throttle = Input.GetAxis("Vertical");
-        if (throttle > throttleSensitivity)
+        if (Mathf.Abs(throttle) > throttleNullThreshold)
         {
             desMoveSpeed = throttle;
         }
-        if (throttle <= throttleSensitivity)
+        else
         {
-            desMoveSpeed = 0;
+            desMoveSpeed = Mathf.MoveTowards(desMoveSpeed, 0, Time.deltaTime);
         }
+
     }
 
     [Command]
@@ -217,10 +223,18 @@ public class PlayerInput : NetworkBehaviour
         {
             rb.drag = drag_normal;
             rb.AddForce(transform.up * accelRate_normal * performanceFactor);
+            isEmittingEngineFX = true;
+            return;
         }
-        if (desMoveSpeed <= 0)
+        if (desMoveSpeed < 0)
         {
             rb.drag = drag_retro;
+            isEmittingEngineFX = false;
+            return;
+        }
+        else
+        {
+            isEmittingEngineFX = false;
         }
 
     }
@@ -244,6 +258,26 @@ public class PlayerInput : NetworkBehaviour
     public bool GetDisabledStatus()
     {
         return isDisabled;
+    }
+
+    [Client]
+    private void ToggleEngineFXOnClient(bool oldValue, bool currentValue)
+    {
+        if (currentValue)
+        {
+            foreach(ParticleSystem ps in engineParticleFX)
+            {
+                ps.Play();
+            }
+            return;
+        }
+        if (!currentValue)
+        {
+            foreach (ParticleSystem ps in engineParticleFX)
+            {
+                ps.Stop();
+            }
+        }
     }
 
 }

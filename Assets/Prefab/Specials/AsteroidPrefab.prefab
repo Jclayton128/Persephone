@@ -128,7 +128,7 @@ MonoBehaviour:
   shieldMax_normal: 0
   shieldRate_normal: 0
   purificationRate: 0.3
-  penetrationToSoakUp: 0
+  penetrationToSoakUp: 1
   isDying: 0
   hullCurrentLevel: 0
   IonFactor: 0

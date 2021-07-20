@@ -11,6 +11,7 @@ public class LevelManager : NetworkBehaviour
     UnitTracker ut;
     ArenaBounds ab;
 
+    [SerializeField] GameObject warpPortalPrefab = null;
     [SerializeField] GameObject[] asteroidPrefabsLarge2Small = null;
     [SerializeField] GameObject persephonePrefab = null;
     [SerializeField] TextMeshProUGUI levelCounterTMP = null;
@@ -26,6 +27,7 @@ public class LevelManager : NetworkBehaviour
     float timeUntilPersephoneArrives = 5f;
 
     public Action<int> OnLevelAdvance;
+    GameObject currentWarpPortal;
 
     private void Awake()
     {
@@ -36,7 +38,7 @@ public class LevelManager : NetworkBehaviour
                 NetworkClient.RegisterPrefab(asteroid);
             }
         }
-
+        NetworkClient.RegisterPrefab(warpPortalPrefab);
         NetworkClient.RegisterPrefab(persephonePrefab);
         foreach (Level level in unencounteredLevels)
         {
@@ -78,6 +80,7 @@ public class LevelManager : NetworkBehaviour
         ResetPlayerPositions();
         SpawnNextLevelMinions();
         SpawnNextLevelAsteroids();
+        SpawnNewWarpPortal();
         SetTimeUntilPersephoneArrives();
     }
 
@@ -99,6 +102,10 @@ public class LevelManager : NetworkBehaviour
         foreach (GameObject asteroid in asteroids)
         {
             Destroy(asteroid);
+        }
+        if (currentWarpPortal)
+        {
+            Destroy(currentWarpPortal);
         }
 
         ut.DestroyAllMinions();
@@ -196,6 +203,11 @@ public class LevelManager : NetworkBehaviour
 
     }
 
+    private void SpawnNewWarpPortal()
+    {
+        currentWarpPortal = Instantiate(warpPortalPrefab, Vector2.zero, Quaternion.identity) as GameObject;
+        NetworkServer.Spawn(currentWarpPortal);
+    }
     private void StartPersephone()
     {
         if (isServer)

@@ -174,7 +174,6 @@ public class AbilityManager : NetworkBehaviour
 
             if (ability.CheckUnlockOnLevelUp(newLevel, out abilityTier))
             {
-                Debug.Log("abilityTier passed out: " + abilityTier + "is client: " + isClient);
                 int secondaryToUnlock = allSecondaryAbilities.IndexOf(ability);
                 if (!unlockedSecondaryAbilities.Contains(ability))
                 {
@@ -182,8 +181,6 @@ public class AbilityManager : NetworkBehaviour
                 }
                 if (isClient && hasAuthority && abilityTier == 0)
                 {
-                    Debug.Log("unlock found");
-                    //Debug.Log($"icon list length: {secondaryAbilityIcons.Length} vs index: {secondaryToUnlock}. AllSecAbLeng: {allSecondaryAbilities.Count}");
                     secondaryAbilityIcons[secondaryToUnlock].sprite = allSecondaryAbilities[secondaryToUnlock].AbilityIcons[0];
                     if (ability.UsesStatusIcon)
                     {

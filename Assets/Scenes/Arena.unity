@@ -2230,6 +2230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  warpPortalPrefab: {fileID: 6366358938517628784, guid: 4b55a29e9ff18e94bbff9c362eb15fb1, type: 3}
   asteroidPrefabsLarge2Small:
   - {fileID: 9038954614479771619, guid: f1080508d3b55434da950d1f90e1a702, type: 3}
   - {fileID: 4985466280272198175, guid: a479e2cc75cbd66468da7af9335cf1bd, type: 3}
@@ -2630,7 +2631,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &690865446
 GameObject:
@@ -11314,84 +11315,3 @@ MonoBehaviour:
   normalStrenght: 5
   normalSmoothing: 1
   computingNormal: 0
---- !u!1001 &5392660631280898828
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5392660631742042840, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_AngularDrag
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042840, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_GravityScale
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042843, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042847, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_Name
-      value: WarpPortal
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392660631742042847, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: m_TagString
-      value: WarpPortal
-      objectReference: {fileID: 0}
-    - target: {fileID: 6731475867213952929, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}
-      propertyPath: sceneId
-      value: 4221547364
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 32a6cf807a147774fbaeb26d6da6cecb, type: 3}

@@ -50,7 +50,7 @@ public class Ability_Blink : Ability
         {
             blinkToPos = targetPos;
             warpPortalExit = Instantiate(abilityPrefabs[0], targetPos, transform.rotation) as GameObject;
-            warpPortalExit.transform.localScale = Vector3.one * 0.25f;
+            //warpPortalExit.transform.localScale = Vector3.one * 0.25f;
             NetworkServer.Spawn(warpPortalExit);
             BeginBlinking();
         }
@@ -170,7 +170,7 @@ public class Ability_Blink : Ability
     private void ExecuteBasicBlink()
     {
         transform.position = blinkToPos;
-        Destroy(warpPortalExit);
+        //Destroy(warpPortalExit);
         IsBlinking = false;
         blinkFactor = 1;
         inPostBlink = true;

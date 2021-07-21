@@ -2734,6 +2734,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7119222003728322057, guid: ecc35d41b5bd21d43b2eb6ed7a81e04e, type: 3}
+      propertyPath: sceneId
+      value: 117624256
+      objectReference: {fileID: 0}
     - target: {fileID: 2309407068753948443, guid: ecc35d41b5bd21d43b2eb6ed7a81e04e, type: 3}
       propertyPath: m_Name
       value: BlinkPoint

@@ -13,7 +13,7 @@ public class Ability_ArcherTurret : Ability
 
     PlayerInput plin;
     GameObject chargingBullet;
-    Vector3 targetPos;
+    [SerializeField] Vector3 targetPos;
     bool isCharging = false;
     float chargeRate = 0.33f;
     int primaryLayerToTarget = 10;
@@ -88,14 +88,15 @@ public class Ability_ArcherTurret : Ability
 
     void Update()
     {
-        if (!plin.GetDisabledStatus())
+        if (hasAuthority && !plin.GetDisabledStatus())
         {
             FindBestTargetPos();
-            PointAtTargetPos();
+
         }
 
-        if (isServer)
+        if (isServer && !plin.GetDisabledStatus())
         {
+            PointAtTargetPos();
             HandleCharging();
         }
     }
@@ -143,18 +144,25 @@ public class Ability_ArcherTurret : Ability
     private void FindBestTargetPos()
     {
         int layerMask = (1 << primaryLayerToTarget) | (1 << secondaryLayerToTarget);
-        GameObject target = CUR.GetNearestGameObjectOnLayer(transform, layerMask, range);
-        if (!target)
+        Rigidbody2D targetRB = CUR.GetNearestGameObjectOnLayer(transform, layerMask, range).GetComponent<Rigidbody2D>();
+        if (!targetRB)
         {
             targetPos = turret.transform.position + transform.up;
+            CmdPushTargetPosToServer(targetPos);
         }
         else
         {
-            Vector3 enemyVel = target.GetComponent<Rigidbody2D>().velocity;
-            float timeOfShot = ((target.transform.position + enemyVel) - transform.position).magnitude / weaponSpeed;
-            targetPos = target.transform.position + (enemyVel * timeOfShot);
-            Debug.DrawLine(turret.transform.position, target.transform.position, Color.blue);
+            Vector3 enemyVel = targetRB.velocity;
+            float timeOfShot = ((targetRB.transform.position + enemyVel) - transform.position).magnitude / weaponSpeed;
+            targetPos = targetRB.transform.position + (enemyVel * timeOfShot);
+            CmdPushTargetPosToServer(targetPos);
         }
+    }
+
+    [Command]
+    private void CmdPushTargetPosToServer(Vector3 newPos)
+    {
+        targetPos = newPos;
     }
 
     private void PointAtTargetPos()

@@ -10,6 +10,7 @@ public class Ability_MarkerTurret : Ability
     [SerializeField] Transform muzzle;
     [SerializeField] float turretTurnRate;
     [SerializeField] float ionizationDamage;
+    [SerializeField] Vector3 targetPos;
     PlayerInput plin;
 
     bool isFiring = false;
@@ -50,15 +51,25 @@ public class Ability_MarkerTurret : Ability
 
     void Update()
     {
-        if (!plin.GetDisabledStatus())
+        if (hasAuthority && !plin.GetDisabledStatus())
         {
-            PointAtMousePosition();
+            UpdateTargetPosition();
         }
 
         if (isServer)
         {
+            RotateTurretTowardsTargetPos();
             HandleFiring();
         }
+    }
+
+    [Server]
+    private void RotateTurretTowardsTargetPos()
+    {
+        Vector3 targetDir = targetPos - turret.transform.position;
+        float angleToTargetFromNorth = Vector3.SignedAngle(targetDir, Vector2.up, transform.forward);
+        Quaternion angleToPoint = Quaternion.Euler(0, 0, -1 * angleToTargetFromNorth);
+        turret.transform.rotation = Quaternion.RotateTowards(turret.transform.rotation, angleToPoint, turretTurnRate * Time.deltaTime);
     }
 
     [Server]
@@ -92,12 +103,16 @@ public class Ability_MarkerTurret : Ability
         }
     }
 
-    private void PointAtMousePosition()
+
+    private void UpdateTargetPosition()
     {
-        Vector3 target = MouseHelper.GetMouseCursorLocation();
-        Vector3 targetDir = target - turret.transform.position;          
-        float angleToTargetFromNorth = Vector3.SignedAngle(targetDir, Vector2.up, transform.forward);
-        Quaternion angleToPoint = Quaternion.Euler(0, 0, -1 * angleToTargetFromNorth);
-        turret.transform.rotation = Quaternion.RotateTowards(turret.transform.rotation, angleToPoint, turretTurnRate * Time.deltaTime);
+        targetPos = MouseHelper.GetMouseCursorLocation();
+        CmdPushNewTargetPos(targetPos);
+    }
+
+    [Command]
+    private void CmdPushNewTargetPos(Vector3 newPos)
+    {
+        targetPos = newPos;
     }
 }

@@ -7,7 +7,7 @@ public class ScrapDropper : NetworkBehaviour
 {
     //init
     [SerializeField] GameObject scrapPrefab = null;
-    [SerializeField] GameObject[] asteroidPrefabs = null;
+    [SerializeField] GameObject asteroidPrefab = null;
 
 
     //param
@@ -30,10 +30,13 @@ public class ScrapDropper : NetworkBehaviour
         }
         if (isClient)
         {
-            NetworkClient.RegisterPrefab(scrapPrefab);
-            foreach (GameObject asteroid in asteroidPrefabs)
+            if (!NetworkClient.prefabs.ContainsValue(scrapPrefab))
             {
-                NetworkClient.RegisterPrefab(asteroid);
+                NetworkClient.RegisterPrefab(scrapPrefab);
+            }
+            if (!NetworkClient.prefabs.ContainsValue(asteroidPrefab))
+            {
+                NetworkClient.RegisterPrefab(asteroidPrefab);
             }
         }
         // TODO maybe have some minions or weapons where scrap flies off if damaged? //health.EntityWasDamaged += 

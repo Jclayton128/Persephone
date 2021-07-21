@@ -19,7 +19,6 @@ public class PlayerShipyard : MonoBehaviour
         foreach (GameObject avatar in allAvatarPrefabs)
         {
             NetworkClient.RegisterPrefab(avatar);
-            Debug.Log($"Registered Avatar Prefab {avatar.name}");
             if (!NetworkClient.prefabs.ContainsValue(avatar))
             {
                 //Debug.Log($"Registered Avatar Prefab {avatar.name}");

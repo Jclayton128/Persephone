@@ -54,7 +54,7 @@ MonoBehaviour:
   - {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   IsPrimaryAbility: 0
   timeBetweenShots: 0
-  weaponLifetime: 0.5
+  weaponLifetime: 0.3
   weaponSpeed: 5
   normalDamage: 2
   shieldBonusDamage: 0

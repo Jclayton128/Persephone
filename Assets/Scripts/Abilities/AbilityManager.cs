@@ -189,12 +189,12 @@ public class AbilityManager : NetworkBehaviour
                 }
                 if (isClient && hasAuthority && abilityTier > 0)
                 {
-                    Debug.Log("upgrade found, should upgrade the icon");
+                    //Debug.Log("upgrade found, should upgrade the icon");
                     UpdateUpgradedAbilityIcon(secondaryToUnlock, abilityTier);
                 }
                 else
                 {
-                    Debug.Log("ability remains locked");
+                    //Debug.Log("ability remains locked");
                 }
 
                 if (secondaryIndex == -1)

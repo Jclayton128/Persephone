@@ -16,7 +16,7 @@ public class LevelManager : NetworkBehaviour
     [SerializeField] GameObject persephonePrefab = null;
     [SerializeField] TextMeshProUGUI levelCounterTMP = null;
     [SerializeField] List<Level> unencounteredLevels = null;
-    List<Level> encounteredLevels = new List<Level>();
+    [SerializeField] List<Level> encounteredLevels = new List<Level>();
 
     static Level currentLevel;
     PersephoneBrain pb;
@@ -57,8 +57,6 @@ public class LevelManager : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-        GameObject warpPortal = GameObject.FindGameObjectWithTag("WarpPortal");
-        warpPortal.GetComponent<Rigidbody2D>().angularVelocity = 10f;
     }
 
     public int GetCurrentLevelCount()
@@ -69,6 +67,7 @@ public class LevelManager : NetworkBehaviour
     [Server]
     public void AdvanceToNextLevel()
     {
+        if (!isServer) { return; }
         if (pb == null)
         {
             StartPersephone(); // Only really needed to start the first level
@@ -127,6 +126,7 @@ public class LevelManager : NetworkBehaviour
                 unencounteredLevels.Add(level);
             }
             encounteredLevels.Clear();
+            encounteredLevels.TrimExcess();
         }
 
         int rand = UnityEngine.Random.Range(0, unencounteredLevels.Count);
@@ -153,6 +153,7 @@ public class LevelManager : NetworkBehaviour
     {
         for (int i = currentLevelCount; i > 0; i--)
         {
+            if (currentLevel == null) { Debug.Log($"current level is null, is client: {isClient}, is server: {isServer}"); }
             GameObject minion = currentLevel.ReturnRandomEnemyFromList();
             mm.SpawnNewMinion(minion);
         }

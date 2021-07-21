@@ -93,12 +93,10 @@ public class PlayerInput : NetworkBehaviour
         float difference = Vector3.Angle(desAimDir, previousAimDir);
         if (difference < aimSensitivity)
         {
-            Debug.Log("Too little difference");
             desAimDir = previousAimDir;
         }
         else
         {
-            Debug.Log("okay, new pos is differnet enough");
             previousAimDir = desAimDir;
         }
     }
@@ -162,7 +160,7 @@ public class PlayerInput : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if (isServer)
+        if (isServer && !isDisabled) 
         {
             ExecuteTurn(desAimDir);
             ExecuteSpeedChange(desMoveSpeed);
@@ -243,6 +241,7 @@ public class PlayerInput : NetworkBehaviour
     private void ReactToBecomingDisabled()
     {
         isDisabled = true;
+        isEmittingEngineFX = false;
     }
 
     private void ReactToBecomingRepaired()

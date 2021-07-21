@@ -28,7 +28,6 @@ public class Level : ScriptableObject
         foreach (GameObject prefab in minionPrefabs)
         {
             NetworkClient.RegisterPrefab(prefab);
-            Debug.Log($"registered {prefab} in {name}");
         }
 
     }

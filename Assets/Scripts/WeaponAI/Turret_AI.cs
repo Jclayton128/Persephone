@@ -41,7 +41,11 @@ public class Turret_AI : MonoBehaviour
 
     private void Awake()
     {
-        NetworkClient.RegisterPrefab(weaponPrefab);
+        if (!NetworkClient.prefabs.ContainsValue(weaponPrefab))
+        {
+            NetworkClient.RegisterPrefab(weaponPrefab);
+        }
+
     }
 
     void Start()

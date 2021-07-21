@@ -12,7 +12,7 @@ public class Ability_Blink : Ability
     PlayerInput pi;
     Rigidbody2D rb;
 
-    float blinkRate = 2.0f;
+    float blinkRate = 3.0f;
     [SyncVar]
     float blinkFactor = 1; //
     float postBlinkFactor = 0;

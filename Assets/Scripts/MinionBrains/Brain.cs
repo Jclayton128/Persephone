@@ -79,7 +79,11 @@ public abstract class Brain : NetworkBehaviour
 
     protected virtual void Awake()
     {
-        NetworkClient.RegisterPrefab(weaponPrefab);
+        if (!NetworkClient.prefabs.ContainsValue(weaponPrefab))
+        {
+            NetworkClient.RegisterPrefab(weaponPrefab);
+        }
+
     }
 
     public override void OnStartServer()

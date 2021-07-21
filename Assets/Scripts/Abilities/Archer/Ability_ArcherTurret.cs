@@ -17,7 +17,7 @@ public class Ability_ArcherTurret : Ability
     bool isCharging = false;
     float chargeRate = 0.33f;
     int primaryLayerToTarget = 10;
-    int secondaryLayerToTarget = 18;
+    int secondaryLayerToTarget = 0; //layer 18 is small enemy ships; this seems to waste Archer shots since Mites move so fast.
     float range;
 
     [SyncVar (hook = nameof(UpdateChargingWeaponGraphic))]

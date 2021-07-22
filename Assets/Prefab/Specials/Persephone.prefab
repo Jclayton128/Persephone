@@ -566,7 +566,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   weaponSpeed: 10
-  weaponLifetime: 3
+  weaponLifetime: 1.1
   timeBetweenShots: 1
   weaponDamage: 3
   weaponBonusShieldDamage: 3
@@ -677,7 +677,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 5800808169269432392, guid: db06b3b7afa85364ebd2fa67cdb21ad1, type: 3}
   weaponSpeed: 10
-  weaponLifetime: 3
+  weaponLifetime: 1.1
   timeBetweenShots: 1
   weaponDamage: 3
   weaponBonusShieldDamage: 3

@@ -34,7 +34,7 @@ public class ScrapDropper : NetworkBehaviour
             {
                 NetworkClient.RegisterPrefab(scrapPrefab);
             }
-            if (!NetworkClient.prefabs.ContainsValue(asteroidPrefab))
+            if (asteroidPrefab && !NetworkClient.prefabs.ContainsValue(asteroidPrefab))
             {
                 NetworkClient.RegisterPrefab(asteroidPrefab);
             }
@@ -64,14 +64,13 @@ public class ScrapDropper : NetworkBehaviour
 
             NetworkServer.Spawn(scrap);
         }
-        if (asteroidPrefabs.Length > 0 && numberOfAsteroids > 0)
+        if (asteroidPrefab && numberOfAsteroids > 0)
         {
             for (int i = 0; i < numberOfAsteroids; i++)
             {
                 Vector3 randomPos = CUR.CreateRandomPointNearInputPoint(transform.position, 0.5f, 0.2f);
                 Vector3 driftDir = randomPos - transform.position;
-                int randomInt = UnityEngine.Random.Range(0, asteroidPrefabs.Length);
-                GameObject newRock = Instantiate(asteroidPrefabs[randomInt], randomPos, Quaternion.identity);
+                GameObject newRock = Instantiate(asteroidPrefab, randomPos, Quaternion.identity);
                 Rigidbody2D newRockRB = newRock.GetComponent<Rigidbody2D>();
                 newRockRB.velocity = driftDir.normalized * driftSpeed;
                 //Debug.Log("drift dir: " + driftDir + " velocity: " + scrapRB.velocity);

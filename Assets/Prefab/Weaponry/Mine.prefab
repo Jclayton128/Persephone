@@ -15,13 +15,17 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   hurtAudioClip: []
+  hullDamageParticleFX: {fileID: 0}
+  shieldDamageParticleFX: {fileID: 0}
   dieAudioClip: []
+  dyingParticleFX: {fileID: 0}
   hullMax: 0.1
   shieldMax_normal: 0
   shieldRate_normal: 0
   purificationRate: 0
   penetrationToSoakUp: 0
   isDying: 0
+  hullCurrentLevel: 0
   IonFactor: 0
   AssignedWreckerDrone: {fileID: 0}
 --- !u!114 &916099816890531952
@@ -46,7 +50,7 @@ MonoBehaviour:
   shrapnelLifetime: 0.25
   shrapnelSpeed: 10
   primaryTargetLayer: 8
-  secondaryTargetLayer: 0
+  secondaryTargetLayer: 4
 --- !u!1001 &6806158174519376679
 PrefabInstance:
   m_ObjectHideFlags: 0

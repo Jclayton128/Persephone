@@ -49,6 +49,7 @@ public class PersephoneBrain : NetworkBehaviour
     [SerializeField] float speed_Current;
 
     Vector3 positionOfWarpPortal;
+    Vector2 directionToWarpPortal;
     float distToWarpPortal;
     float timeLeftForWarpCharging = 5;
 
@@ -103,7 +104,7 @@ public class PersephoneBrain : NetworkBehaviour
     {
         if (isClient)
         {
-            HandleVisibility();
+            HandleVisibilityOnClient();
             //OrientCompass();
         }
 
@@ -126,7 +127,7 @@ public class PersephoneBrain : NetworkBehaviour
         compass.transform.rotation = rot;
     }
 
-    private void HandleVisibility()
+    private void HandleVisibilityOnClient()
     {
         if (!isInArena)
         {
@@ -181,8 +182,8 @@ public class PersephoneBrain : NetworkBehaviour
 
     private void FaceWarpPortal()
     {
-        Vector3 facingDir = (positionOfWarpPortal - transform.position);
-        Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, facingDir);
+        directionToWarpPortal = (positionOfWarpPortal - transform.position);
+        Quaternion targetRot = Quaternion.LookRotation(Vector3.forward, directionToWarpPortal);
         Quaternion rot = Quaternion.RotateTowards(transform.rotation, targetRot, turnRate * Time.deltaTime);
         transform.rotation = rot;
     }
@@ -200,8 +201,11 @@ public class PersephoneBrain : NetworkBehaviour
         if (distToWarpPortal <= minTravelDist)
         {
             gameObject.layer = 8;
-            float factor = Mathf.Clamp01(distToWarpPortal / closeEnoughDist);
-            speed_Current = speed_InSystem * factor;
+            float distanceFactor = Mathf.Clamp01(distToWarpPortal / closeEnoughDist);
+            float angleToPortal = Vector2.SignedAngle(transform.up, directionToWarpPortal);
+            float angleFactor = 1 - Mathf.Clamp01((angleToPortal / 45f));
+
+            speed_Current = speed_InSystem * distanceFactor * angleFactor;
             foreach (Turret_AI turret in turrets)
             {
                 turret.enabled = true;

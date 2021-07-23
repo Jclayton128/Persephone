@@ -27,7 +27,7 @@ public static class CUR : object
         foreach (GameObject currentTargetBeingEvaluated in possibleTargets)
         {
             Vector3 diff = currentTargetBeingEvaluated.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
+            float curDistance = diff.magnitude;
             if (curDistance < distance)
             {
                 closestTarget = currentTargetBeingEvaluated;
@@ -53,7 +53,7 @@ public static class CUR : object
             }
 
             Vector3 diff = currentTargetBeingEvaluated.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
+            float curDistance = diff.magnitude;
             if (curDistance < distance)
             {
                 closestTarget = currentTargetBeingEvaluated;
@@ -92,7 +92,7 @@ public static class CUR : object
         foreach (GameObject currentTargetBeingEvaluated in possibleTargets)
         {
             Vector3 diff = currentTargetBeingEvaluated.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
+            float curDistance = diff.magnitude;
             if (curDistance < distance)
             {
                 closestTarget = currentTargetBeingEvaluated;
@@ -117,7 +117,7 @@ public static class CUR : object
                 continue; //if the examined GO has that component, then skip it.
             }
             Vector3 diff = currentTargetBeingEvaluated.transform.position - position;
-            float curDistance = diff.sqrMagnitude;
+            float curDistance = diff.magnitude;
             if (curDistance < distance)
             {
                 closestTarget = currentTargetBeingEvaluated;
@@ -136,7 +136,7 @@ public static class CUR : object
         foreach (RaycastHit2D contact in hitColliders)
         {
             GameObject go = contact.transform.gameObject;
-            float evaluatedObjectDistance = (go.transform.position - posToSearchFrom.position).sqrMagnitude;
+            float evaluatedObjectDistance = (go.transform.position - posToSearchFrom.position).magnitude;
             if (evaluatedObjectDistance <= distance)
             {
                 distance = evaluatedObjectDistance;
@@ -155,7 +155,7 @@ public static class CUR : object
         foreach (RaycastHit2D contact in hitColliders)
         {
             GameObject go = contact.transform.gameObject;
-            float evaluatedObjectDistance = (go.transform.position - posToSearchFrom.position).sqrMagnitude;
+            float evaluatedObjectDistance = (go.transform.position - posToSearchFrom.position).magnitude;
             if (evaluatedObjectDistance <= distance)
             {
                 distance = evaluatedObjectDistance;
@@ -172,7 +172,7 @@ public static class CUR : object
         foreach (RaycastHit2D contact in hitColliders)
         {
             GameObject go = contact.transform.gameObject;
-            float evaluatedObjectDistance = (go.transform.position - posToSearchFrom.position).sqrMagnitude;
+            float evaluatedObjectDistance = (go.transform.position - posToSearchFrom.position).magnitude;
             if (evaluatedObjectDistance <= distance)
             {
                 distance = evaluatedObjectDistance;

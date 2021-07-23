@@ -11,6 +11,7 @@ TagManager:
   - WarpPortal
   - Scrap
   - Asteroid
+  - ScrapperTurret
   layers:
   - Default
   - TransparentFX

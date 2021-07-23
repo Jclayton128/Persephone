@@ -13,15 +13,10 @@ MonoBehaviour:
   m_Name: AllMinionTest
   m_EditorClassIdentifier: 
   minionPrefabs:
-  - {fileID: 8875231626690418558, guid: 77855890edb89874b8ab4942676c5659, type: 3}
-  - {fileID: 2860327530500213790, guid: 250d82fe14542e24eb1ef5384c00ed14, type: 3}
-  - {fileID: 5129634792365371851, guid: 8f4a5c706a37f354aa143f4af5015b15, type: 3}
-  - {fileID: 4465107883179748394, guid: 1415afeea4a220b47acc2a5d1a7f52d6, type: 3}
-  - {fileID: 3937818766114237639, guid: 7b6c9240013d41040b4caa5dd5501955, type: 3}
-  - {fileID: 8798660456887285136, guid: 615194c490e9eb84dae12922705ee8d9, type: 3}
+  - {fileID: 8767846883090652150, guid: f7d53eb924606174fa12586a98c60a53, type: 3}
   spawnPoints: []
   portalLocation: {x: 0, y: 1}
-  asteroidLevel: 3
+  asteroidLevel: 0
   playerEntryPoint: {x: 0, y: 0, z: 0}
   fogLevel: 0
   isBossLevel: 0

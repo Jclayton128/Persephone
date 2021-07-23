@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using Mirror;
-[RequireComponent(typeof(UpgradeManager))]
+
 
 public class ScrapCollector : NetworkBehaviour
 {
@@ -16,6 +16,7 @@ public class ScrapCollector : NetworkBehaviour
     [SerializeField] CircleCollider2D scrapVacuum = null;
     [SerializeField] float scrapVacuumSize;
 
+    public Action OnScrapPickup;
     private void Start()
     {
         scrapVacuum.radius = scrapVacuumSize;
@@ -31,7 +32,9 @@ public class ScrapCollector : NetworkBehaviour
             if (dist < catchDistance)
             {
                 //TODO play picked up scrap audioclip
-                um.GainScrap(1);
+                OnScrapPickup?.Invoke();
+                um?.GainScrap(1);
+                NetworkServer.UnSpawn(collision.gameObject);
                 Destroy(collision.gameObject);
             }
         }

@@ -52,15 +52,7 @@ public class Turret_AI : MonoBehaviour
     void Start()
     {
         range = (weaponLifetime * weaponSpeed);
-        if (transform.parent.gameObject.tag == "Persephone")
-        {
-            isServer = GetComponentInParent<PersephoneBrain>().isServer;
-        }
-        else
-        {
-            isServer = GetComponentInParent<Brain>().isServer;
-        }
-
+        isServer = FindObjectOfType<LevelManager>().isServer;
     }
 
     // Update is called once per frame

@@ -135,7 +135,7 @@ public abstract class Brain : NetworkBehaviour
     {
         det.HiderSpotCheck(detectorRange);
     }
-    private void UpdateNavData()
+    protected void UpdateNavData()
     {
         Vector2 dir = currentDest - transform.position;
         distToDest = dir.magnitude;
@@ -242,7 +242,7 @@ public abstract class Brain : NetworkBehaviour
 
     #region Navigation Behaviour
     // Navigation Behaviours exist solely as a strategy to update a Brain's current Destination.
-    private void ExecuteIdleNavigationBehavior()
+    protected void ExecuteIdleNavigationBehavior()
     {
         switch (idleNavBehaviour)
         {

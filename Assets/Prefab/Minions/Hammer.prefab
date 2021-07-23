@@ -16,9 +16,9 @@ MonoBehaviour:
   syncInterval: 0.1
   targets: []
   currentAttackTarget: {fileID: 0}
-  targetSortMode: 3
-  targetingPriority: 0
-  idleNavBehaviour: 0
+  targetSortMode: 1
+  targetingPriority: 1
+  idleNavBehaviour: 2
   detectorRange: 30
   accelRate_normal: 50
   maxTurnSpeed_normal: 180
@@ -31,7 +31,7 @@ MonoBehaviour:
   weaponSpeed: 0
   weaponTurnRate: 0
   intervalBetweenWeapons: 0
-  weaponNormalDamage: 0
+  weaponNormalDamage: 10
   weaponShieldBonusDamage: 0
   weaponKnockback: 0
   weaponIonization: 0

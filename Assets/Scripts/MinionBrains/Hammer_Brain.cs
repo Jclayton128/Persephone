@@ -22,8 +22,6 @@ public class Hammer_Brain : Brain
     float damageBallMaxDamage = 10;
 
     //hood
-    float distanceToPlayer = 10f;
-    float angleToPlayer = 0f;
     float timeSinceBeganCharging = 0f;
     bool isSprinting = false;
     float timeSinceBeganSprinting = 0f;
@@ -40,14 +38,37 @@ public class Hammer_Brain : Brain
 
     protected override void Update()
     {
+        base.Update();
         if (isServer)
         {
-            TrackPlayer();
             CreateDamageBall();
-            SelectBestTarget();
         }
-    }
 
+    }
+    private void CreateDamageBall()
+    {
+        if (!damageBall && !isSprinting && timeSinceBeganCharging < randomVarianceToChargeUpTime)
+        {
+            damageBall = Instantiate(weaponPrefab, muz.PrimaryMuzzle.position, muz.PrimaryMuzzle.rotation) as GameObject; //weaponEmitterPoint.transform.position, weaponEmitterPoint.transform.rotation) as GameObject;
+            damageBall.layer = 11;  //11 means that the hammer won't hurt other enemy units
+            dbdd = damageBall.GetComponent<DamageDealer>();
+            dbdd.SetNormalDamage(weaponNormalDamage);
+            NetworkServer.Spawn(damageBall);
+            //damageBall.transform.parent = gameObject.transform;  // I think having a child with a netidentity is bad.
+            dbsr = damageBall.GetComponent<SpriteRenderer>();
+            damageBallChargeFactor = 0;
+            dbsr.color = new Color(1, 1, 1, damageBallChargeFactor);
+
+        }
+        if (damageBall)
+        {
+            damageBall.transform.position = muz.PrimaryMuzzle.position;
+            damageBallChargeFactor = (timeSinceBeganCharging / timeRequiredToChargeMotors);
+            dbdd.SetNormalDamage(damageBallChargeFactor * damageBallMaxDamage);
+
+        }
+
+    }
     private void UpdateDamageBallImageOnClient(float v1, float v2)
     {
         if (damageBall && dbsr)
@@ -63,45 +84,20 @@ public class Hammer_Brain : Brain
         if (isServer)
         {
             SprintTowardsPlayer();
-            ChargeMotorsWhileFacingPlayer();
+            ChargeMotorsWhileFacingPlayer();            
         }
 
     }
-    private void CreateDamageBall()
-    {
-        if (!damageBall && !isSprinting && timeSinceBeganCharging < randomVarianceToChargeUpTime)
-        {
-            damageBall = Instantiate(weaponPrefab, muz.PrimaryMuzzle.position, muz.PrimaryMuzzle.rotation) as GameObject; //weaponEmitterPoint.transform.position, weaponEmitterPoint.transform.rotation) as GameObject;
-            damageBall.layer = 11;  //11 means that the hammer won't hurt other enemy units
-            dbdd = damageBall.GetComponent<DamageDealer>();
-            dbdd.SetNormalDamage(0);
-            NetworkServer.Spawn(damageBall);
-            //damageBall.transform.parent = gameObject.transform;  // I think having a child with a netidentity is bad.
-            dbsr = damageBall.GetComponent<SpriteRenderer>();
-            damageBallChargeFactor = 0;
-            dbsr.color = new Color(1, 1, 1, damageBallChargeFactor);
-            
-        }
-        if (damageBall)
-        {
-            damageBall.transform.position = muz.PrimaryMuzzle.position;
-            damageBallChargeFactor = (timeSinceBeganCharging / timeRequiredToChargeMotors);
-            dbdd.SetNormalDamage(damageBallChargeFactor * damageBallMaxDamage);
 
-        }
-
-    }
 
     private void ChargeMotorsWhileFacingPlayer()
     {
         if (!currentAttackTarget) { return; }
-        Vector2 targetDir = currentAttackTarget.transform.position - transform.position;
-        angleToPlayer = Vector3.SignedAngle(targetDir, transform.up, transform.forward);
-        if (angleToPlayer > 5)
+        if (angleToAttackTarget > 5)
         {
             rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
         }
-        if (angleToPlayer < -5)
+        if (angleToAttackTarget < -5)
         {
             rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
         }
@@ -112,7 +108,6 @@ public class Hammer_Brain : Brain
         }
         if (timeSinceBeganCharging >= timeRequiredToChargeMotors && !isSprinting) //Charged up and not already sprinting: begin sprinting!
         {
-            //sr.color = Color.red;
             rb.angularDrag = sprintingAngularDrag;
             isSprinting = true;
         }
@@ -136,11 +131,6 @@ public class Hammer_Brain : Brain
         }
     }
 
-    private void TrackPlayer()
-    {
-        if (!currentAttackTarget) { return; }
-        distanceToPlayer = (currentAttackTarget.transform.position - transform.position).sqrMagnitude;
-    }
 
     protected override void OnDestroy()
     {

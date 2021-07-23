@@ -20,11 +20,11 @@ public abstract class Brain : NetworkBehaviour
     protected Health health;
 
     //param
-    private enum TargetSortMode {ClosestAllyFirst, MostImportantAllyFirst, MostIonizedPlayerFirst, MostHealthyPlayerFirst, InOrderOfDetection }
+    private enum TargetSortMode {ClosestAllyFirst, LeastImportantAllyFirst, MostIonizedPlayerFirst, MostHealthyPlayerFirst, InOrderOfDetection }
     [SerializeField] TargetSortMode targetSortMode;
     private enum TargetingPriority {FirstInList, LastInList};
     [SerializeField] TargetingPriority targetingPriority;
-    private enum IdleNavBehaviour { WanderAroundThenAttackTarget, WanderAroundAndIgnoreTargets, WanderSaveTargetAttackWhenCharged ,EightDirFencing}
+    private enum IdleNavBehaviour { WanderAroundThenAttackTarget, WanderAroundAndIgnoreTargets, RemainStillIfNoTargetThenMoveToTarget ,EightDirFencing}
     [SerializeField] IdleNavBehaviour idleNavBehaviour;
 
 
@@ -213,7 +213,7 @@ public abstract class Brain : NetworkBehaviour
         IFF iif = new IFF();
         switch (targetSortMode)
         {
-            case TargetSortMode.MostImportantAllyFirst:
+            case TargetSortMode.LeastImportantAllyFirst:
                 targets.Sort(IFF.CompareByImportance);
                 return;
 
@@ -247,15 +247,15 @@ public abstract class Brain : NetworkBehaviour
         switch (idleNavBehaviour)
         {
             case IdleNavBehaviour.WanderAroundThenAttackTarget:
-                NavBehaviour_WanderAroundThenAttackTarget();
+                NavBehaviour_WanderAroundThenMoveToTarget();
                 return;
 
             case IdleNavBehaviour.WanderAroundAndIgnoreTargets:
                 NavBehaviour_WanderAroundAndIgnoreTarget();
                 return;
 
-            case IdleNavBehaviour.WanderSaveTargetAttackWhenCharged:
-                NavBehaviour_WanderSaveTargetAttackWhenCharged();
+            case IdleNavBehaviour.RemainStillIfNoTargetThenMoveToTarget:
+                NavBehaviour_RemainStillIfNoTargetThenMoveTowardsTarget();
                 return;
 
             case IdleNavBehaviour.EightDirFencing:
@@ -265,7 +265,7 @@ public abstract class Brain : NetworkBehaviour
         }
     }
 
-    private void NavBehaviour_WanderAroundThenAttackTarget()
+    private void NavBehaviour_WanderAroundThenMoveToTarget()
     {
         if (currentAttackTarget)
         {
@@ -289,20 +289,18 @@ public abstract class Brain : NetworkBehaviour
         }
     }
 
-    private void NavBehaviour_WanderSaveTargetAttackWhenCharged()
+    private void NavBehaviour_RemainStillIfNoTargetThenMoveTowardsTarget()
     {
-        if (currentAttackTarget && weaponIsCharged)
+        if (!currentAttackTarget)
         {
-            currentDest = currentAttackTarget.transform.position;
+            currentDest = transform.position;
             return;
         }
-        if (!currentAttackTarget || !weaponIsCharged)
+        if (currentAttackTarget)
         {
-            if (distToDest < attackRange * 4f)
-            {
-                currentDest = ab.CreateRandomPointWithinArena();
-            }
-
+            currentDest = currentAttackTarget.transform.position;
+            angleToDest = UnityEngine.Random.Range(-179, 179);
+            return;
         }
     }
 

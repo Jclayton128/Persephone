@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Asteroid_Tiny
       objectReference: {fileID: 0}
+    - target: {fileID: 4554407695335934994, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 4554407695335935080, guid: cff0694f6df08604e9ad2847e8e09a46, type: 3}
       propertyPath: m_Sprite
       value: 

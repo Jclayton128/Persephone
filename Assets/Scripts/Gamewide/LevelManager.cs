@@ -151,12 +151,16 @@ public class LevelManager : NetworkBehaviour
 
     private void SpawnNextLevelMinions()
     {
-        for (int i = currentLevelCount; i > 0; i--)
+        if (isServer)
         {
-            if (currentLevel == null) { Debug.Log($"current level is null, is client: {isClient}, is server: {isServer}"); }
-            GameObject minion = currentLevel.ReturnRandomEnemyFromList();
-            mm.SpawnNewMinion(minion);
+            for (int i = currentLevelCount; i > 0; i--)
+            {
+                Debug.Log("spawned a minion");
+                GameObject minion = currentLevel.ReturnRandomEnemyFromList();
+                mm.SpawnNewMinion(minion);
+            }
         }
+
     }
 
     private void SpawnNextLevelAsteroids()

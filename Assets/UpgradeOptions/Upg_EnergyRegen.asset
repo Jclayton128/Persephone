@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f6fd6d09e37fa5544af62b5a2fd2c362, type: 3}
-  m_Name: TestUpgrade2
+  m_Name: Upg_EnergyRegen
   m_EditorClassIdentifier: 
   PurchaseCount: 0
   UpgradeIcon: {fileID: 21300000, guid: 43a551a01ac9a8543849b0fd3fc926b9, type: 3}
-  NameForUI: 
-  Explanation: Placeholder2 Upgrade. Increases Placeholder2 value.
+  NameForUI: Energy Regen Boost
+  Explanation: Boosts energy regeneration rate.
   LocalUpgradeOptionID: 0
+  upgradeType: 3
+  upgradeAmount: 0.2

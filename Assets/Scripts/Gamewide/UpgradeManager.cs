@@ -108,7 +108,7 @@ public class UpgradeManager : NetworkBehaviour
         if (currentUpgradePoints > 0)
         {
             currentUpgradePoints--;
-            allUpgradeOptions[index].ExecuteUpgrade();
+            allUpgradeOptions[index].ExecuteUpgrade(this);
         }
 
     }

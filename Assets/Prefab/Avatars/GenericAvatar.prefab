@@ -345,6 +345,7 @@ MonoBehaviour:
   turnAccelRate_normal: 30
   engineParticleFX:
   - {fileID: 911763215022830564}
+  isEmittingEngineFX: 0
 --- !u!50 &8706150506697623497
 Rigidbody2D:
   serializedVersion: 4
@@ -497,10 +498,10 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   allUpgradeOptions:
-  - {fileID: 11400000, guid: 609499a160419d64bbad132bac658467, type: 2}
-  - {fileID: 11400000, guid: bf61c90286ba47e4c804f5509b075e56, type: 2}
-  - {fileID: 11400000, guid: 680cb96bb9b22614aa43072979a3336b, type: 2}
-  - {fileID: 11400000, guid: ad7b020597860a746b6aa8c6cf470af3, type: 2}
+  - {fileID: 11400000, guid: fd8440bc98aca27498f84e69291c3198, type: 2}
+  - {fileID: 11400000, guid: 64e646c0a093d3c4a82fb1f111831a93, type: 2}
+  - {fileID: 11400000, guid: 3ae5c149f1ac38946accb3d35f10d84c, type: 2}
+  - {fileID: 11400000, guid: 3c8266e2085f5a147a06ac6d48c60bc4, type: 2}
 --- !u!114 &-7943953684487488827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,7 +522,7 @@ MonoBehaviour:
   lockedAbilitySprite: {fileID: 21300000, guid: faa6e913a1cffc04b8dbbba1123dbf4b, type: 3}
   statusIcon_Off: {fileID: 21300000, guid: 8f62f27872513104fbf3f718705b41db, type: 3}
   statusIcon_On: {fileID: 21300000, guid: 6f4feff5342ce1f419392424705cfb7b, type: 3}
-  allSecondaryAbilities: []
+  AllSecondaryAbilities: []
   unlockedSecondaryAbilities: []
 --- !u!114 &-3361430503782286581
 MonoBehaviour:

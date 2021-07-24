@@ -100,7 +100,7 @@ public class EnergySource : NetworkBehaviour
         if (isDisabled == false)
         {
             energyMax_current = (1 - health.IonFactor) * energyMax_normal;
-            energyRate_current = ((1 - health.IonFactor) * energyRate_normal);
+            energyRate_current = ((1 - health.IonFactor) * energyRate_normal) + health.GetShieldRegenDivertedToEnergy();
         }
     }
 
@@ -155,19 +155,9 @@ public class EnergySource : NetworkBehaviour
 
     }
 
-    //public void ModifyCurrentPowerLevel(float powerChange)
-    //{
-    //    energyCurrent += powerChange;
-    //}
-
     public void ResetPowerLevel()
     {
         energyCurrentLevel = energyMax_normal;
-    }
-
-    public float GetMaxPower()
-    {
-        return energyMax_normal;
     }
 
     public void SetTemporaryRegen(float newBonusAmount, float duration)
@@ -181,10 +171,15 @@ public class EnergySource : NetworkBehaviour
     {
         return energyRate_current;
     }
-    public void SetMaxPower(float newMaxPower)
+    public void ModifyMaxEnergy(float modificationToMaxEnergy)
     {
-        energyMax_normal = newMaxPower;
+        energyMax_normal += modificationToMaxEnergy;
         UpdateUI(0,0);
+    }
+
+    public void ModifyEnergyRegen(float modificationToEnergyRegen)
+    {
+        energyRate_normal += modificationToEnergyRegen;
     }
 
 
@@ -193,6 +188,8 @@ public class EnergySource : NetworkBehaviour
         isDisabled = true;
         energyCurrentLevel = 0;
         energyRate_current = 0;
+        bonusRegen = 0;
+        endtimeForBonusRegen = Time.time;
     }
 
     public void ReactToBecomingRepaired()

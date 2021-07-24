@@ -6,13 +6,16 @@ using System;
 
 public class Ability_BarbShotgun : Ability
 {
+
+    
     //upgradeable param
-    int bulletsPerShot = 5;
-    //float weaponLifetime already captured in base Ability
+    int minBulletsPerShot = 3;
+    int maxBulletsPerShot = 5;
+
 
     //immutable param
     float lifetimeRandomFactor = 0.2f;
-    float degreesToCover = 60f;
+    float degreesToCover = 40f;
 
 
 
@@ -27,12 +30,13 @@ public class Ability_BarbShotgun : Ability
     {
         if (es.CheckSpendEnergy(costToActivate))
         {
-            float spreadSubdivided = degreesToCover / bulletsPerShot;
-            for (int i = 0; i < bulletsPerShot; i++)
+            int actualCount = UnityEngine.Random.Range(minBulletsPerShot, maxBulletsPerShot + 1);
+            float spreadSubdivided = degreesToCover / maxBulletsPerShot;
+            for (int i = 0; i < actualCount; i++)
             {
                 Quaternion sector = Quaternion.Euler(0, 0, (i * spreadSubdivided) - (degreesToCover / 2) + transform.eulerAngles.z);
                 GameObject pellet = Instantiate(abilityPrefabs[0], am.PrimaryMuzzle.position, sector) as GameObject;
-                pellet.GetComponent<Rigidbody2D>().velocity = pellet.transform.up * weaponSpeed;
+                pellet.GetComponent<Rigidbody2D>().velocity = (pellet.transform.up * weaponSpeed) + (Vector3)avatarRB.velocity;
                 pellet.layer = 9;
                 DamageDealer damageDealer = pellet.GetComponent<DamageDealer>();
                 damageDealer.SetNormalDamage(normalDamage);
@@ -52,5 +56,18 @@ public class Ability_BarbShotgun : Ability
     protected override void MouseClickUpEffect()
     {
         
+    }
+
+    public override void ModifyCount(int amount)
+    {
+        minBulletsPerShot += amount;
+        maxBulletsPerShot += amount;
+        degreesToCover += 5f;
+
+    }
+
+    public override void ModifyRangeViaSpeedOrLifetime(float amount)
+    {
+        weaponLifetime += amount;
     }
 }

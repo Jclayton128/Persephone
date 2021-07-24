@@ -18,7 +18,8 @@ public class AbilityManager : NetworkBehaviour
     Image[] statusIcons;
     Ability_Dummy dummyAbility;
 
-    [SerializeField] List<Ability> allSecondaryAbilities = new List<Ability>();
+
+    [SerializeField] public List<Ability> AllSecondaryAbilities = new List<Ability>();
     [SerializeField] List<Ability> unlockedSecondaryAbilities = new List<Ability>();
     public Ability SelectedSecondaryAbility { get; private set; }
     public Ability PrimaryAbility { get; private set; }
@@ -38,7 +39,7 @@ public class AbilityManager : NetworkBehaviour
 
         if (isClient && hasAuthority)
         {
-            HookIntoLocalUI(allSecondaryAbilities.Count);
+            HookIntoLocalUI(AllSecondaryAbilities.Count);
             HideAllStatusIcons();
             UpdateSecondaryAbilitiesOnLevelUp(1); // Hard 1 because everyone starts on level 1
             UpdateSelectionUI();
@@ -70,11 +71,11 @@ public class AbilityManager : NetworkBehaviour
             }
             else
             {
-                allSecondaryAbilities.Add(allAbilities[i]);
+                AllSecondaryAbilities.Add(allAbilities[i]);
             }
         }
 
-        allSecondaryAbilities.Sort(allSecondaryAbilities[0]);
+        AllSecondaryAbilities.Sort(AllSecondaryAbilities[0]);
 
     }
     private void HookIntoLocalUI(int numberOfAbilitiesToPull)
@@ -88,9 +89,9 @@ public class AbilityManager : NetworkBehaviour
         for (int i = 0; i < numberOfAbilitiesToPull; i++)
         {
             int unusedInt;
-            if (allSecondaryAbilities[i].CheckUnlockOnLevelUp(um.GetCurrentLevel(), out unusedInt))
+            if (AllSecondaryAbilities[i].CheckUnlockOnLevelUp(um.GetCurrentLevel(), out unusedInt))
             {
-                secondaryAbilityIcons[i].sprite = allSecondaryAbilities[i].AbilityIcons[0];
+                secondaryAbilityIcons[i].sprite = AllSecondaryAbilities[i].AbilityIcons[0];
             }
             else
             {
@@ -168,20 +169,20 @@ public class AbilityManager : NetworkBehaviour
 
     private void UpdateSecondaryAbilitiesOnLevelUp(int newLevel)
     {
-        foreach (Ability ability in allSecondaryAbilities)
+        foreach (Ability ability in AllSecondaryAbilities)
         {
             int abilityTier;
 
             if (ability.CheckUnlockOnLevelUp(newLevel, out abilityTier))
             {
-                int secondaryToUnlock = allSecondaryAbilities.IndexOf(ability);
+                int secondaryToUnlock = AllSecondaryAbilities.IndexOf(ability);
                 if (!unlockedSecondaryAbilities.Contains(ability))
                 {
                     unlockedSecondaryAbilities.Add(ability);
                 }
                 if (isClient && hasAuthority && abilityTier == 0)
                 {
-                    secondaryAbilityIcons[secondaryToUnlock].sprite = allSecondaryAbilities[secondaryToUnlock].AbilityIcons[0];
+                    secondaryAbilityIcons[secondaryToUnlock].sprite = AllSecondaryAbilities[secondaryToUnlock].AbilityIcons[0];
                     if (ability.UsesStatusIcon)
                     {
                         statusIcons[secondaryToUnlock].enabled = true;
@@ -217,7 +218,7 @@ public class AbilityManager : NetworkBehaviour
 
     private void UpdateUpgradedAbilityIcon(int index, int tier)
     {
-        Sprite upgradedAbilityIcon = allSecondaryAbilities[index].AbilityIcons[tier];
+        Sprite upgradedAbilityIcon = AllSecondaryAbilities[index].AbilityIcons[tier];
         secondaryAbilityIcons[index].sprite = upgradedAbilityIcon;
     }
 
@@ -252,7 +253,7 @@ public class AbilityManager : NetworkBehaviour
     public void ToggleStatusIcon(Ability askingAbility, bool shouldBeOn)
     {
         if (!hasAuthority) { return; }
-        int index = allSecondaryAbilities.IndexOf(askingAbility);
+        int index = AllSecondaryAbilities.IndexOf(askingAbility);
         Image status = statusIcons[index];
 
         if (shouldBeOn)

@@ -2619,6 +2619,7 @@ MonoBehaviour:
   - {fileID: 831018614288581221, guid: 4d9c199875069434c8458e38c788dd76, type: 3}
   - {fileID: 5666640253333592021, guid: 9df2a8043610d2d49813fdbe85979869, type: 3}
   - {fileID: 357377898457060053, guid: f540cc07c0b3e83498a07d6c0a5da9c9, type: 3}
+  - {fileID: 4169809614747152490, guid: cfc0e53f7af711345bf5ef850d75239e, type: 3}
   availableAvatarPrefabs: []
 --- !u!4 &662271455
 Transform:
@@ -10553,7 +10554,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

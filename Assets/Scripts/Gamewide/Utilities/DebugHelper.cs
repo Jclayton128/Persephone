@@ -34,6 +34,16 @@ public class DebugHelper : NetworkBehaviour
             HandlePlayerDisableUndisable();
             HandlePlayerEnergyReset();
             HandlePersephoneHalt();
+            HandleExperienceGain();
+        }
+    }
+
+    private void HandleExperienceGain()
+    {
+        if (hasAuthority && isInDebugMode && Input.GetKeyDown(KeyCode.L)) 
+        {
+            UpgradeManager um = ClientInstance.ReturnClientInstance().CurrentAvatar.GetComponent<UpgradeManager>();
+            um.GainScrap(100);
         }
     }
 
@@ -65,7 +75,6 @@ public class DebugHelper : NetworkBehaviour
         {
             EnergySource es = GetComponent<ClientInstance>().CurrentAvatar.GetComponent<EnergySource>();
             es.ResetPowerLevel();
-            Debug.Log("debug reset energy");
         }
     }
 
@@ -76,14 +85,12 @@ public class DebugHelper : NetworkBehaviour
             Health health = GetComponent<ClientInstance>().CurrentAvatar.GetComponent<Health>();
             if (health.GetCurrentHull() > 0)
             {
-                Debug.Log("debug disable");
                 health.CmdModifyHullLevelViaClientDebug(-1 * health.GetMaxHull(), false);
                 return;
             }
             if (health.GetCurrentHull() <= 0)
             {
                 health.CmdModifyHullLevelViaClientDebug(health.GetMaxHull()*10f, true);
-                Debug.Log("debug repair");
                 return;
             }
 
@@ -106,7 +113,7 @@ public class DebugHelper : NetworkBehaviour
             isInDebugMode = !isInDebugMode;
             if (isInDebugMode)
             {
-                debugModeTMP.text = "DEBUG, H = heal toggle, P = reset energy, M = Toggle Pers Movement";
+                debugModeTMP.text = "DEBUG, H = heal toggle, P = reset energy, M = Toggle Pers Movement, L = Level Up";
             }
             else
             {

@@ -8,8 +8,10 @@ public class Ability_JammerMode : Ability
 {
     Sprite retractedSprite;
     [SerializeField] Sprite deployedSprite = null;
+    [SerializeField] GameObject energyBallPrefab = null;
     SpriteRenderer sr;
     IFF iff;
+    Health health;
 
     //param
     int jammerImportance = 11;
@@ -24,6 +26,7 @@ public class Ability_JammerMode : Ability
     protected override void Start()
     {
         base.Start();
+        health = GetComponent<Health>();
         sr = GetComponent<SpriteRenderer>();
         isDeployed = false;
         retractedSprite = sr.sprite;
@@ -59,10 +62,12 @@ public class Ability_JammerMode : Ability
         if (isDeployed)
         {
             iff.OverrideCurrentImportance(jammerImportance);
+            health.SetShieldRegenDiverted(isDeployed);
         }
         if (!isDeployed)
         {
             iff.OverrideCurrentImportance(regularImportance);
+            health.SetShieldRegenDiverted(isDeployed);
         }
     }
 

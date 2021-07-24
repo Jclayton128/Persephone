@@ -80,6 +80,8 @@ public class Health : NetworkBehaviour
     DamageDealer lastDamageDealerToBeHitBy;
     GameObject ownerOfLastDamageDealerToBeHitBy;
 
+    bool shieldRegenIsDiverted = false;
+
 
     #endregion
 
@@ -162,7 +164,7 @@ public class Health : NetworkBehaviour
         //Process Draining effects
         IonFactor = 1 - ((hullMax - ionizationAmount) / hullMax);
         shieldMax_current = (1 - IonFactor) * shieldMax_normal;
-        shieldRate_current = (1 - IonFactor) * shieldRate_normal;
+        shieldRate_current = (1 - IonFactor) * shieldRate_normal * Convert.ToInt16(!shieldRegenIsDiverted);
     }
 
     private void RechargeShield()
@@ -427,15 +429,17 @@ public class Health : NetworkBehaviour
 
     }
 
-    public void SetMaxShield(float newMaxShield)
+    public void ModifyMaxShield(float modificationToMaxShield)
     {
-        shieldMax_normal = newMaxShield;
+        shieldMax_normal += modificationToMaxShield;
     }
 
-    public void SetShieldRegen(float newShieldRegen)
+    public void ModifyShieldRegen(float modificationToShieldRegen)
     {
-        shieldRate_current = newShieldRegen;
+        shieldRate_normal += modificationToShieldRegen;
     }
+
+
     public float GetMaxHull()
     {
         return hullMax;
@@ -456,6 +460,24 @@ public class Health : NetworkBehaviour
 
         float healthFactor = hullCurrentLevel / hullMax;
         return healthFactor;
+    }
+
+    public void SetShieldRegenDiverted(bool newValue)
+    {
+        shieldRegenIsDiverted = newValue;
+    }
+
+    public float GetShieldRegenDivertedToEnergy()
+    {
+        if (shieldRegenIsDiverted)
+        {
+            return (1 - IonFactor) * shieldRate_normal;
+        }
+        else
+        {
+            return 0;
+        }
+
     }
 
     private void UpdateUI(float oldValue, float newValue)
@@ -495,10 +517,6 @@ public class Health : NetworkBehaviour
         }
     }
 
-    public float GetPurificationRate()
-    {
-        return purificationRate;
-    }
 
     public void SetMaxHullAndHealToIt(float newMaxHull)
     {

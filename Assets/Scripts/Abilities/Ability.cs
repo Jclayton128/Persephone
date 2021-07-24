@@ -25,6 +25,7 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
     protected float timeOfNextShot;
     protected EnergySource es;
     protected AbilityManager am;
+    protected Rigidbody2D avatarRB;
 
 
     protected virtual void Awake()
@@ -42,6 +43,7 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
     {
         es = GetComponent<EnergySource>();
         am = GetComponent<AbilityManager>();
+        avatarRB = GetComponent<Rigidbody2D>();
         if (UsesStatusIcon)
         {
             ToggleAbilityStatusOnUI(true);
@@ -122,8 +124,28 @@ public abstract class Ability : NetworkBehaviour, IComparer<Ability>
         {
             am.ToggleStatusIcon(this, shouldBeOn);
         }
-
     }
+    #region Generic Upgrades
+    public virtual void ModifyCount(int amount)
+    {
+        //Increase weapon count
+    }
+    public virtual void ModifyNormalDamage(float amount)
+    {
+        //Increase weapon normal damage
+    }
+    public virtual void ModifyIonization(float amount)
+    {
+        //Increase weapon ionization
+    }
+    public virtual void ModifyRangeViaSpeedOrLifetime(float amount)
+    {
+        //Increase weapon normal damage
+    }
+
+
+    #endregion
+
 
 
 

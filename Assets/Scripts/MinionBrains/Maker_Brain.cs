@@ -73,7 +73,7 @@ public class Maker_Brain : Brain
             GameObject newMite = Instantiate(weaponPrefab, muz.PrimaryMuzzle.position, muz.PrimaryMuzzle.rotation) as GameObject;
             Mite_Brain mite_Brain = newMite.GetComponent<Mite_Brain>();
             mite_Brain.SetMothership(this);
-            newMite.GetComponent<Health>().SetMaxShield(10);
+            //newMite.GetComponent<Health>().SetMaxShield(10);
             mitesSpawned.Add(mite_Brain);
             NetworkServer.Spawn(newMite);
             timeUntilNextMiteSpawn = 0;

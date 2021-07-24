@@ -279,4 +279,11 @@ public class PlayerInput : NetworkBehaviour
         }
     }
 
+    public void ModifyMobility(float amount)
+    {
+        accelRate_normal += amount;
+        maxTurnSpeed_normal += (amount * 10f);
+        turnAccelRate_normal += (amount * 10f);
+    }
+
 }

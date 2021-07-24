@@ -113,6 +113,7 @@ MonoBehaviour:
   insufficientEnergySound: {fileID: 0}
   UsesStatusIcon: 1
   deployedSprite: {fileID: 21300000, guid: 06e85c583abb6424d86aa78feb873349, type: 3}
+  energyBallPrefab: {fileID: 0}
   isDeployed: 0
 --- !u!1001 &8971152960895127546
 PrefabInstance:
@@ -227,24 +228,32 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: allUpgradeOptions.Array.size
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: allUpgradeOptions.Array.data[0]
       value: 
-      objectReference: {fileID: 11400000, guid: 609499a160419d64bbad132bac658467, type: 2}
+      objectReference: {fileID: 11400000, guid: 64e646c0a093d3c4a82fb1f111831a93, type: 2}
     - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: allUpgradeOptions.Array.data[1]
       value: 
-      objectReference: {fileID: 11400000, guid: bf61c90286ba47e4c804f5509b075e56, type: 2}
+      objectReference: {fileID: 11400000, guid: 3ae5c149f1ac38946accb3d35f10d84c, type: 2}
     - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: allUpgradeOptions.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: 680cb96bb9b22614aa43072979a3336b, type: 2}
+      objectReference: {fileID: 11400000, guid: 1fd4eb8b71480a246bb8a5fcad862e8b, type: 2}
     - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: allUpgradeOptions.Array.data[3]
       value: 
-      objectReference: {fileID: 11400000, guid: ad7b020597860a746b6aa8c6cf470af3, type: 2}
+      objectReference: {fileID: 11400000, guid: a7f7119865d1a2b4fa88b8fc8f23f632, type: 2}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 771d85f99d31ada46a806e95a180f1b7, type: 2}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 2186926918a1dd04a8809b7c257e44d6, type: 2}
     - target: {fileID: 6334781685113115072, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: avatarName
       value: Barbarian

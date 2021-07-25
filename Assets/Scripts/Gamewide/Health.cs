@@ -13,6 +13,7 @@ public class Health : NetworkBehaviour
     [SerializeField] AudioClip[] hurtAudioClip = null;
     [SerializeField] GameObject hullDamageParticleFX = null;
     [SerializeField] GameObject shieldDamageParticleFX = null;
+    [SerializeField] ParticleSystem ionizationFX = null;
     [SerializeField] AudioClip[] dieAudioClip = null;
     [SerializeField] GameObject dyingParticleFX = null;
 
@@ -71,10 +72,12 @@ public class Health : NetworkBehaviour
     [SyncVar(hook = nameof(UpdateUI))]
     [SerializeField] float hullCurrentLevel;
 
-    [SyncVar(hook = nameof(UpdateUI))]
+
     float ionizationAmount;
 
+    [SyncVar(hook = nameof(UpdateUI))]
     public float IonFactor = 0;
+
     public GameObject AssignedWreckerDrone;
 
     DamageDealer lastDamageDealerToBeHitBy;
@@ -111,6 +114,7 @@ public class Health : NetworkBehaviour
             pi = GetComponent<PlayerInput>();
             HookIntoLocalUI();
         }
+
     }
 
     private void HookIntoLocalUI()
@@ -156,15 +160,11 @@ public class Health : NetworkBehaviour
         ionizationAmount -= purificationRate * Time.deltaTime;
         ionizationAmount = Mathf.Clamp(ionizationAmount, 0, hullMax);
 
-        if (ionizationAmount > 0)
-        {
-            //TODO spawn a particle effect. Ensure it is seen on all clients
-        }
-
         //Process Draining effects
         IonFactor = 1 - ((hullMax - ionizationAmount) / hullMax);
         shieldMax_current = (1 - IonFactor) * shieldMax_normal;
         shieldRate_current = (1 - IonFactor) * shieldRate_normal * Convert.ToInt16(!shieldRegenIsDiverted);
+
     }
 
     private void RechargeShield()
@@ -506,13 +506,19 @@ public class Health : NetworkBehaviour
         {
             if (IonFactor > 0)
             {
-                ionizationSlider.enabled = true;
                 ionizationSlider.value = IonFactor;
             }
             if (IonFactor <= 0)
             {
-                ionizationSlider.enabled = false;
+                ionizationSlider.value = 0;
             }
+        }
+        if (IonFactor > 0)
+        {
+            var em = ionizationFX.emission;
+            em.rateOverTime = Mathf.RoundToInt(IonFactor*10f);
+            //var burst = em.GetBurst(0);
+            //burst.probability = 0.5f;
 
         }
     }

@@ -16,6 +16,7 @@ MonoBehaviour:
   syncInterval: 0.1
   targets: []
   currentAttackTarget: {fileID: 0}
+  performanceFactor: 1
   targetSortMode: 4
   targetingPriority: 0
   idleNavBehaviour: 0
@@ -133,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 0.53
       objectReference: {fileID: 0}
+    - target: {fileID: 4956367225063725399, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_UseColliderMask
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5624013662604118736, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.226
@@ -148,6 +153,10 @@ PrefabInstance:
     - target: {fileID: 6469742619674677656, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.226
+      objectReference: {fileID: 0}
+    - target: {fileID: 6525623337869742696, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7004619822151118274, guid: e7abb473ae54c3a4099a058ccb1deb90, type: 3}
       propertyPath: scrapPrefab

@@ -13,6 +13,7 @@ public class Ability_MarkerTurret : Ability
     [SerializeField] Vector3 targetPos;
     PlayerInput plin;
 
+
     bool isFiring = false;
 
     protected override void Start()
@@ -89,7 +90,7 @@ public class Ability_MarkerTurret : Ability
                 GameObject bullet = Instantiate(abilityPrefabs[0], muzzle.position, muzzle.rotation) as GameObject;
                 bullet.layer = 9;
 
-                bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.up * weaponSpeed;
+                bullet.GetComponent<Rigidbody2D>().velocity = (bullet.transform.up * weaponSpeed) + (Vector3)avatarRB.velocity;
 
                 DamageDealer dd = bullet.GetComponent<DamageDealer>();
                 dd.SetNormalDamage(normalDamage);

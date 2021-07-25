@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6fd6d09e37fa5544af62b5a2fd2c362, type: 3}
+  m_Name: Upg_ArcherCost
+  m_EditorClassIdentifier: 
+  PurchaseCount: 0
+  UpgradeIcon: {fileID: 0}
+  NameForUI: 
+  Explanation: Reduces the cost of the Archer's normal and ShieldBreaker mode
+  LocalUpgradeOptionID: 5
+  upgradeType: 10
+  upgradeAmount: 0
+  customAbility: Ability_ArcherTurret
+  customMethod: Cheapen

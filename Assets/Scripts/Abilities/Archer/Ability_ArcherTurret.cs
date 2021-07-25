@@ -90,7 +90,8 @@ public class Ability_ArcherTurret : Ability
     {
         if (hasAuthority && !plin.GetDisabledStatus())
         {
-            FindBestTargetPos();
+            //FindBestTargetPos();
+            UpdateTargetPosition();
 
         }
 
@@ -100,6 +101,11 @@ public class Ability_ArcherTurret : Ability
             HandleCharging();
         }
     }
+    private void UpdateTargetPosition()
+    {
+        targetPos = MouseHelper.GetMouseCursorLocation();
+        CmdPushTargetPosToServer(targetPos);
+    }
 
 
     [Server]
@@ -107,7 +113,7 @@ public class Ability_ArcherTurret : Ability
     {
         if (isCharging)
         {
-            if (!es.CheckSpendEnergy(costToActivate * Time.deltaTime))
+            if (!es.CheckEnergy(costToActivate * Time.deltaTime))
             {
                 FireWeapon();
                 return;
@@ -124,10 +130,17 @@ public class Ability_ArcherTurret : Ability
 
                 chargingFactor += Time.deltaTime * chargeRate;
                 chargingFactor = Mathf.Clamp01(chargingFactor);
+
                 if (chargingFactor >= 0.9f)
                 {
                     am.ToggleStatusIcon(this, true);
+                    es.CheckSpendEnergy(costToActivate/2f * Time.deltaTime);
                 }
+                else
+                {
+                    es.CheckSpendEnergy(costToActivate * Time.deltaTime);
+                }
+
             }
 
         }
@@ -141,23 +154,23 @@ public class Ability_ArcherTurret : Ability
         }
     }
 
-    private void FindBestTargetPos()
-    {
-        int layerMask = (1 << primaryLayerToTarget) | (1 << secondaryLayerToTarget);
-        Rigidbody2D targetRB = CUR.GetNearestGameObjectOnLayer(transform, layerMask, range).GetComponent<Rigidbody2D>();
-        if (!targetRB)
-        {
-            targetPos = turret.transform.position + transform.up;
-            CmdPushTargetPosToServer(targetPos);
-        }
-        else
-        {
-            Vector3 enemyVel = targetRB.velocity;
-            float timeOfShot = ((targetRB.transform.position + enemyVel) - transform.position).magnitude / weaponSpeed;
-            targetPos = targetRB.transform.position + (enemyVel * timeOfShot);
-            CmdPushTargetPosToServer(targetPos);
-        }
-    }
+    //private void FindBestTargetPos()
+    //{
+    //    int layerMask = (1 << primaryLayerToTarget) | (1 << secondaryLayerToTarget);
+    //    Rigidbody2D targetRB = CUR.GetNearestGameObjectOnLayer(transform, layerMask, range).GetComponent<Rigidbody2D>();
+    //    if (!targetRB)
+    //    {
+    //        targetPos = turret.transform.position + transform.up;
+    //        CmdPushTargetPosToServer(targetPos);
+    //    }
+    //    else
+    //    {
+    //        Vector3 enemyVel = targetRB.velocity;
+    //        float timeOfShot = ((targetRB.transform.position + enemyVel) - transform.position).magnitude / weaponSpeed;
+    //        targetPos = targetRB.transform.position + (enemyVel * timeOfShot);
+    //        CmdPushTargetPosToServer(targetPos);
+    //    }
+    //}
 
     [Command]
     private void CmdPushTargetPosToServer(Vector3 newPos)
@@ -171,5 +184,11 @@ public class Ability_ArcherTurret : Ability
         float angleToTargetFromNorth = Vector3.SignedAngle(targetDir, Vector2.up, transform.forward);
         Quaternion angleToPoint = Quaternion.Euler(0, 0, -1 * angleToTargetFromNorth);
         turret.transform.rotation = Quaternion.RotateTowards(turret.transform.rotation, angleToPoint, turretTurnRate * Time.deltaTime);
+    }
+
+    public void Cheapen()
+    {
+        costToActivate *= 0.8f;
+        GetComponent<Ability_ShieldBreaker>().Cheapen();
     }
 }

@@ -86,7 +86,7 @@ public class Ability_ShieldBreaker : Ability
     {
         if (isCharging)
         {
-            if (!es.CheckSpendEnergy(costToActivate * Time.deltaTime))
+            if (!es.CheckEnergy(costToActivate * Time.deltaTime))
             {
                 FireWeapon();
                 return;
@@ -103,9 +103,15 @@ public class Ability_ShieldBreaker : Ability
 
                 chargingFactor += Time.deltaTime * chargeRate;
                 chargingFactor = Mathf.Clamp01(chargingFactor);
+
                 if (chargingFactor >= 0.9f)
                 {
                     am.ToggleStatusIcon(this, true);
+                    es.CheckSpendEnergy(costToActivate / 2f * Time.deltaTime);
+                }
+                else
+                {
+                    es.CheckSpendEnergy(costToActivate * Time.deltaTime);
                 }
             }
 
@@ -119,5 +125,10 @@ public class Ability_ShieldBreaker : Ability
         {
             chargingBullet.transform.localScale = Vector3.one * chargingFactor;
         }
+    }
+
+    public void Cheapen()
+    {
+        costToActivate *= 0.8f;
     }
 }

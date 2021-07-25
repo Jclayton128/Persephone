@@ -16,6 +16,7 @@ public class UpgradeOption : ScriptableObject
     Health health;
     EnergySource es;
     PlayerInput pi;
+    ScrapCollector sc;
 
     enum UpgradeType { ShieldMax, ShieldRegen, EnergyMax, EnergyRegen, PriDamage, PriRange, PriIonization, PriCount, Mobility, ScrapVacRange, Custom}
     [SerializeField] UpgradeType upgradeType;
@@ -61,6 +62,9 @@ public class UpgradeOption : ScriptableObject
             case UpgradeType.Mobility:
                 pi.ModifyMobility(upgradeAmount);
                 return;
+            case UpgradeType.ScrapVacRange:
+                sc.IncreaseScrapVacRange(upgradeAmount);
+                return;
             case UpgradeType.Custom:
                 Ability abilityToUpgrade = (Ability)callingUM.gameObject.GetComponent(customAbility);
                 abilityToUpgrade.Invoke(customMethod, 0);
@@ -75,6 +79,7 @@ public class UpgradeOption : ScriptableObject
         health = go.GetComponent<Health>();
         am = go.GetComponent<AbilityManager>();
         pi = go.GetComponent<PlayerInput>();
+        sc = go.GetComponent<ScrapCollector>();
 
     }
 

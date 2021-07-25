@@ -146,6 +146,8 @@ public static class CUR : object
         return closestTarget;
     }
 
+
+
     static public GameObject GetNearestGameObjectOnLayer(Transform posToSearchFrom, string layerName, float maxSearchDistance)
     {
         int layerMask = LayerMask.NameToLayer(layerName);
@@ -207,6 +209,26 @@ public static class CUR : object
         {
             GameObject go = hit.transform.gameObject;
             float evaluatedObjectDistance = (go.transform.position - posToSearchFrom.position).magnitude;
+            if (evaluatedObjectDistance <= distance)
+            {
+                distance = evaluatedObjectDistance;
+                closestTarget = go;
+            }
+        }
+        return closestTarget;
+    }
+
+    static public GameObject GetNearestGameObjectOnLayer(Vector3 posToSearchFrom, int layerMask, float maxSearchDistance)
+    {
+        //Debug.Log(LayerMask.LayerToName(layerIndex));
+        float distance = maxSearchDistance;
+        GameObject closestTarget = null;
+        //RaycastHit2D[] hitColliders = Physics2D.CircleCastAll(posToSearchFrom.position, maxSearchDistance, Vector2.up, 0f, layerMask, -1f, 1f);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(posToSearchFrom, maxSearchDistance, layerMask);
+        foreach (Collider2D hit in hits)
+        {
+            GameObject go = hit.transform.gameObject;
+            float evaluatedObjectDistance = (go.transform.position - posToSearchFrom).magnitude;
             if (evaluatedObjectDistance <= distance)
             {
                 distance = evaluatedObjectDistance;

@@ -38,7 +38,12 @@ public class ScrapCollector : NetworkBehaviour
                 Destroy(collision.gameObject);
             }
         }
+    }
 
+    public void IncreaseScrapVacRange(float amount)
+    {
+        scrapVacuumSize += amount;
+        scrapVacuum.radius = scrapVacuumSize;
     }
 
 }

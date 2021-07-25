@@ -152,6 +152,17 @@ public class Health : NetworkBehaviour
                 RechargeShield();
             }
         }
+        if (isClient)
+        {
+            if (IonFactor > 0)
+            {
+                var em = ionizationFX.emission;
+                em.rateOverTime = Mathf.RoundToInt(IonFactor * 20f);
+                //var burst = em.GetBurst(0);
+                //burst.probability = 0.5f;
+
+            }
+        }
     }
 
     private void ProcessIonization()
@@ -513,14 +524,7 @@ public class Health : NetworkBehaviour
                 ionizationSlider.value = 0;
             }
         }
-        if (IonFactor > 0)
-        {
-            var em = ionizationFX.emission;
-            em.rateOverTime = Mathf.RoundToInt(IonFactor*10f);
-            //var burst = em.GetBurst(0);
-            //burst.probability = 0.5f;
 
-        }
     }
 
 

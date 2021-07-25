@@ -18,6 +18,7 @@ public abstract class Brain : NetworkBehaviour
     protected UnitTracker ut;
     protected Muzzle muz;
     protected Health health;
+    [SerializeField] protected float performanceFactor = 1;
 
     //param
     private enum TargetSortMode {ClosestAllyFirst, LeastImportantAllyFirst, MostIonizedPlayerFirst, MostHealthyPlayerFirst, InOrderOfDetection }
@@ -59,10 +60,6 @@ public abstract class Brain : NetworkBehaviour
     [SerializeField] protected bool weaponIsCharged;
 
     public enum FaceMode { complex, simple};
-
-    float param1;
-    float param2;
-    float param3;
 
 
     [SerializeField] AudioClip[] firingSounds;
@@ -421,7 +418,7 @@ public abstract class Brain : NetworkBehaviour
 
     protected virtual void FixedUpdate()
     {
-
+        performanceFactor = 1 - Mathf.Clamp01(health.IonFactor);        
     }
 
     #region Movement
@@ -433,19 +430,19 @@ public abstract class Brain : NetworkBehaviour
             case MoveMode.General:
                 if (Mathf.Abs(angleToDest) <= angleThresholdForAccel)
                 {
-                    rb.AddForce(accelRate_normal * transform.up);
+                    rb.AddForce(accelRate_normal * transform.up * performanceFactor);
                     return;
                 }
                 if (Mathf.Abs(angleToDest) <= angleThresholdForAccel * 3)
                 {
-                    rb.AddForce(accelRate_normal / 2 * transform.up);
+                    rb.AddForce(accelRate_normal / 2 * transform.up * performanceFactor);
                 }
                 return;
 
             case MoveMode.Precise:
                 if (Mathf.Abs(angleToDest) <= angleThresholdForAccel)
                 {
-                    rb.AddForce(accelRate_normal * transform.up);
+                    rb.AddForce(accelRate_normal * transform.up * performanceFactor);
                 }
                 return;
         }
@@ -456,7 +453,7 @@ public abstract class Brain : NetworkBehaviour
         if (Mathf.Abs(angleToDest) <= angleThresholdForAccel && distToStop > 0)
         {
             float factor = Mathf.Clamp01(distToDest - distToStop);
-            rb.AddForce(accelRate_normal * transform.up * Time.timeScale * factor);
+            rb.AddForce(accelRate_normal * transform.up * Time.timeScale * factor * performanceFactor);
         }
     }
 
@@ -467,11 +464,11 @@ public abstract class Brain : NetworkBehaviour
             float distThresh = closeEnough;
             float distMod = distToDest - distanceToStopAt;
             float factor = Mathf.Clamp(distMod / distThresh, -1, 1);
-            rb.AddForce(accelRate_normal * transform.up * Time.timeScale * factor);
+            rb.AddForce(accelRate_normal * transform.up * Time.timeScale * factor * performanceFactor);
         }
         if (Mathf.Abs(angleToDest) <= angleThresholdForAccel && adjustForDistanceToTarget == false)
         {
-            rb.AddForce(accelRate_normal * transform.up * Time.timeScale);
+            rb.AddForce(accelRate_normal * transform.up * Time.timeScale * performanceFactor);
         }
     }
 
@@ -482,12 +479,12 @@ public abstract class Brain : NetworkBehaviour
             float distThresh = closeEnough;
             float factor = Mathf.Clamp01(distToDest / distThresh);
             Vector2 thrustAxis = currentDest - transform.position;
-            rb.AddForce(accelRate_normal * thrustAxis * Time.timeScale * factor);
+            rb.AddForce(accelRate_normal * thrustAxis * Time.timeScale * factor * performanceFactor);
         }
         if (!adjustForDistanceToTarget)
         {
             Vector2 thrustAxis = currentDest - transform.position;
-            rb.AddForce(accelRate_normal * thrustAxis * Time.timeScale);
+            rb.AddForce(accelRate_normal * thrustAxis * Time.timeScale * performanceFactor);
         }
     }
     #endregion
@@ -501,11 +498,11 @@ public abstract class Brain : NetworkBehaviour
             factor = Mathf.Clamp01(factor);
             if (angleToDest > 0)
             {
-                rb.angularVelocity = -1 * maxTurnSpeed_normal * factor;
+                rb.angularVelocity = -1 * maxTurnSpeed_normal * factor * performanceFactor;
             }
             if (angleToDest < 0)
             {
-                rb.angularVelocity = maxTurnSpeed_normal * factor;
+                rb.angularVelocity = maxTurnSpeed_normal * factor * performanceFactor;
             }
             return;
         }
@@ -514,11 +511,11 @@ public abstract class Brain : NetworkBehaviour
         {
             if (angleToDest > 0)
             {
-                rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
+                rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime * performanceFactor);
             }
             if (angleToDest <= 0)
             {
-                rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
+                rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime * performanceFactor);
             }
 
             return;
@@ -552,26 +549,7 @@ public abstract class Brain : NetworkBehaviour
     }
 
     #endregion
-
-    #region LevelScaling
-
-    public void SetParam1(float value)
-    {
-        param1 = value;
-    }
-
-    public void SetParam2(float value)
-    {
-        param2 = value;
-    }
-
-    public void SetParam3(float value)
-    {
-        param3 = value;
-    }
-
-    #endregion
-
+    
     [Server]
     protected virtual void OnDestroy()
     {

@@ -81,6 +81,7 @@ public class Hammer_Brain : Brain
 
     protected override void FixedUpdate()
     {
+        base.FixedUpdate();
         if (isServer)
         {
             SprintTowardsPlayer();
@@ -95,16 +96,16 @@ public class Hammer_Brain : Brain
         if (!currentAttackTarget) { return; }
         if (angleToAttackTarget > 5)
         {
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, -maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime * performanceFactor);
         }
         if (angleToAttackTarget < -5)
         {
-            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime);
+            rb.angularVelocity = Mathf.Lerp(rb.angularVelocity, maxTurnSpeed_normal, turnAccelRate_normal * Time.deltaTime * performanceFactor);
         }
 
         if (timeSinceBeganCharging < timeRequiredToChargeMotors)
         {
-            timeSinceBeganCharging += Time.deltaTime;
+            timeSinceBeganCharging += Time.deltaTime * performanceFactor;
         }
         if (timeSinceBeganCharging >= timeRequiredToChargeMotors && !isSprinting) //Charged up and not already sprinting: begin sprinting!
         {
@@ -119,7 +120,7 @@ public class Hammer_Brain : Brain
         if (isSprinting)
         {
             timeSinceBeganSprinting += Time.deltaTime;
-            rb.AddForce(accelRate_normal * transform.up * Time.timeScale);
+            rb.AddForce(accelRate_normal * transform.up * Time.timeScale * performanceFactor);
             if (timeSinceBeganSprinting >= sprintDuration) //Once sprinting duration is done: decolor, decrease angular drag,
             {
                 //sr.color = Color.white;

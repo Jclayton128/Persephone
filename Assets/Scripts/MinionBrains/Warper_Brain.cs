@@ -44,15 +44,6 @@ public class Warper_Brain : Brain
         }
     }
 
-    private void TargetMostImportantTarget()
-    {
-        if (targets.Count > 0 )
-        {
-            currentAttackTarget = targets[0].gameObject;
-        }
-
-    }
-
     protected override void Scan()
     {
         base.Scan();

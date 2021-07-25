@@ -23,12 +23,12 @@ MonoBehaviour:
   timeBetweenShots: 0
   weaponLifetime: 0.1
   weaponSpeed: 15
-  normalDamage: 10
+  normalDamage: 0
   shieldBonusDamage: 0
   costToActivate: 1
   insufficientEnergySound: {fileID: 0}
   UsesStatusIcon: 0
-  ionizationDamage: 1
+  ionizationDamage: 10
 --- !u!114 &194901994997442335
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -127,11 +127,11 @@ public class PlayerInput : NetworkBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            am.SelectedSecondaryAbility.MouseClickDownValidate();
+            am.SelectedSecondaryAbility?.MouseClickDownValidate();
         }
         if (Input.GetKeyUp(KeyCode.Mouse1))
         {
-            am.SelectedSecondaryAbility.MouseClickUpValidate();
+            am.SelectedSecondaryAbility?.MouseClickUpValidate();
         }
     }
 

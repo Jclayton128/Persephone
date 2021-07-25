@@ -12,7 +12,7 @@ public class Ability_Blink : Ability
     PlayerInput pi;
     Rigidbody2D rb;
 
-    float blinkRate = 3.0f;
+    float blinkRate = 1.5f;
     [SyncVar]
     float blinkFactor = 1; //
     float postBlinkFactor = 0;
@@ -188,7 +188,7 @@ public class Ability_Blink : Ability
         for (int i = 1; i <= shrapnelCount; i++)
         {
             Quaternion sector = Quaternion.Euler(0, 0, i * circleSubdivided + transform.eulerAngles.z + (weaponSpeed / 2) + 180);
-            GameObject newShrapnel = Instantiate(abilityPrefabs[1], transform.position, sector) as GameObject;
+            GameObject newShrapnel = Instantiate(abilityPrefabs[1], blinkFromPos, sector) as GameObject;
             newShrapnel.layer = 9;
             newShrapnel.transform.localScale = Vector3.one * 0.75f;
             newShrapnel.GetComponent<Rigidbody2D>().velocity = newShrapnel.transform.up * weaponSpeed;
@@ -206,7 +206,7 @@ public class Ability_Blink : Ability
         for (int i = 1; i <= shrapnelCount; i++)
         {
             Quaternion sector = Quaternion.Euler(0, 0, i * circleSubdivided + transform.eulerAngles.z + (weaponSpeed / 2) + 180);
-            GameObject newShrapnel = Instantiate(abilityPrefabs[2], blinkFromPos, sector) as GameObject;
+            GameObject newShrapnel = Instantiate(abilityPrefabs[2], transform.position, sector) as GameObject;
             newShrapnel.layer = 9;
             newShrapnel.transform.localScale = Vector3.one;
             newShrapnel.GetComponent<Rigidbody2D>().velocity = newShrapnel.transform.up * weaponSpeed;
@@ -244,6 +244,12 @@ public class Ability_Blink : Ability
             tier = -1;
             return false;
         }
+    }
+
+    public void ImproveBlink()
+    {
+        blinkRate *= 1.25f;
+        costToActivate *= 0.75f;
     }
 
 }

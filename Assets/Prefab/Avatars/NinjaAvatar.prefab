@@ -23,12 +23,12 @@ MonoBehaviour:
   timeBetweenShots: 0
   weaponLifetime: 0.1
   weaponSpeed: 15
-  normalDamage: 0
+  normalDamage: 7
   shieldBonusDamage: 0
-  costToActivate: 1
+  costToActivate: 3
   insufficientEnergySound: {fileID: 0}
   UsesStatusIcon: 0
-  ionizationDamage: 10
+  ionizationDamage: 3
 --- !u!114 &194901994997442335
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47,7 +47,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 1f4dd0a9b423f9444898d3d240c44ea8, type: 3}
   - {fileID: 21300000, guid: 753adf59a1f66b34684ca181a6d3747e, type: 3}
   - {fileID: 21300000, guid: a7044b0269f9cc44abb46aa9a2b9a813, type: 3}
-  unlockLevels: 000000000200000003000000
+  unlockLevels: 030000000600000009000000
   abilityPrefabs:
   - {fileID: 2309407068753948443, guid: ecc35d41b5bd21d43b2eb6ed7a81e04e, type: 3}
   - {fileID: 8469018735137222058, guid: c409e004d5daa9545b8efeea4f33099e, type: 3}
@@ -56,12 +56,12 @@ MonoBehaviour:
   timeBetweenShots: 0
   weaponLifetime: 0.3
   weaponSpeed: 5
-  normalDamage: 2
+  normalDamage: 0.5
   shieldBonusDamage: 0
-  costToActivate: 3
+  costToActivate: 5
   insufficientEnergySound: {fileID: 0}
   UsesStatusIcon: 0
-  novaBlinkIonizationDamage: 5
+  novaBlinkIonizationDamage: 0.5
   IsBlinking: 0
 --- !u!1001 &2540300016308635610
 PrefabInstance:
@@ -216,6 +216,46 @@ PrefabInstance:
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: hullMax
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: shieldMax_normal
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5030652208682602083, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: purificationRate
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 72cb23f11151df447ab5c19fd89baec8, type: 2}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 987d1275fa47ee44baff7906c3978c4f, type: 2}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 205d421d2ce168442beada6bf1767f24, type: 2}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9affc22164106514596bf4a49df3fbe8, type: 2}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 5b71e2246a0938c4f8a26ef1931f7a8c, type: 2}
+    - target: {fileID: 5508274861021996712, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
+      propertyPath: allUpgradeOptions.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0102b37912d81d04cbdc53a03ebd18a2, type: 2}
     - target: {fileID: 6334781685113115072, guid: 9b1724d7a40c0ee498b1ee17190772bf, type: 3}
       propertyPath: ShipName
       value: Ninja

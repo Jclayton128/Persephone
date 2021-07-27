@@ -11,14 +11,12 @@ public class ShipSelectPanelDriver : MonoBehaviour
     // Start is called before the first frame update
     public ClientInstance ci;
     PlayerShipyard ps;
-    Vector3 displayPos = Vector3.zero;
-    Vector3 hidePos = new Vector3(999, 999, 0);
 
     [SerializeField] Button[] avatarButtons = null;
     [SerializeField] TextMeshProUGUI choiceName = null;
     [SerializeField] TextMeshProUGUI choiceDescription = null;
 
-    public int chosenAvatarIndex { get; private set; } = -1;
+    public int chosenAvatarIndex = -1;
     void Start()
     {
         ps = FindObjectOfType<PlayerShipyard>();
@@ -79,8 +77,7 @@ public class ShipSelectPanelDriver : MonoBehaviour
 
     public void DisplayPanel()
     {
-        transform.position = displayPos;
-
+        //transform.position = displayPos;
     }
 
     public void HidePanel()

@@ -41,6 +41,9 @@ public class UpgradeManager : NetworkBehaviour
         if (hasAuthority)
         {
             HookIntoLocalUI();
+            UpdateUIForUpgradePoints(0,0);
+            UpdateUIForLevel(0,0);
+            UpdateUIForScrap(0,0);
         }
         PrepareUpgradeOptions();
     }

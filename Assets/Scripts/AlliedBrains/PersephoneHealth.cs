@@ -12,6 +12,7 @@ public class PersephoneHealth : NetworkBehaviour
 
     [SerializeField] AudioClip[] hurtAudioClip = null;
     [SerializeField] AudioClip[] dieAudioClip = null;
+    ParticleSystem deathFX;
 
     AudioClip chosenHurtSound;
     AudioClip chosenDieSound;
@@ -23,6 +24,7 @@ public class PersephoneHealth : NetworkBehaviour
 
     //param
     [SerializeField] float startingHealth;
+    float timeSpentDying = 5;
     
     #region Init: current state
     //hood
@@ -40,19 +42,24 @@ public class PersephoneHealth : NetworkBehaviour
 
     #endregion
 
+    //hood
+    float timeToDie = Mathf.Infinity;
+
     public Action EntityWasDamaged;
-    public Action EntityIsDying;
+    public Action PersephoneIsDying;
+    public Action PersephoneIsDead;
+
+
 
     void Start()
     {
-
         currentHealth = startingHealth;
-
         SetAudioClips();
 
         if (isClient)
         {
             HookIntoLocalUI();
+            deathFX = GetComponent<ParticleSystem>();
         }
     }
 
@@ -79,9 +86,14 @@ public class PersephoneHealth : NetworkBehaviour
         if (isServer)
         {
             LiveOrDie();
-   
+            if (isDying && Time.time >= timeToDie)
+            {
+                //stop particleFX
+                PersephoneIsDead?.Invoke();
+                RpcToggleDeathEffectsOnClient(false);
+                Destroy(gameObject);
+            }
         }
-
     }
 
     public void ModifyHullLevel(float amount)
@@ -96,27 +108,37 @@ public class PersephoneHealth : NetworkBehaviour
         {
             isDying = true;
             //TODO Pers death results in a slow-down of time, a camera snap to the persephone, and eventual game over.
-            EntityIsDying?.Invoke();
-            BroadcastMessage("DyingActions", ownerOfLastDamageDealerToBeHitBy, SendMessageOptions.DontRequireReceiver);
+            PersephoneIsDying?.Invoke();
             if (chosenDieSound)
             {
                 AudioSource.PlayClipAtPoint(chosenDieSound, transform.position);
-                //if (countsTowardsScore)
-                //{
-                //    sk.IncreaseScore();
-                //}
-                Destroy(gameObject);
+
+                DepictPersephoneDeath();
                 //Destroy(gameObject, chosenDieSound.length);
             }
             if (!chosenDieSound)
             {
-                //if (countsTowardsScore)
-                //{
-                //    sk.IncreaseScore();
-                //}
-                Destroy(gameObject);
+
+                DepictPersephoneDeath();
             }
         }
+    }
+
+    private void DepictPersephoneDeath()
+    {
+        var turrets = GetComponentsInChildren<Turret_AI>();
+        foreach (var turret in turrets)
+        {
+            turret.enabled = false;
+        }
+        GetComponent<IFF>().SetEnabledDisabledImportance(true);
+        GetComponent<PersephoneBrain>().enabled = false;
+        var rb = GetComponent<Rigidbody2D>();
+        rb.drag = 3f;
+        rb.angularDrag = 1f;
+        RpcToggleDeathEffectsOnClient(true);
+        timeToDie = Time.time + timeSpentDying;
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -174,7 +196,6 @@ public class PersephoneHealth : NetworkBehaviour
         }
     }
 
-
     private void UpdateUI(float v1, float v2)
     {
        
@@ -189,14 +210,26 @@ public class PersephoneHealth : NetworkBehaviour
     {
         if (repairCost > currentHealth)
         {
-            Debug.Log("Persephone is too damaged to repair a player.");
             return false;
         }
         else
         {
             currentHealth -= repairCost;
-            Debug.Log("Pers paid for a player repair");
             return true;
+        }
+    }
+
+    [ClientRpc]
+    private void RpcToggleDeathEffectsOnClient(bool isPlaying)
+    {
+        if (isPlaying)
+        {
+            deathFX.Play();
+            Camera.main.GetComponent<WorldCameraController>().FollowSpecificTarget(gameObject);
+        }
+        if (!isPlaying)
+        {
+            deathFX.Pause();
         }
     }
 }

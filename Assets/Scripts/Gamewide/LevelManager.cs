@@ -17,9 +17,11 @@ public class LevelManager : NetworkBehaviour
     [SerializeField] TextMeshProUGUI levelCounterTMP = null;
     [SerializeField] List<Level> unencounteredLevels = null;
     [SerializeField] List<Level> encounteredLevels = new List<Level>();
+    [SerializeField] GameObject gameOverScreenPrefab = null;
 
     static Level currentLevel;
     PersephoneBrain pb;
+    PersephoneHealth ph;
 
     [SyncVar(hook = nameof(UpdateLevelCountUI))]
     int currentLevelCount = 0;
@@ -217,13 +219,44 @@ public class LevelManager : NetworkBehaviour
     {
         if (isServer)
         {
+            Time.timeScale = 1;
             GameObject persephone = Instantiate(persephonePrefab, Vector2.zero, Quaternion.identity) as GameObject;
             pb = persephone.GetComponent<PersephoneBrain>();
             pb.StartPersephone();
+            ph = persephone.GetComponent<PersephoneHealth>();
+            ph.PersephoneIsDead += ReactToPersephoneDeath;
             NetworkServer.Spawn(persephone);
 
         }
 
+    }
+
+    [Server]
+    private void ReactToPersephoneDeath()
+    {
+        RpcPushGameOverScreenOnClients(currentLevelCount);
+        Time.timeScale = 0;
+        pb = null;
+        ph = null;
+        currentLevel = null;
+        currentLevelCount = 0;
+        ClearOutAllPlayers();
+    }
+
+    private void ClearOutAllPlayers()
+    {
+        var avatars = FindObjectsOfType<PlayerInput>();
+        foreach (var avatar in avatars)
+        {
+            Destroy(avatar.transform.gameObject);
+        }
+    }
+
+    [ClientRpc]
+    private void RpcPushGameOverScreenOnClients(int levelReached)
+    {
+        GameObject screen = Instantiate(gameOverScreenPrefab) as GameObject;
+        screen.GetComponent<GameOverScreenDriver>().LevelReachedTMP.text = "You made it to level: " + levelReached.ToString();
     }
 
     private void SetTimeUntilPersephoneArrives()

@@ -11,8 +11,7 @@ public class ClientInstance : NetworkBehaviour
     public static ClientInstance Instance;
     [SerializeField] Camera cam;
     //[SerializeField] GameObject desiredAvatar;
-    ShipSelectPanelDriver sspd;
-    int desiredAvatar;
+    public ShipSelectPanelDriver sspd;
     public GameObject CurrentAvatar;
     LevelManager lm;
     PlayerShipyard ps;
@@ -95,20 +94,22 @@ public class ClientInstance : NetworkBehaviour
     [Command]
     public void CmdNetworkSpawnAvatarAndStartGame(int indexOfChoiceFromShipyard)
     {
-        if (!CurrentAvatar)
-        {
-            GameObject prefab = ps.allAvatarPrefabs[indexOfChoiceFromShipyard];
-            Vector2 startPoint = FindObjectOfType<ArenaBounds>().CreateRandomPointWithinArena(Vector2.zero, 3.0f, ArenaBounds.DestinationMode.noFartherThan);
-            GameObject go = Instantiate(prefab, startPoint, Quaternion.identity);
-            go.GetComponent<IFF>().SetIFFAllegiance(IFF.PlayerIFF);
-            NetworkServer.Spawn(go, base.connectionToClient);
+        GameObject prefab = ps.allAvatarPrefabs[indexOfChoiceFromShipyard];
+        Vector2 startPoint = FindObjectOfType<ArenaBounds>().CreateRandomPointWithinArena(Vector2.zero, 3.0f, ArenaBounds.DestinationMode.noFartherThan);
+        GameObject go = Instantiate(prefab, startPoint, Quaternion.identity);
+        go.GetComponent<IFF>().SetIFFAllegiance(IFF.PlayerIFF);
+        NetworkServer.Spawn(go, base.connectionToClient);
 
-            RequestStartingLevelIfFirstPlayer();
-        }
-        else
-        {
-            Debug.Log("player alread has a current avatar");
-        }
+        RequestStartingLevelIfFirstPlayer();
+
+        //if (!CurrentAvatar)
+        //{
+
+        //}
+        //else
+        //{
+        //    Debug.Log("player alread has a current avatar");
+        //}
 
     }
 

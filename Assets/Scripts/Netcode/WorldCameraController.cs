@@ -8,17 +8,24 @@ public class WorldCameraController : MonoBehaviour
 {
     private void Awake()
     {
-        ClientInstance.OnAvatarSpawned += ClientInstance_OnAvatarSpawned;
+        ClientInstance.OnAvatarSpawned += FollowSpecificTarget;
         //Subscribe to "On Avatar Spawned", thereby firing the "CliInst_OnAvaSpa" script with a GameObject reference attached to the event.
     }
 
     private void OnDestroy()
     {
-        ClientInstance.OnAvatarSpawned -= ClientInstance_OnAvatarSpawned;
+        ClientInstance.OnAvatarSpawned -= FollowSpecificTarget;
     }
 
-    private void ClientInstance_OnAvatarSpawned(GameObject go)
+    //private void ClientInstance_OnAvatarSpawned(GameObject go)
+    //{
+    //    GetComponentInChildren<CinemachineVirtualCamera>().Follow = go.transform;
+    //}
+
+    public void FollowSpecificTarget(GameObject go)
     {
         GetComponentInChildren<CinemachineVirtualCamera>().Follow = go.transform;
     }
+
+
 }
